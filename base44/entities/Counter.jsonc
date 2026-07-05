@@ -1,0 +1,88 @@
+{
+  "name": "Counter",
+  "type": "object",
+  "properties": {
+    "tipo": {
+      "type": "string",
+      "title": "Tipo (client_code / contrato / os)",
+      "enum": [
+        "client_code",
+        "contrato",
+        "os"
+      ]
+    },
+    "ultimo_numero": {
+      "type": "number",
+      "title": "\u00daltimo N\u00famero Gerado",
+      "default": 0
+    }
+  },
+  "required": [
+    "tipo",
+    "ultimo_numero"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

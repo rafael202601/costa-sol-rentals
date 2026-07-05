@@ -1,0 +1,349 @@
+{
+  "name": "AgentSettings",
+  "type": "object",
+  "properties": {
+    "openai_api_key": {
+      "type": "string",
+      "title": "OpenAI API Key"
+    },
+    "gemini_api_key": {
+      "type": "string",
+      "title": "Gemini API Key"
+    },
+    "ai_provider_primary": {
+      "type": "string",
+      "title": "AI Provider Principal",
+      "default": "openai"
+    },
+    "ai_provider_fallback": {
+      "type": "string",
+      "title": "AI Provider Fallback",
+      "default": "gemini"
+    },
+    "whatsapp_access_token": {
+      "type": "string",
+      "title": "WhatsApp Access Token (API Oficial Meta)"
+    },
+    "whatsapp_phone_number_id": {
+      "type": "string",
+      "title": "WhatsApp Phone Number ID (API Oficial Meta)"
+    },
+    "whatsapp_verify_token": {
+      "type": "string",
+      "title": "WhatsApp Verify Token"
+    },
+    "whatsapp_numero": {
+      "type": "string",
+      "title": "N\u00famero WhatsApp Conectado (Meta)"
+    },
+    "whatsapp_instrucao_especifica": {
+      "type": "string",
+      "title": "Instru\u00e7\u00e3o Espec\u00edfica \u2014 WhatsApp A (Meta)"
+    },
+    "generica_ativa": {
+      "type": "boolean",
+      "title": "API Gen\u00e9rica Ativa (Z-API/Evolution)",
+      "default": false
+    },
+    "generica_api_url": {
+      "type": "string",
+      "title": "API Gen\u00e9rica \u2014 URL Base"
+    },
+    "generica_api_token": {
+      "type": "string",
+      "title": "API Gen\u00e9rica \u2014 Token/API Key"
+    },
+    "generica_instance": {
+      "type": "string",
+      "title": "API Gen\u00e9rica \u2014 Instance ID"
+    },
+    "generica_numero": {
+      "type": "string",
+      "title": "API Gen\u00e9rica \u2014 N\u00famero WhatsApp"
+    },
+    "generica_verify_token": {
+      "type": "string",
+      "title": "API Gen\u00e9rica \u2014 Verify Token (Webhook)"
+    },
+    "generica_instrucao_especifica": {
+      "type": "string",
+      "title": "Instru\u00e7\u00e3o Espec\u00edfica \u2014 WhatsApp B (Gen\u00e9rica)"
+    },
+    "agente_ativo": {
+      "type": "boolean",
+      "title": "Agente Ativo (Meta)",
+      "default": false
+    },
+    "generica_agente_ativo": {
+      "type": "boolean",
+      "title": "Agente Ativo (Gen\u00e9rica)",
+      "default": false
+    },
+    "nome_agente": {
+      "type": "string",
+      "title": "Nome do Agente"
+    },
+    "personalidade": {
+      "type": "string",
+      "title": "Personalidade"
+    },
+    "linguagem": {
+      "type": "string",
+      "title": "Linguagem"
+    },
+    "tempo_resposta": {
+      "type": "string",
+      "title": "Tempo de Resposta"
+    },
+    "mensagem_boas_vindas": {
+      "type": "string",
+      "title": "Mensagem de Boas-vindas"
+    },
+    "mensagem_cliente_nao_encontrado": {
+      "type": "string",
+      "title": "Mensagem Cliente N\u00e3o Encontrado"
+    },
+    "mensagem_cobranca": {
+      "type": "string",
+      "title": "Mensagem de Cobran\u00e7a"
+    },
+    "mensagem_confirmacao_pagamento": {
+      "type": "string",
+      "title": "Mensagem Confirma\u00e7\u00e3o Pagamento"
+    },
+    "mensagem_envio_contrato": {
+      "type": "string",
+      "title": "Mensagem Envio Contrato"
+    },
+    "mensagem_envio_orcamento": {
+      "type": "string",
+      "title": "Mensagem Envio Or\u00e7amento"
+    },
+    "mensagem_aguardo_humano": {
+      "type": "string",
+      "title": "Mensagem Aguardo Humano (Interven\u00e7\u00e3o)"
+    },
+    "prompt_personalizado": {
+      "type": "string",
+      "title": "Prompt Personalizado"
+    },
+    "ia_instrucoes_gerais": {
+      "type": "string",
+      "title": "Instru\u00e7\u00f5es Gerais do Agente"
+    },
+    "ia_contexto_empresa": {
+      "type": "string",
+      "title": "Contexto da Empresa"
+    },
+    "ia_base_conhecimento": {
+      "type": "array",
+      "title": "Base de Conhecimento (Arquivos)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string",
+            "title": "Descri\u00e7\u00e3o / Contexto para IA"
+          },
+          "url": {
+            "type": "string"
+          },
+          "tamanho": {
+            "type": "number"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "data_upload": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean",
+            "default": true
+          },
+          "status": {
+            "type": "string",
+            "default": "disponivel"
+          }
+        }
+      }
+    },
+    "ia_regras_operacionais": {
+      "type": "array",
+      "title": "Regras Operacionais",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "ia_respostas_prontas": {
+      "type": "array",
+      "title": "Respostas Prontas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "texto": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "ia_aprendizados": {
+      "type": "array",
+      "title": "Aprendizados / Mem\u00f3ria Operacional",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "texto": {
+            "type": "string"
+          },
+          "ativo": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "exigir_confirmacao": {
+      "type": "boolean",
+      "title": "Exigir Confirma\u00e7\u00e3o Humana",
+      "default": false
+    },
+    "transferir_atendente": {
+      "type": "boolean",
+      "title": "Transferir para Atendente",
+      "default": false
+    },
+    "limite_tentativas": {
+      "type": "number",
+      "title": "Limite de Tentativas",
+      "default": 5
+    },
+    "consultar_clientes": {
+      "type": "boolean",
+      "title": "Consultar Clientes",
+      "default": true
+    },
+    "consultar_contratos": {
+      "type": "boolean",
+      "title": "Consultar Contratos",
+      "default": true
+    },
+    "consultar_os": {
+      "type": "boolean",
+      "title": "Consultar OS",
+      "default": true
+    },
+    "consultar_financeiro": {
+      "type": "boolean",
+      "title": "Consultar Financeiro",
+      "default": true
+    },
+    "consultar_orcamentos": {
+      "type": "boolean",
+      "title": "Consultar Or\u00e7amentos",
+      "default": false
+    },
+    "cobranca_ativa": {
+      "type": "boolean",
+      "title": "Cobran\u00e7a Autom\u00e1tica Ativa",
+      "default": false
+    },
+    "cobranca_intervalo": {
+      "type": "number",
+      "title": "Intervalo de Cobran\u00e7a (dias)",
+      "default": 2
+    },
+    "cobranca_incluir_pix": {
+      "type": "boolean",
+      "title": "Incluir PIX na Cobran\u00e7a",
+      "default": false
+    },
+    "tipo_envio": {
+      "type": "string",
+      "title": "Tipo de Envio",
+      "default": "api_oficial"
+    },
+    "central_intervencoes_ativa": {
+      "type": "boolean",
+      "title": "Central de Interven\u00e7\u00f5es Ativa",
+      "default": true
+    },
+    "ia_pode_pedir_ajuda": {
+      "type": "boolean",
+      "title": "IA Pode Solicitar Ajuda Humana",
+      "default": true
+    },
+    "pausar_ia_automaticamente": {
+      "type": "boolean",
+      "title": "Pausar IA Automaticamente ao Escalar",
+      "default": true
+    },
+    "retornar_ia_apos_resposta": {
+      "type": "boolean",
+      "title": "Retornar IA Ap\u00f3s Resposta Humana",
+      "default": false
+    },
+    "intervencao_timeout_minutos": {
+      "type": "number",
+      "title": "Retorno Autom\u00e1tico da IA ap\u00f3s Inatividade (minutos)",
+      "default": 0
+    }
+  },
+  "required": [],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

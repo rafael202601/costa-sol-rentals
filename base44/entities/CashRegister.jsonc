@@ -1,0 +1,116 @@
+{
+  "name": "CashRegister",
+  "type": "object",
+  "properties": {
+    "data_abertura": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Data/Hora de Abertura"
+    },
+    "data_fechamento": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Data/Hora de Fechamento"
+    },
+    "responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "valor_inicial": {
+      "type": "number",
+      "title": "Valor Inicial (R$)",
+      "default": 0
+    },
+    "total_entradas": {
+      "type": "number",
+      "title": "Total de Entradas (R$)",
+      "default": 0
+    },
+    "total_saidas": {
+      "type": "number",
+      "title": "Total de Sa\u00eddas (R$)",
+      "default": 0
+    },
+    "saldo_final": {
+      "type": "number",
+      "title": "Saldo Final (R$)",
+      "default": 0
+    },
+    "diferenca": {
+      "type": "number",
+      "title": "Diferen\u00e7a (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "aberto",
+        "fechado"
+      ],
+      "enumNames": [
+        "Aberto",
+        "Fechado"
+      ],
+      "default": "aberto"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "data_abertura",
+    "responsavel",
+    "valor_inicial"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

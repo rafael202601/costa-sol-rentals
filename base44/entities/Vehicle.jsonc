@@ -1,0 +1,139 @@
+{
+  "name": "Vehicle",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome do Ve\u00edculo"
+    },
+    "placa": {
+      "type": "string",
+      "title": "Placa"
+    },
+    "modelo": {
+      "type": "string",
+      "title": "Modelo"
+    },
+    "marca": {
+      "type": "string",
+      "title": "Marca"
+    },
+    "ano": {
+      "type": "number",
+      "title": "Ano"
+    },
+    "cor": {
+      "type": "string",
+      "title": "Cor"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "caminhao",
+        "van",
+        "carro",
+        "moto",
+        "outro"
+      ],
+      "enumNames": [
+        "Caminh\u00e3o",
+        "Van",
+        "Carro",
+        "Moto",
+        "Outro"
+      ],
+      "default": "caminhao"
+    },
+    "motorista_id": {
+      "type": "string",
+      "title": "ID do Motorista"
+    },
+    "motorista_nome": {
+      "type": "string",
+      "title": "Motorista Respons\u00e1vel"
+    },
+    "km_atual": {
+      "type": "number",
+      "title": "KM Atual",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "ativo",
+        "inativo",
+        "manutencao"
+      ],
+      "enumNames": [
+        "Ativo",
+        "Inativo",
+        "Em Manuten\u00e7\u00e3o"
+      ],
+      "default": "ativo"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "placa",
+    "modelo"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "motorista"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

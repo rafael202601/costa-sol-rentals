@@ -1,0 +1,177 @@
+{
+  "name": "PaymentRequest",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "itens": {
+      "type": "array",
+      "title": "Itens Selecionados",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "valor": {
+            "type": "number"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "valor_original": {
+            "type": "number"
+          },
+          "desconto": {
+            "type": "number",
+            "default": 0
+          },
+          "valor_final": {
+            "type": "number"
+          },
+          "forma_pagamento": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Valor Total (R$)",
+      "default": 0
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data da Solicita\u00e7\u00e3o"
+    },
+    "comprovante_url": {
+      "type": "string",
+      "title": "URL do Comprovante"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "nota_id": {
+      "type": "string",
+      "title": "ID da Nota de Cobran\u00e7a Vinculada"
+    },
+    "nota_numero": {
+      "type": "string",
+      "title": "N\u00famero da Nota de Cobran\u00e7a"
+    },
+    "registrado_por": {
+      "type": "string",
+      "title": "Registrado por"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "aguardando_confirmacao",
+        "confirmado",
+        "rejeitado"
+      ],
+      "enumNames": [
+        "Aguardando Confirma\u00e7\u00e3o",
+        "Confirmado",
+        "Rejeitado"
+      ],
+      "default": "aguardando_confirmacao"
+    },
+    "motivo_rejeicao": {
+      "type": "string",
+      "title": "Motivo da Rejei\u00e7\u00e3o"
+    },
+    "confirmado_por": {
+      "type": "string",
+      "title": "Confirmado/Rejeitado por"
+    }
+  },
+  "required": [
+    "client_id",
+    "client_nome",
+    "valor_total"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "name": "ConversationState",
+  "type": "object",
+  "properties": {
+    "telefone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "intent": {
+      "type": "string",
+      "title": "Inten\u00e7\u00e3o",
+      "enum": [
+        "orcamento",
+        "financeiro",
+        "entrega",
+        "recolha",
+        "suporte",
+        "reclamacao",
+        "urgencia",
+        "humano",
+        "cancelamento",
+        "outro"
+      ],
+      "default": "orcamento"
+    },
+    "flow": {
+      "type": "string",
+      "title": "Fluxo",
+      "enum": [
+        "andaime",
+        "escoramento",
+        "cacamba",
+        "ferramentas",
+        "financeiro",
+        "entrega",
+        "recolha",
+        "suporte",
+        "reclamacao",
+        "geral"
+      ],
+      "default": "geral"
+    },
+    "step": {
+      "type": "string",
+      "title": "Etapa Atual",
+      "default": "saudacao"
+    },
+    "dados_coletados": {
+      "type": "object",
+      "title": "Dados Coletados",
+      "properties": {
+        "equipamento": {
+          "type": "string"
+        },
+        "quantidade": {
+          "type": "number"
+        },
+        "metragem": {
+          "type": "string"
+        },
+        "altura": {
+          "type": "string"
+        },
+        "pisos": {
+          "type": "number"
+        },
+        "bairro": {
+          "type": "string"
+        },
+        "cidade": {
+          "type": "string"
+        },
+        "endereco": {
+          "type": "string"
+        },
+        "periodo": {
+          "type": "string"
+        },
+        "data_prevista": {
+          "type": "string"
+        },
+        "nome_cliente": {
+          "type": "string"
+        },
+        "cpf_cnpj": {
+          "type": "string"
+        }
+      }
+    },
+    "resumo_operacional": {
+      "type": "string",
+      "title": "Resumo Operacional"
+    },
+    "ultima_pergunta": {
+      "type": "string",
+      "title": "\u00daltima Pergunta Feita"
+    },
+    "ultima_resposta": {
+      "type": "string",
+      "title": "\u00daltima Resposta Enviada"
+    },
+    "ultima_interacao": {
+      "type": "string",
+      "title": "Data/Hora da \u00daltima Intera\u00e7\u00e3o"
+    },
+    "apresentado": {
+      "type": "boolean",
+      "title": "J\u00e1 se Apresentou",
+      "default": false
+    },
+    "total_trocas": {
+      "type": "number",
+      "title": "Total de Trocas",
+      "default": 0
+    },
+    "debug_ultimo_prompt": {
+      "type": "string",
+      "title": "\u00daltimo Prompt Enviado (Debug)"
+    },
+    "debug_contexto": {
+      "type": "string",
+      "title": "Contexto Enviado (Debug)"
+    },
+    "debug_intent_detectada": {
+      "type": "string",
+      "title": "Inten\u00e7\u00e3o Detectada (Debug)"
+    },
+    "debug_flow_selecionado": {
+      "type": "string",
+      "title": "Fluxo Selecionado (Debug)"
+    },
+    "debug_regras_aplicadas": {
+      "type": "string",
+      "title": "Regras Aplicadas (Debug)"
+    },
+    "debug_modelo_usado": {
+      "type": "string",
+      "title": "Modelo IA Usado (Debug)"
+    },
+    "origem": {
+      "type": "string",
+      "title": "Origem (meta/generica)"
+    }
+  },
+  "required": [
+    "telefone"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {},
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

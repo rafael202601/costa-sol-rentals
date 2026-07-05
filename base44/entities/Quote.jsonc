@@ -1,0 +1,160 @@
+{
+  "name": "Quote",
+  "type": "object",
+  "properties": {
+    "numero": {
+      "type": "string",
+      "title": "N\u00ba do Or\u00e7amento"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "data_validade": {
+      "type": "string",
+      "format": "date",
+      "title": "Validade"
+    },
+    "data_inicio": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de In\u00edcio da Loca\u00e7\u00e3o"
+    },
+    "data_fim": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Fim da Loca\u00e7\u00e3o"
+    },
+    "itens": {
+      "type": "array",
+      "title": "Itens",
+      "items": {
+        "type": "object",
+        "properties": {
+          "equipamento_id": {
+            "type": "string"
+          },
+          "equipamento_nome": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "number",
+            "default": 1
+          },
+          "valor_unitario": {
+            "type": "number",
+            "default": 0
+          },
+          "desconto": {
+            "type": "number",
+            "default": 0
+          }
+        }
+      }
+    },
+    "frete": {
+      "type": "number",
+      "title": "Frete (R$)",
+      "default": 0
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Valor Total (R$)",
+      "default": 0
+    },
+    "endereco_entrega": {
+      "type": "string",
+      "title": "Endere\u00e7o de Entrega"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "clausulas": {
+      "type": "string",
+      "title": "Cl\u00e1usulas"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "rascunho",
+        "enviado",
+        "aprovado",
+        "recusado",
+        "expirado"
+      ],
+      "enumNames": [
+        "Rascunho",
+        "Enviado",
+        "Aprovado",
+        "Recusado",
+        "Expirado"
+      ],
+      "default": "rascunho"
+    }
+  },
+  "required": [
+    "client_id",
+    "client_nome"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "created_by": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

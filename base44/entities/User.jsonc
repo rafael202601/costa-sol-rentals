@@ -1,0 +1,46 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "title": "Perfil de Acesso",
+      "enum": [
+        "admin",
+        "user",
+        "atendente",
+        "financeiro",
+        "operacional"
+      ],
+      "enumNames": [
+        "Administrador",
+        "Usu\u00e1rio",
+        "Atendente",
+        "Financeiro",
+        "Operacional"
+      ],
+      "default": "user"
+    },
+    "setor": {
+      "type": "string",
+      "title": "Setor"
+    },
+    "ativo": {
+      "type": "boolean",
+      "title": "Ativo",
+      "default": true
+    },
+    "permissions": {
+      "type": "object",
+      "title": "Permiss\u00f5es"
+    },
+    "assinatura_usuario": {
+      "type": "string",
+      "title": "Assinatura (imagem base64 ou URL)"
+    }
+  },
+  "required": [
+    "setor",
+    "permissions"
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "name": "VehicleExpense",
+  "type": "object",
+  "properties": {
+    "vehicle_id": {
+      "type": "string",
+      "title": "ID do Ve\u00edculo"
+    },
+    "vehicle_placa": {
+      "type": "string",
+      "title": "Placa"
+    },
+    "vehicle_modelo": {
+      "type": "string",
+      "title": "Modelo"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo de Despesa",
+      "enum": [
+        "combustivel",
+        "manutencao",
+        "seguro",
+        "ipva",
+        "lavagem",
+        "pneu",
+        "outro"
+      ],
+      "enumNames": [
+        "Combust\u00edvel",
+        "Manuten\u00e7\u00e3o",
+        "Seguro",
+        "IPVA",
+        "Lavagem",
+        "Pneu",
+        "Outro"
+      ],
+      "default": "combustivel"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "km": {
+      "type": "number",
+      "title": "KM no momento",
+      "default": 0
+    },
+    "fornecedor": {
+      "type": "string",
+      "title": "Fornecedor/Posto"
+    },
+    "comprovante_url": {
+      "type": "string",
+      "title": "Comprovante (URL)"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "vehicle_id",
+    "tipo",
+    "valor",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

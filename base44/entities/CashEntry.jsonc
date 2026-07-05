@@ -1,0 +1,241 @@
+{
+  "name": "CashEntry",
+  "type": "object",
+  "properties": {
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "receita",
+        "despesa",
+        "sangria",
+        "suprimento"
+      ],
+      "enumNames": [
+        "Receita",
+        "Despesa",
+        "Sangria",
+        "Suprimento"
+      ]
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "motivo": {
+      "type": "string",
+      "title": "Motivo (Sangria/Suprimento)"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "forma_pagamento": {
+      "type": "string",
+      "title": "Forma de Pagamento",
+      "enum": [
+        "dinheiro",
+        "pix",
+        "cartao_debito",
+        "cartao_credito",
+        "transferencia",
+        "boleto",
+        "outro"
+      ],
+      "enumNames": [
+        "Dinheiro",
+        "PIX",
+        "Cart\u00e3o D\u00e9bito",
+        "Cart\u00e3o Cr\u00e9dito",
+        "Transfer\u00eancia",
+        "Boleto",
+        "Outro"
+      ]
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "hora": {
+      "type": "string",
+      "title": "Hora"
+    },
+    "origem": {
+      "type": "string",
+      "title": "Origem",
+      "enum": [
+        "manual",
+        "contrato",
+        "os",
+        "portal_cliente",
+        "sangria",
+        "suprimento",
+        "venda"
+      ],
+      "enumNames": [
+        "Manual",
+        "Contrato",
+        "Ordem de Servi\u00e7o",
+        "Portal do Cliente",
+        "Sangria",
+        "Suprimento",
+        "Venda"
+      ],
+      "default": "manual"
+    },
+    "origem_id": {
+      "type": "string",
+      "title": "ID da Origem"
+    },
+    "origem_numero": {
+      "type": "string",
+      "title": "N\u00famero da Origem"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Cliente"
+    },
+    "responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "usuario": {
+      "type": "string",
+      "title": "Usu\u00e1rio (email)"
+    },
+    "usuario_nome": {
+      "type": "string",
+      "title": "Nome do Usu\u00e1rio"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "confirmado",
+        "pendente",
+        "cancelado"
+      ],
+      "enumNames": [
+        "Confirmado",
+        "Pendente",
+        "Cancelado"
+      ],
+      "default": "confirmado"
+    },
+    "caixa_id": {
+      "type": "string",
+      "title": "ID do Caixa"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "payment_request_id": {
+      "type": "string",
+      "title": "ID da Solicita\u00e7\u00e3o (anti-duplo)"
+    },
+    "solicitacoes_edicao": {
+      "type": "array",
+      "title": "Solicita\u00e7\u00f5es de Edi\u00e7\u00e3o",
+      "items": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "motivo": {
+            "type": "string"
+          },
+          "solicitado_por": {
+            "type": "string"
+          },
+          "solicitado_por_nome": {
+            "type": "string"
+          },
+          "solicitado_em": {
+            "type": "string"
+          },
+          "aprovado_por": {
+            "type": "string"
+          },
+          "aprovado_em": {
+            "type": "string"
+          },
+          "motivo_rejeicao": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "tipo",
+    "valor",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

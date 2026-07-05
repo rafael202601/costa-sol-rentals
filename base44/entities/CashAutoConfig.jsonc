@@ -1,0 +1,139 @@
+{
+  "name": "CashAutoConfig",
+  "type": "object",
+  "properties": {
+    "fechamento_ativo": {
+      "type": "boolean",
+      "title": "Fechamento Autom\u00e1tico Ativo",
+      "default": false
+    },
+    "fechamento_tipo": {
+      "type": "string",
+      "title": "Tipo de Fechamento",
+      "enum": [
+        "horario",
+        "horas_apos_abertura"
+      ],
+      "enumNames": [
+        "Hor\u00e1rio fixo",
+        "Horas ap\u00f3s abertura"
+      ],
+      "default": "horario"
+    },
+    "fechamento_horario": {
+      "type": "string",
+      "title": "Hor\u00e1rio de Fechamento (HH:MM)",
+      "default": "18:00"
+    },
+    "fechamento_horas": {
+      "type": "number",
+      "title": "Horas ap\u00f3s abertura para fechar",
+      "default": 12
+    },
+    "abertura_ativa": {
+      "type": "boolean",
+      "title": "Abertura Autom\u00e1tica Ativa",
+      "default": false
+    },
+    "abertura_tipo": {
+      "type": "string",
+      "title": "Tipo de Abertura",
+      "enum": [
+        "horario",
+        "horas_apos_fechamento"
+      ],
+      "enumNames": [
+        "Hor\u00e1rio fixo",
+        "Horas ap\u00f3s fechamento"
+      ],
+      "default": "horario"
+    },
+    "abertura_horario": {
+      "type": "string",
+      "title": "Hor\u00e1rio de Abertura (HH:MM)",
+      "default": "07:00"
+    },
+    "abertura_horas": {
+      "type": "number",
+      "title": "Horas ap\u00f3s fechamento para abrir",
+      "default": 13
+    },
+    "abertura_valor_inicial": {
+      "type": "number",
+      "title": "Valor Inicial Autom\u00e1tico (R$)",
+      "default": 0
+    },
+    "abertura_responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel padr\u00e3o na abertura autom\u00e1tica"
+    },
+    "configurado_por": {
+      "type": "string",
+      "title": "Configurado por (email)"
+    },
+    "configurado_por_nome": {
+      "type": "string",
+      "title": "Configurado por (nome)"
+    },
+    "configurado_em": {
+      "type": "string",
+      "title": "Data/Hora da \u00daltima Configura\u00e7\u00e3o"
+    },
+    "historico": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Execu\u00e7\u00f5es",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "data_hora": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "detalhe": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

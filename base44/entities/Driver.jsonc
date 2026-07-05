@@ -1,0 +1,113 @@
+{
+  "name": "Driver",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome"
+    },
+    "email": {
+      "type": "string",
+      "title": "E-mail (login)"
+    },
+    "telefone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "cnh": {
+      "type": "string",
+      "title": "N\u00ba CNH"
+    },
+    "veiculo": {
+      "type": "string",
+      "title": "Ve\u00edculo"
+    },
+    "placa": {
+      "type": "string",
+      "title": "Placa"
+    },
+    "cor": {
+      "type": "string",
+      "title": "Cor no Quadro Log\u00edstico (hex)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "ativo",
+        "inativo"
+      ],
+      "enumNames": [
+        "Ativo",
+        "Inativo"
+      ],
+      "default": "ativo"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "nome"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "motorista"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

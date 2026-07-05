@@ -1,0 +1,378 @@
+{
+  "name": "BillingNote",
+  "type": "object",
+  "properties": {
+    "numero": {
+      "type": "string",
+      "title": "N\u00ba da Nota"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "client_cpf_cnpj": {
+      "type": "string",
+      "title": "CPF/CNPJ"
+    },
+    "contratos_ids": {
+      "type": "array",
+      "title": "IDs dos Contratos",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contratos_numeros": {
+      "type": "array",
+      "title": "N\u00fameros dos Contratos",
+      "items": {
+        "type": "string"
+      }
+    },
+    "os_ids": {
+      "type": "array",
+      "title": "IDs das OS",
+      "items": {
+        "type": "string"
+      }
+    },
+    "os_numeros": {
+      "type": "array",
+      "title": "N\u00fameros das OS",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "contrato",
+        "os",
+        "misto"
+      ],
+      "enumNames": [
+        "Contrato",
+        "OS",
+        "Misto"
+      ],
+      "default": "contrato"
+    },
+    "itens": {
+      "type": "array",
+      "title": "Itens Cobrados",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "valor_original": {
+            "type": "number",
+            "default": 0
+          },
+          "desconto": {
+            "type": "number",
+            "default": 0
+          },
+          "valor_final": {
+            "type": "number",
+            "default": 0
+          },
+          "endereco": {
+            "type": "string"
+          },
+          "obra_nome": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "valor_bruto": {
+      "type": "number",
+      "title": "Valor Bruto (R$)",
+      "default": 0
+    },
+    "desconto": {
+      "type": "number",
+      "title": "Desconto (R$)",
+      "default": 0
+    },
+    "valor_final": {
+      "type": "number",
+      "title": "Valor Final (R$)",
+      "default": 0
+    },
+    "valor_pago": {
+      "type": "number",
+      "title": "Valor Pago (R$)",
+      "default": 0
+    },
+    "saldo_aberto": {
+      "type": "number",
+      "title": "Saldo em Aberto (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pendente",
+        "parcial",
+        "pago",
+        "cancelado"
+      ],
+      "enumNames": [
+        "Pendente",
+        "Parcialmente Pago",
+        "Pago",
+        "Cancelado"
+      ],
+      "default": "pendente"
+    },
+    "forma_pagamento": {
+      "type": "string",
+      "title": "Forma de Pagamento"
+    },
+    "data_vencimento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Vencimento"
+    },
+    "pagamentos": {
+      "type": "array",
+      "title": "Pagamentos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "valor": {
+            "type": "number",
+            "default": 0
+          },
+          "forma": {
+            "type": "string"
+          },
+          "registrado_por": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmado",
+              "aguardando_confirmacao",
+              "rejeitado"
+            ],
+            "default": "confirmado"
+          }
+        }
+      }
+    },
+    "historico_observacoes": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Observa\u00e7\u00f5es",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "string"
+          },
+          "texto": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "documentos_financeiros": {
+      "type": "array",
+      "title": "Documentos Financeiros",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "title": "Tipo (boleto/nf/nfe/outros)"
+          },
+          "numero": {
+            "type": "string",
+            "title": "N\u00famero do Documento"
+          },
+          "data_vencimento": {
+            "type": "string",
+            "title": "Data de Vencimento"
+          },
+          "data_emissao": {
+            "type": "string",
+            "title": "Data de Emiss\u00e3o"
+          },
+          "valor": {
+            "type": "number",
+            "title": "Valor (R$)"
+          },
+          "observacao": {
+            "type": "string",
+            "title": "Observa\u00e7\u00e3o"
+          },
+          "arquivo_url": {
+            "type": "string",
+            "title": "URL do Arquivo"
+          },
+          "arquivo_nome": {
+            "type": "string",
+            "title": "Nome do Arquivo"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "pendente"
+          },
+          "criado_por": {
+            "type": "string"
+          },
+          "criado_em": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "anexos": {
+      "type": "array",
+      "title": "Anexos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "criado_por": {
+      "type": "string",
+      "title": "Criado por"
+    },
+    "cancelado_por": {
+      "type": "string",
+      "title": "Cancelado por"
+    },
+    "motivo_cancelamento": {
+      "type": "string",
+      "title": "Motivo do Cancelamento"
+    },
+    "payment_request_id": {
+      "type": "string",
+      "title": "ID da Solicita\u00e7\u00e3o de Pagamento (anti-duplo)"
+    },
+    "dados_cliente_pdf": {
+      "type": "object",
+      "title": "Dados do Cliente (PDF)"
+    },
+    "dados_cliente_pdf_alterado_por": {
+      "type": "string"
+    },
+    "dados_cliente_pdf_alterado_em": {
+      "type": "string"
+    },
+    "dados_cliente_pdf_campos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "client_nome",
+    "valor_final"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

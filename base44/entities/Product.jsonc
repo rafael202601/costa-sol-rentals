@@ -1,0 +1,142 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome do Produto"
+    },
+    "codigo": {
+      "type": "string",
+      "title": "C\u00f3digo"
+    },
+    "codigo_barras": {
+      "type": "string",
+      "title": "C\u00f3digo de Barras (EAN/UPC/Code128)"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria"
+    },
+    "marca": {
+      "type": "string",
+      "title": "Marca"
+    },
+    "modelo": {
+      "type": "string",
+      "title": "Modelo"
+    },
+    "custo": {
+      "type": "number",
+      "title": "Custo (R$)",
+      "default": 0
+    },
+    "margem": {
+      "type": "number",
+      "title": "Margem (%)",
+      "default": 0
+    },
+    "valor_venda": {
+      "type": "number",
+      "title": "Valor de Venda (R$)",
+      "default": 0
+    },
+    "estoque_atual": {
+      "type": "number",
+      "title": "Estoque Atual",
+      "default": 0
+    },
+    "estoque_minimo": {
+      "type": "number",
+      "title": "Estoque M\u00ednimo",
+      "default": 0
+    },
+    "unidade": {
+      "type": "string",
+      "title": "Unidade",
+      "enum": [
+        "un",
+        "m\u00b2",
+        "m",
+        "kg",
+        "l",
+        "cx",
+        "p\u00e7",
+        "par"
+      ],
+      "default": "un"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "ativo": {
+      "type": "boolean",
+      "title": "Ativo",
+      "default": true
+    }
+  },
+  "required": [
+    "nome",
+    "valor_venda"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

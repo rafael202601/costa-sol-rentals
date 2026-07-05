@@ -1,0 +1,412 @@
+{
+  "name": "Client",
+  "type": "object",
+  "properties": {
+    "external_id": {
+      "type": "string",
+      "title": "ID Externo (Integra\u00e7\u00e3o)"
+    },
+    "codigo_cliente": {
+      "type": "string",
+      "title": "C\u00f3digo do Cliente"
+    },
+    "tipo_perfil": {
+      "type": "string",
+      "title": "Tipo de Perfil",
+      "enum": [
+        "comum",
+        "cnpj",
+        "empreiteiro"
+      ],
+      "enumNames": [
+        "Cliente Comum (CPF)",
+        "Cliente CNPJ",
+        "Empreiteiro"
+      ],
+      "default": "comum"
+    },
+    "nome_razao_social": {
+      "type": "string",
+      "title": "Nome/Raz\u00e3o Social"
+    },
+    "fantasia": {
+      "type": "string",
+      "title": "Fantasia"
+    },
+    "cpf_cnpj": {
+      "type": "string",
+      "title": "CPF/CNPJ"
+    },
+    "inscricao_estadual": {
+      "type": "string",
+      "title": "Inscri\u00e7\u00e3o Estadual"
+    },
+    "inscricao_municipal": {
+      "type": "string",
+      "title": "Inscri\u00e7\u00e3o Municipal"
+    },
+    "rg": {
+      "type": "string",
+      "title": "RG"
+    },
+    "data_nascimento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Nascimento"
+    },
+    "email": {
+      "type": "string",
+      "title": "E-mail"
+    },
+    "telefone1": {
+      "type": "string",
+      "title": "Telefone 1"
+    },
+    "telefone2": {
+      "type": "string",
+      "title": "Telefone 2"
+    },
+    "telefone3": {
+      "type": "string",
+      "title": "Telefone 3"
+    },
+    "conjuge_contato": {
+      "type": "string",
+      "title": "C\u00f4njuge/Contato"
+    },
+    "socio": {
+      "type": "string",
+      "title": "S\u00f3cio"
+    },
+    "socio_cpf": {
+      "type": "string",
+      "title": "CPF do S\u00f3cio"
+    },
+    "nome_pai": {
+      "type": "string",
+      "title": "Nome do Pai"
+    },
+    "nome_mae": {
+      "type": "string",
+      "title": "Nome da M\u00e3e"
+    },
+    "empreiteiro_id": {
+      "type": "string",
+      "title": "ID do Empreiteiro Respons\u00e1vel"
+    },
+    "empreiteiro_nome": {
+      "type": "string",
+      "title": "Empreiteiro Respons\u00e1vel"
+    },
+    "obras": {
+      "type": "array",
+      "title": "Obras",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome_obra": {
+            "type": "string"
+          },
+          "endereco": {
+            "type": "string"
+          },
+          "responsavel": {
+            "type": "string"
+          },
+          "empreiteiro_id": {
+            "type": "string"
+          },
+          "empreiteiro_nome": {
+            "type": "string"
+          },
+          "pessoas_autorizadas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "telefone": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "ativa": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "etiquetas": {
+      "type": "array",
+      "title": "Etiquetas",
+      "items": {
+        "type": "string"
+      }
+    },
+    "endereco_entrega_rua": {
+      "type": "string",
+      "title": "Rua (Entrega)"
+    },
+    "endereco_entrega_numero": {
+      "type": "string",
+      "title": "N\u00famero (Entrega)"
+    },
+    "endereco_entrega_complemento": {
+      "type": "string",
+      "title": "Complemento (Entrega)"
+    },
+    "endereco_entrega_bairro": {
+      "type": "string",
+      "title": "Bairro (Entrega)"
+    },
+    "endereco_entrega_cidade": {
+      "type": "string",
+      "title": "Cidade (Entrega)"
+    },
+    "endereco_entrega_uf": {
+      "type": "string",
+      "title": "UF (Entrega)"
+    },
+    "endereco_entrega_cep": {
+      "type": "string",
+      "title": "CEP (Entrega)"
+    },
+    "endereco_cobranca_rua": {
+      "type": "string",
+      "title": "Rua (Cobran\u00e7a)"
+    },
+    "endereco_cobranca_numero": {
+      "type": "string",
+      "title": "N\u00famero (Cobran\u00e7a)"
+    },
+    "endereco_cobranca_complemento": {
+      "type": "string",
+      "title": "Complemento (Cobran\u00e7a)"
+    },
+    "endereco_cobranca_bairro": {
+      "type": "string",
+      "title": "Bairro (Cobran\u00e7a)"
+    },
+    "endereco_cobranca_cidade": {
+      "type": "string",
+      "title": "Cidade (Cobran\u00e7a)"
+    },
+    "endereco_cobranca_uf": {
+      "type": "string",
+      "title": "UF (Cobran\u00e7a)"
+    },
+    "endereco_cobranca_cep": {
+      "type": "string",
+      "title": "CEP (Cobran\u00e7a)"
+    },
+    "pessoas_liberadas": {
+      "type": "array",
+      "title": "Pessoas Autorizadas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "title": "Nome Completo"
+          },
+          "cpf": {
+            "type": "string",
+            "title": "CPF"
+          },
+          "telefone": {
+            "type": "string",
+            "title": "Telefone"
+          },
+          "data_inicio": {
+            "type": "string",
+            "title": "Data de In\u00edcio"
+          },
+          "data_vencimento": {
+            "type": "string",
+            "title": "Data de Vencimento"
+          },
+          "prazo": {
+            "type": "string",
+            "title": "Prazo"
+          }
+        }
+      }
+    },
+    "data_validade_cadastro": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Validade do Cadastro"
+    },
+    "bloqueado": {
+      "type": "boolean",
+      "title": "Bloqueado",
+      "default": false
+    },
+    "pendencia_financeira": {
+      "type": "boolean",
+      "title": "Pend\u00eancia Financeira",
+      "default": false
+    },
+    "status_serasa": {
+      "type": "string",
+      "title": "Status Serasa",
+      "enum": [
+        "limpo",
+        "restrito",
+        "negativado"
+      ],
+      "default": "limpo"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "foto_url": {
+      "type": "string",
+      "title": "Foto do Cliente (URL)"
+    },
+    "documentos": {
+      "type": "array",
+      "title": "Documentos Anexos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "string"
+          },
+          "status_assinatura": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "financeiro_bloqueio_automatico": {
+      "type": "boolean",
+      "title": "Bloqueio Autom\u00e1tico",
+      "description": "Bloquear cliente automaticamente ao atingir o limite de saldo em aberto",
+      "default": false
+    },
+    "financeiro_limite_bloqueio": {
+      "type": "number",
+      "title": "Limite para Bloqueio (R$)",
+      "description": "Saldo em aberto m\u00e1ximo antes do bloqueio autom\u00e1tico",
+      "default": 0
+    },
+    "financeiro_dias_carencia": {
+      "type": "number",
+      "title": "Dias de Car\u00eancia",
+      "description": "Dias de car\u00eancia antes de aplicar bloqueio autom\u00e1tico",
+      "default": 0
+    },
+    "financeiro_faturamento_automatico": {
+      "type": "boolean",
+      "title": "Faturamento Autom\u00e1tico",
+      "description": "Gerar nota de cobran\u00e7a automaticamente no intervalo configurado",
+      "default": false
+    },
+    "financeiro_intervalo_faturamento": {
+      "type": "number",
+      "title": "Intervalo de Faturamento (dias)",
+      "default": 30
+    },
+    "financeiro_observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es Financeiras",
+      "description": "Hist\u00f3rico de cobran\u00e7as, acordos e notas internas financeiras"
+    }
+  },
+  "required": [
+    "nome_razao_social"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "data.email": "{{user.email}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "data.email": "{{user.email}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

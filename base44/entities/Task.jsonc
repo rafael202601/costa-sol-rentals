@@ -1,0 +1,249 @@
+{
+  "name": "Task",
+  "type": "object",
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "title": "T\u00edtulo"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "prioridade": {
+      "type": "string",
+      "title": "Prioridade",
+      "enum": [
+        "baixa",
+        "media",
+        "alta",
+        "urgente"
+      ],
+      "enumNames": [
+        "Baixa",
+        "M\u00e9dia",
+        "Alta",
+        "Urgente"
+      ],
+      "default": "media"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pendente",
+        "em_andamento",
+        "aguardando",
+        "concluida",
+        "atrasada",
+        "cancelada"
+      ],
+      "enumNames": [
+        "Pendente",
+        "Em Andamento",
+        "Aguardando",
+        "Conclu\u00edda",
+        "Atrasada",
+        "Cancelada"
+      ],
+      "default": "pendente"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "logistica",
+        "financeiro",
+        "manutencao",
+        "entrega",
+        "cobranca",
+        "administrativo",
+        "outro"
+      ],
+      "enumNames": [
+        "Log\u00edstica",
+        "Financeiro",
+        "Manuten\u00e7\u00e3o",
+        "Entrega",
+        "Cobran\u00e7a",
+        "Administrativo",
+        "Outro"
+      ],
+      "default": "administrativo"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "horario": {
+      "type": "string",
+      "title": "Hor\u00e1rio"
+    },
+    "data_conclusao": {
+      "type": "string",
+      "title": "Data/Hora de Conclus\u00e3o"
+    },
+    "concluido_por": {
+      "type": "string",
+      "title": "Conclu\u00eddo por"
+    },
+    "visibilidade": {
+      "type": "string",
+      "title": "Visibilidade",
+      "enum": [
+        "privada",
+        "compartilhada"
+      ],
+      "enumNames": [
+        "Privada",
+        "Compartilhada"
+      ],
+      "default": "compartilhada"
+    },
+    "usuario_email": {
+      "type": "string",
+      "title": "Email do Criador"
+    },
+    "usuario_nome": {
+      "type": "string",
+      "title": "Nome do Criador"
+    },
+    "responsaveis": {
+      "type": "array",
+      "title": "Respons\u00e1veis",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "title": "Checklist",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "texto": {
+            "type": "string"
+          },
+          "concluido": {
+            "type": "boolean",
+            "default": false
+          },
+          "concluido_em": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "comentarios": {
+      "type": "array",
+      "title": "Coment\u00e1rios",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "texto": {
+            "type": "string"
+          },
+          "usuario_nome": {
+            "type": "string"
+          },
+          "usuario_email": {
+            "type": "string"
+          },
+          "data_hora": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "anexos": {
+      "type": "array",
+      "title": "Anexos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ordem": {
+      "type": "number",
+      "title": "Ordem (Kanban)",
+      "default": 0
+    }
+  },
+  "required": [
+    "titulo"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "data.usuario_email": "{{user.email}}"
+        },
+        {
+          "data.responsaveis.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.usuario_email": "{{user.email}}"
+        },
+        {
+          "data.responsaveis.email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.usuario_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

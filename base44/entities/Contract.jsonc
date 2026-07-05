@@ -1,0 +1,595 @@
+{
+  "name": "Contract",
+  "type": "object",
+  "properties": {
+    "numero": {
+      "type": "string",
+      "title": "N\u00ba do Contrato"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "client_codigo": {
+      "type": "string",
+      "title": "C\u00f3digo do Cliente (legado)"
+    },
+    "customer_code": {
+      "type": "string",
+      "title": "C\u00f3digo do Cliente (snapshot)"
+    },
+    "solicitante_nome": {
+      "type": "string",
+      "title": "Solicitante"
+    },
+    "solicitante_tipo": {
+      "type": "string",
+      "title": "Tipo de Solicitante",
+      "enum": [
+        "empreiteiro",
+        "pessoa_autorizada",
+        "cliente"
+      ],
+      "default": "cliente"
+    },
+    "obra_nome": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "obra_endereco": {
+      "type": "string",
+      "title": "Endere\u00e7o da Obra"
+    },
+    "data_inicio": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de In\u00edcio"
+    },
+    "sem_prazo": {
+      "type": "boolean",
+      "title": "Contrato Sem Prazo Determinado",
+      "default": false
+    },
+    "prazo_tipo": {
+      "type": "string",
+      "title": "Tipo de Prazo",
+      "enum": [
+        "dias",
+        "meses"
+      ],
+      "default": "dias"
+    },
+    "prazo_valor": {
+      "type": "number",
+      "title": "Prazo (Valor)",
+      "default": 30
+    },
+    "data_prevista_termino": {
+      "type": "string",
+      "format": "date",
+      "title": "Data Prevista de T\u00e9rmino"
+    },
+    "tipo_entrega": {
+      "type": "string",
+      "title": "Tipo de Entrega",
+      "enum": [
+        "entrega",
+        "retirada_loja"
+      ],
+      "enumNames": [
+        "Entrega na Obra",
+        "Retirada na Loja"
+      ],
+      "default": "entrega"
+    },
+    "itens": {
+      "type": "array",
+      "title": "Itens do Contrato",
+      "items": {
+        "type": "object",
+        "properties": {
+          "equipamento_id": {
+            "type": "string"
+          },
+          "equipamento_nome": {
+            "type": "string"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "quantidade_retirada": {
+            "type": "number",
+            "default": 0
+          },
+          "valor_unitario": {
+            "type": "number",
+            "default": 0
+          },
+          "valor_diario": {
+            "type": "number",
+            "default": 0
+          },
+          "desconto": {
+            "type": "number",
+            "default": 0
+          },
+          "quantidade_devolvida": {
+            "type": "number",
+            "default": 0
+          }
+        }
+      }
+    },
+    "historico_recolhas": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Recolhas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "motorista": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "assinatura": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "historico_devolucoes": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Devolu\u00e7\u00f5es (Recibos)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "title": "Data/Hora"
+          },
+          "tipo": {
+            "type": "string",
+            "title": "Tipo (parcial/total)"
+          },
+          "motorista": {
+            "type": "string",
+            "title": "Motorista"
+          },
+          "usuario": {
+            "type": "string",
+            "title": "Respons\u00e1vel"
+          },
+          "observacao": {
+            "type": "string",
+            "title": "Observa\u00e7\u00e3o"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number"
+                },
+                "unidade": {
+                  "type": "string"
+                },
+                "observacao": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "historico_trocas": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Trocas de Equipamento",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "title": "Data/Hora"
+          },
+          "tipo": {
+            "type": "string",
+            "title": "Tipo (em_campo/na_loja)"
+          },
+          "motivo": {
+            "type": "string",
+            "title": "Motivo"
+          },
+          "motorista": {
+            "type": "string",
+            "title": "Motorista"
+          },
+          "usuario": {
+            "type": "string",
+            "title": "Respons\u00e1vel"
+          },
+          "observacao": {
+            "type": "string",
+            "title": "Observa\u00e7\u00e3o"
+          },
+          "itens_saindo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number"
+                },
+                "equipamento_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "itens_entrando": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number"
+                },
+                "equipamento_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "assinatura_url": {
+            "type": "string",
+            "title": "URL da Assinatura"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "concluida"
+          }
+        }
+      }
+    },
+    "recolha_parcial_pendente": {
+      "type": "boolean",
+      "title": "Recolha Parcial Pendente",
+      "default": false
+    },
+    "recolha_parcial_itens": {
+      "type": "array",
+      "title": "Itens da Recolha Parcial Pendente",
+      "items": {
+        "type": "object"
+      }
+    },
+    "frete": {
+      "type": "number",
+      "title": "Frete (R$)",
+      "default": 0
+    },
+    "tipo_calculo_frete": {
+      "type": "string",
+      "title": "Tipo C\u00e1lculo Frete",
+      "default": "manual"
+    },
+    "sinal": {
+      "type": "number",
+      "title": "Sinal (R$)",
+      "default": 0
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Valor Total (R$)",
+      "default": 0
+    },
+    "valor_pago": {
+      "type": "number",
+      "title": "Valor Pago (R$)",
+      "default": 0
+    },
+    "saldo_pagar": {
+      "type": "number",
+      "title": "Saldo a Pagar (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "rascunho",
+        "em_transito",
+        "na_obra",
+        "aguardando_recolha",
+        "devolvido_parcial",
+        "devolvido_pendente",
+        "finalizado",
+        "cancelado"
+      ],
+      "enumNames": [
+        "Lan\u00e7ado",
+        "Em Rota",
+        "Entregue",
+        "Recolha Solicitada",
+        "Recolhido",
+        "Dev. Pend. Pagamento",
+        "Finalizado",
+        "Cancelado"
+      ],
+      "default": "rascunho"
+    },
+    "status_financeiro": {
+      "type": "string",
+      "title": "Status Financeiro",
+      "enum": [
+        "pendente",
+        "parcial",
+        "pago"
+      ],
+      "enumNames": [
+        "Pendente",
+        "Parcial",
+        "Pago"
+      ],
+      "default": "pendente"
+    },
+    "endereco_entrega": {
+      "type": "string",
+      "title": "Endere\u00e7o de Entrega"
+    },
+    "observacao_devolucao": {
+      "type": "string",
+      "title": "Observa\u00e7\u00e3o de Devolu\u00e7\u00e3o"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "valor_recebido_ultima_baixa": {
+      "type": "number",
+      "title": "Valor Recebido (\u00daltima Baixa)",
+      "default": 0
+    },
+    "forma_pagamento": {
+      "type": "string",
+      "title": "Forma de Pagamento"
+    },
+    "criado_por": {
+      "type": "string",
+      "title": "Criado por"
+    },
+    "editado_por": {
+      "type": "string",
+      "title": "\u00daltimo editor"
+    },
+    "motorista_entrega": {
+      "type": "string",
+      "title": "Motorista de Entrega"
+    },
+    "motorista_recolha": {
+      "type": "string",
+      "title": "Motorista de Recolha"
+    },
+    "veiculo_entrega": {
+      "type": "string",
+      "title": "Ve\u00edculo de Entrega (Placa)"
+    },
+    "assinatura_data": {
+      "type": "string",
+      "title": "Data/Hora da Assinatura do Cliente"
+    },
+    "assinatura_entrega_url": {
+      "type": "string",
+      "title": "Assinatura de Entrega (base64/URL)"
+    },
+    "assinatura_entrega_motorista": {
+      "type": "string",
+      "title": "Motorista \u2014 Assinatura de Entrega"
+    },
+    "assinatura_entrega_data": {
+      "type": "string",
+      "title": "Data/Hora \u2014 Assinatura de Entrega"
+    },
+    "assinatura_devolucao_url": {
+      "type": "string",
+      "title": "Assinatura de Devolu\u00e7\u00e3o (base64/URL)"
+    },
+    "assinatura_devolucao_motorista": {
+      "type": "string",
+      "title": "Motorista \u2014 Assinatura de Devolu\u00e7\u00e3o"
+    },
+    "assinatura_devolucao_data": {
+      "type": "string",
+      "title": "Data/Hora \u2014 Assinatura de Devolu\u00e7\u00e3o"
+    },
+    "cobranca_pausada": {
+      "type": "boolean",
+      "title": "Cobran\u00e7a Autom\u00e1tica Pausada",
+      "default": false
+    },
+    "ultima_cobranca_enviada": {
+      "type": "string",
+      "title": "\u00daltima Cobran\u00e7a Enviada (data)"
+    },
+    "dinamico_data_base": {
+      "type": "string",
+      "format": "date",
+      "title": "Data Base p/ Contagem Din\u00e2mica"
+    },
+    "dinamico_valor_pago_acumulado": {
+      "type": "number",
+      "title": "Total Pago Acumulado (hist\u00f3rico)",
+      "default": 0
+    },
+    "dinamico_dias_em_aberto": {
+      "type": "number",
+      "title": "Dias em Aberto (atualizado diariamente)",
+      "default": 0
+    },
+    "dinamico_valor_em_aberto": {
+      "type": "number",
+      "title": "Valor em Aberto Din\u00e2mico (R$)",
+      "default": 0
+    },
+    "dinamico_ultima_atualizacao": {
+      "type": "string",
+      "title": "\u00daltima Atualiza\u00e7\u00e3o Din\u00e2mica"
+    },
+    "locador_nome": {
+      "type": "string",
+      "title": "Nome do Locador (criador)"
+    },
+    "locador_assinatura": {
+      "type": "string",
+      "title": "Assinatura do Locador (base64)"
+    },
+    "locador_data": {
+      "type": "string",
+      "title": "Data/Hora de Cria\u00e7\u00e3o pelo Locador"
+    },
+    "fotos": {
+      "type": "array",
+      "title": "Registro Fotogr\u00e1fico",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "URL da Foto"
+          },
+          "data_hora": {
+            "type": "string",
+            "title": "Data/Hora"
+          },
+          "usuario": {
+            "type": "string",
+            "title": "Usu\u00e1rio"
+          },
+          "descricao": {
+            "type": "string",
+            "title": "Descri\u00e7\u00e3o/Nome"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "client_nome",
+    "data_inicio"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "motorista"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "motorista"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

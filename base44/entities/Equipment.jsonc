@@ -1,0 +1,270 @@
+{
+  "name": "Equipment",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome do Equipamento"
+    },
+    "codigo": {
+      "type": "string",
+      "title": "C\u00f3digo do Equipamento"
+    },
+    "codigo_barras": {
+      "type": "string",
+      "title": "C\u00f3digo de Barras"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria"
+    },
+    "marca": {
+      "type": "string",
+      "title": "Marca"
+    },
+    "modelo": {
+      "type": "string",
+      "title": "Modelo"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo (legado)",
+      "enum": [
+        "equipamento",
+        "andaime_tubular",
+        "andaime_fachadeiro",
+        "grade",
+        "cacamba",
+        "escora",
+        "outro"
+      ],
+      "default": "equipamento"
+    },
+    "tipos": {
+      "type": "array",
+      "title": "Tipos",
+      "items": {
+        "type": "string"
+      }
+    },
+    "voltagem": {
+      "type": "string",
+      "title": "Voltagem",
+      "enum": [
+        "110v",
+        "220v",
+        "bivolt",
+        "nao_aplicavel"
+      ]
+    },
+    "foto_url": {
+      "type": "string",
+      "title": "Foto"
+    },
+    "link_externo": {
+      "type": "string",
+      "title": "Link Externo"
+    },
+    "quantidade_total": {
+      "type": "number",
+      "title": "Quantidade Total",
+      "default": 1
+    },
+    "quantidade_disponivel": {
+      "type": "number",
+      "title": "Quantidade Dispon\u00edvel",
+      "default": 1
+    },
+    "quantidade_alugada": {
+      "type": "number",
+      "title": "Quantidade Alugada",
+      "default": 0
+    },
+    "quantidade_manutencao": {
+      "type": "number",
+      "title": "Quantidade em Manuten\u00e7\u00e3o",
+      "default": 0
+    },
+    "status_item": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "disponivel",
+        "alugado",
+        "manutencao"
+      ],
+      "default": "disponivel"
+    },
+    "valor_diario": {
+      "type": "number",
+      "title": "Valor Di\u00e1rio (R$)",
+      "default": 0
+    },
+    "valor_mensal": {
+      "type": "number",
+      "title": "Valor Mensal (R$)",
+      "default": 0
+    },
+    "valor_indenizacao": {
+      "type": "number",
+      "title": "Valor de Indeniza\u00e7\u00e3o (R$)",
+      "default": 0
+    },
+    "aplica_valor_minimo": {
+      "type": "boolean",
+      "title": "Aplicar cobran\u00e7a m\u00ednima",
+      "default": true
+    },
+    "dias_minimos_proprio": {
+      "type": "number",
+      "title": "Dias m\u00ednimos pr\u00f3prios",
+      "default": 0
+    },
+    "aplica_desconto_automatico": {
+      "type": "boolean",
+      "title": "Desconto autom\u00e1tico",
+      "default": false
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es T\u00e9cnicas"
+    },
+    "ativo": {
+      "type": "boolean",
+      "title": "Ativo",
+      "default": true
+    },
+    "controle_individual": {
+      "type": "boolean",
+      "title": "Controlar individualmente por numera\u00e7\u00e3o",
+      "default": false
+    },
+    "numeracoes": {
+      "type": "array",
+      "title": "Numera\u00e7\u00f5es/Seriais Individuais",
+      "items": {
+        "type": "object",
+        "properties": {
+          "serial": {
+            "type": "string",
+            "title": "Serial/N\u00famero"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "enum": [
+              "disponivel",
+              "alugado",
+              "manutencao",
+              "avariado",
+              "perdido",
+              "reservado"
+            ],
+            "default": "disponivel"
+          },
+          "contrato_id": {
+            "type": "string",
+            "title": "Contrato atual"
+          },
+          "contrato_numero": {
+            "type": "string",
+            "title": "N\u00famero do contrato atual"
+          },
+          "historico": {
+            "type": "array",
+            "title": "Hist\u00f3rico",
+            "items": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                },
+                "evento": {
+                  "type": "string"
+                },
+                "contrato_id": {
+                  "type": "string"
+                },
+                "contrato_numero": {
+                  "type": "string"
+                },
+                "motorista": {
+                  "type": "string"
+                },
+                "usuario": {
+                  "type": "string"
+                },
+                "observacao": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "nome",
+    "tipo"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

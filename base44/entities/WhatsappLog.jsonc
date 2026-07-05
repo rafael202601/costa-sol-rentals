@@ -1,0 +1,102 @@
+{
+  "name": "WhatsappLog",
+  "type": "object",
+  "properties": {
+    "telefone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "cliente_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "cliente_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "pergunta": {
+      "type": "string",
+      "title": "Mensagem do Cliente"
+    },
+    "resposta": {
+      "type": "string",
+      "title": "Resposta da IA"
+    },
+    "data_hora": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Data/Hora"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "enviado",
+        "erro",
+        "sem_cadastro"
+      ],
+      "enumNames": [
+        "Enviado",
+        "Erro",
+        "Sem Cadastro"
+      ],
+      "default": "enviado"
+    },
+    "erro_detalhe": {
+      "type": "string",
+      "title": "Detalhe do Erro"
+    }
+  },
+  "required": [
+    "telefone"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

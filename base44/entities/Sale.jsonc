@@ -1,0 +1,250 @@
+{
+  "name": "Sale",
+  "type": "object",
+  "properties": {
+    "numero": {
+      "type": "string",
+      "title": "N\u00ba da Venda"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "client_cpf_cnpj": {
+      "type": "string",
+      "title": "CPF/CNPJ"
+    },
+    "itens": {
+      "type": "array",
+      "title": "Itens",
+      "items": {
+        "type": "object",
+        "properties": {
+          "produto_id": {
+            "type": "string"
+          },
+          "produto_nome": {
+            "type": "string"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "number",
+            "default": 1
+          },
+          "valor_unitario": {
+            "type": "number",
+            "default": 0
+          },
+          "custo_unitario": {
+            "type": "number",
+            "default": 0
+          },
+          "total": {
+            "type": "number",
+            "default": 0
+          },
+          "faturado": {
+            "type": "boolean",
+            "default": false
+          },
+          "nota_id": {
+            "type": "string"
+          },
+          "nota_numero": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "title": "Subtotal (R$)",
+      "default": 0
+    },
+    "desconto_tipo": {
+      "type": "string",
+      "title": "Tipo de Desconto",
+      "enum": [
+        "reais",
+        "percentual"
+      ],
+      "default": "reais"
+    },
+    "desconto_valor": {
+      "type": "number",
+      "title": "Desconto",
+      "default": 0
+    },
+    "total": {
+      "type": "number",
+      "title": "Total (R$)",
+      "default": 0
+    },
+    "forma_pagamento": {
+      "type": "string",
+      "title": "Forma de Pagamento",
+      "enum": [
+        "dinheiro",
+        "pix",
+        "cartao_debito",
+        "cartao_credito",
+        "boleto",
+        "a_prazo"
+      ],
+      "enumNames": [
+        "Dinheiro",
+        "PIX",
+        "Cart\u00e3o D\u00e9bito",
+        "Cart\u00e3o Cr\u00e9dito",
+        "Boleto",
+        "A Prazo / Fiado"
+      ],
+      "default": "pix"
+    },
+    "valor_pago": {
+      "type": "number",
+      "title": "Valor Pago (R$)",
+      "default": 0
+    },
+    "saldo_pendente": {
+      "type": "number",
+      "title": "Saldo Pendente (R$)",
+      "default": 0
+    },
+    "troco": {
+      "type": "number",
+      "title": "Troco (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "aguardando_aprovacao",
+        "aprovado",
+        "cancelado"
+      ],
+      "enumNames": [
+        "Aguardando Aprova\u00e7\u00e3o",
+        "Aprovado",
+        "Cancelado"
+      ],
+      "default": "aguardando_aprovacao"
+    },
+    "status_pagamento": {
+      "type": "string",
+      "title": "Status de Pagamento",
+      "enum": [
+        "pago",
+        "parcial",
+        "nao_pago",
+        "pendente"
+      ],
+      "enumNames": [
+        "Pago",
+        "Parcial",
+        "N\u00e3o Pago",
+        "Pendente"
+      ],
+      "default": "pendente"
+    },
+    "nota_vinculada_id": {
+      "type": "string",
+      "title": "ID da Nota Vinculada"
+    },
+    "nota_vinculada_numero": {
+      "type": "string",
+      "title": "N\u00ba da Nota Vinculada"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "data_aprovacao": {
+      "type": "string",
+      "title": "Data de Aprova\u00e7\u00e3o"
+    },
+    "criado_por": {
+      "type": "string",
+      "title": "Criado por"
+    },
+    "editado_por": {
+      "type": "string",
+      "title": "Editado por"
+    }
+  },
+  "required": [
+    "client_nome",
+    "total"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "financeiro"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

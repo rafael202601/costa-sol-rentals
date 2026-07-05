@@ -1,0 +1,491 @@
+{
+  "name": "ServiceOrder",
+  "type": "object",
+  "properties": {
+    "numero": {
+      "type": "string",
+      "title": "N\u00ba da OS"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "client_codigo": {
+      "type": "string",
+      "title": "C\u00f3digo do Cliente (legado)"
+    },
+    "customer_code": {
+      "type": "string",
+      "title": "C\u00f3digo do Cliente (snapshot)"
+    },
+    "local_entrega": {
+      "type": "string",
+      "title": "Local de Entrega"
+    },
+    "motorista_entrega": {
+      "type": "string",
+      "title": "Motorista de Entrega"
+    },
+    "motorista_recolhimento": {
+      "type": "string",
+      "title": "Motorista de Recolhimento"
+    },
+    "veiculo_entrega": {
+      "type": "string",
+      "title": "Ve\u00edculo de Entrega"
+    },
+    "data_entrega": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Data/Hora de Entrega"
+    },
+    "data_recolhimento": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Data/Hora de Recolhimento"
+    },
+    "hora_tipo": {
+      "type": "string",
+      "title": "Tipo de Hor\u00e1rio de Entrega"
+    },
+    "hora_periodo": {
+      "type": "string",
+      "title": "Per\u00edodo de Entrega"
+    },
+    "hora_recolha_tipo": {
+      "type": "string",
+      "title": "Tipo de Hor\u00e1rio de Recolhimento"
+    },
+    "hora_recolha_periodo": {
+      "type": "string",
+      "title": "Per\u00edodo de Recolhimento"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "valor_unitario": {
+      "type": "number",
+      "title": "Valor Unit\u00e1rio (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pendente",
+        "em_transito",
+        "entregue",
+        "aguardando_recolha",
+        "recolhida",
+        "finalizada",
+        "cancelada"
+      ],
+      "enumNames": [
+        "Pendente",
+        "Em Tr\u00e2nsito",
+        "Entregue",
+        "Aguardando Recolha",
+        "Recolhida",
+        "Finalizada",
+        "Cancelada"
+      ],
+      "default": "pendente"
+    },
+    "status_pagamento": {
+      "type": "string",
+      "title": "Status de Pagamento",
+      "enum": [
+        "pendente",
+        "pago"
+      ],
+      "enumNames": [
+        "Pendente",
+        "Pago"
+      ],
+      "default": "pendente"
+    },
+    "tipo_cacamba": {
+      "type": "string",
+      "title": "Tipo de Ca\u00e7amba"
+    },
+    "cacamba_equipamento_id": {
+      "type": "string",
+      "title": "ID do Equipamento (Ca\u00e7amba)"
+    },
+    "quantidade_cacambas": {
+      "type": "number",
+      "title": "Quantidade de Ca\u00e7ambas",
+      "default": 1
+    },
+    "quantidade_recolhida": {
+      "type": "number",
+      "title": "Quantidade Recolhida (confirmada)",
+      "default": 0
+    },
+    "quantidade_ativa": {
+      "type": "number",
+      "title": "Quantidade Ativa (saldo em campo)",
+      "default": 1
+    },
+    "historico_recolhas": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Recolhas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "data_solicitacao": {
+            "type": "string"
+          },
+          "data_prevista": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "data_confirmacao": {
+            "type": "string"
+          },
+          "quantidade": {
+            "type": "number"
+          },
+          "motorista": {
+            "type": "string"
+          },
+          "veiculo": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "string"
+          },
+          "observacao": {
+            "type": "string"
+          },
+          "confirmada": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "historico_devolucoes": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Devolu\u00e7\u00f5es (Recibos)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "title": "Data/Hora"
+          },
+          "tipo": {
+            "type": "string",
+            "title": "Tipo (parcial/total)"
+          },
+          "motorista": {
+            "type": "string",
+            "title": "Motorista"
+          },
+          "usuario": {
+            "type": "string",
+            "title": "Respons\u00e1vel"
+          },
+          "observacao": {
+            "type": "string",
+            "title": "Observa\u00e7\u00e3o"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number"
+                },
+                "unidade": {
+                  "type": "string"
+                },
+                "observacao": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "historico_trocas": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Trocas de Equipamento",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "title": "Data/Hora"
+          },
+          "tipo": {
+            "type": "string",
+            "title": "Tipo (em_campo/na_loja)"
+          },
+          "motivo": {
+            "type": "string",
+            "title": "Motivo"
+          },
+          "motorista": {
+            "type": "string",
+            "title": "Motorista"
+          },
+          "usuario": {
+            "type": "string",
+            "title": "Respons\u00e1vel"
+          },
+          "observacao": {
+            "type": "string",
+            "title": "Observa\u00e7\u00e3o"
+          },
+          "itens_saindo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number"
+                },
+                "equipamento_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "itens_entrando": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string"
+                },
+                "quantidade": {
+                  "type": "number"
+                },
+                "equipamento_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "assinatura_url": {
+            "type": "string",
+            "title": "URL da Assinatura"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "concluida"
+          }
+        }
+      }
+    },
+    "tipo_os": {
+      "type": "string",
+      "title": "Tipo de OS",
+      "enum": [
+        "padrao",
+        "troca_cacamba"
+      ],
+      "enumNames": [
+        "Padr\u00e3o",
+        "Troca de Ca\u00e7amba"
+      ],
+      "default": "padrao"
+    },
+    "os_origem_id": {
+      "type": "string",
+      "title": "ID da OS Original (Troca)"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "assinatura_data": {
+      "type": "string",
+      "title": "Data/Hora da Assinatura do Cliente"
+    },
+    "assinatura_cliente": {
+      "type": "string",
+      "title": "Assinatura do Cliente (base64)"
+    },
+    "assinatura_entrega_url": {
+      "type": "string",
+      "title": "Assinatura de Entrega (base64/URL)"
+    },
+    "assinatura_entrega_motorista": {
+      "type": "string",
+      "title": "Motorista \u2014 Assinatura de Entrega"
+    },
+    "assinatura_entrega_data": {
+      "type": "string",
+      "title": "Data/Hora \u2014 Assinatura de Entrega"
+    },
+    "assinatura_devolucao_url": {
+      "type": "string",
+      "title": "Assinatura de Devolu\u00e7\u00e3o (base64/URL)"
+    },
+    "assinatura_devolucao_motorista": {
+      "type": "string",
+      "title": "Motorista \u2014 Assinatura de Devolu\u00e7\u00e3o"
+    },
+    "assinatura_devolucao_data": {
+      "type": "string",
+      "title": "Data/Hora \u2014 Assinatura de Devolu\u00e7\u00e3o"
+    },
+    "assinatura_pendente": {
+      "type": "boolean",
+      "title": "Assinatura Pendente",
+      "default": false
+    },
+    "assinatura_pendente_motorista": {
+      "type": "string",
+      "title": "Motorista \u2014 Assinatura Pendente"
+    },
+    "assinatura_pendente_data": {
+      "type": "string",
+      "title": "Data \u2014 Assinatura Pendente"
+    },
+    "locador_nome": {
+      "type": "string",
+      "title": "Nome do Respons\u00e1vel (criador)"
+    },
+    "locador_assinatura": {
+      "type": "string",
+      "title": "Assinatura do Respons\u00e1vel (base64)"
+    },
+    "locador_data": {
+      "type": "string",
+      "title": "Data/Hora de Cria\u00e7\u00e3o pelo Respons\u00e1vel"
+    },
+    "fotos": {
+      "type": "array",
+      "title": "Registro Fotogr\u00e1fico",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "URL da Foto"
+          },
+          "data_hora": {
+            "type": "string",
+            "title": "Data/Hora"
+          },
+          "usuario": {
+            "type": "string",
+            "title": "Usu\u00e1rio"
+          },
+          "descricao": {
+            "type": "string",
+            "title": "Descri\u00e7\u00e3o/Nome"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "client_nome",
+    "local_entrega"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "motorista"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "operacional"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "motorista"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

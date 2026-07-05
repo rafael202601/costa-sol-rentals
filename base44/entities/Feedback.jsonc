@@ -1,0 +1,148 @@
+{
+  "name": "Feedback",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "title": "ID do Cliente"
+    },
+    "client_nome": {
+      "type": "string",
+      "title": "Nome do Cliente"
+    },
+    "titulo": {
+      "type": "string",
+      "title": "T\u00edtulo"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "elogio",
+        "reclamacao",
+        "sugestao",
+        "problema_tecnico",
+        "atendimento",
+        "entrega",
+        "equipamentos"
+      ],
+      "enumNames": [
+        "Elogio",
+        "Reclama\u00e7\u00e3o",
+        "Sugest\u00e3o",
+        "Problema T\u00e9cnico",
+        "Atendimento",
+        "Entrega",
+        "Equipamentos"
+      ],
+      "default": "atendimento"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "nota_geral": {
+      "type": "number",
+      "title": "Nota Geral (1-5)",
+      "default": 5
+    },
+    "nota_atendimento": {
+      "type": "number",
+      "title": "Nota Atendimento (1-5)"
+    },
+    "nota_entrega": {
+      "type": "number",
+      "title": "Nota Entrega (1-5)"
+    },
+    "nota_equipamento": {
+      "type": "number",
+      "title": "Nota Equipamento (1-5)"
+    },
+    "colaborador_nome": {
+      "type": "string",
+      "title": "Colaborador Relacionado"
+    },
+    "contrato_numero": {
+      "type": "string",
+      "title": "Contrato/OS Relacionado"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "novo",
+        "em_analise",
+        "respondido",
+        "resolvido",
+        "arquivado"
+      ],
+      "enumNames": [
+        "Novo",
+        "Em An\u00e1lise",
+        "Respondido",
+        "Resolvido",
+        "Arquivado"
+      ],
+      "default": "novo"
+    },
+    "resposta": {
+      "type": "string",
+      "title": "Resposta da Empresa"
+    },
+    "respondido_por": {
+      "type": "string",
+      "title": "Respondido por"
+    },
+    "respondido_em": {
+      "type": "string",
+      "title": "Data da Resposta"
+    },
+    "anexos": {
+      "type": "array",
+      "title": "Anexos",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "tipo": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "client_id",
+    "client_nome",
+    "titulo",
+    "categoria"
+  ],
+  "rls": {
+    "create": {},
+    "read": {},
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "atendente"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "name": "FluxoIA",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome do Fluxo"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo do Fluxo",
+      "enum": [
+        "andaime",
+        "escoramento",
+        "cacamba",
+        "ferramentas",
+        "financeiro",
+        "entrega",
+        "recolha",
+        "reclamacao",
+        "suporte",
+        "contratos",
+        "ordem_servico",
+        "personalizado"
+      ],
+      "enumNames": [
+        "Andaime",
+        "Escoramento",
+        "Ca\u00e7amba",
+        "Ferramentas",
+        "Financeiro",
+        "Entrega",
+        "Recolha",
+        "Reclama\u00e7\u00e3o",
+        "Suporte",
+        "Contratos",
+        "Ordem de Servi\u00e7o",
+        "Personalizado"
+      ],
+      "default": "personalizado"
+    },
+    "ativo": {
+      "type": "boolean",
+      "title": "Fluxo Ativo",
+      "default": true
+    },
+    "objetivo": {
+      "type": "string",
+      "title": "Objetivo do Fluxo"
+    },
+    "palavras_chave": {
+      "type": "array",
+      "title": "Palavras-chave de Ativa\u00e7\u00e3o",
+      "items": {
+        "type": "string"
+      }
+    },
+    "etapas": {
+      "type": "array",
+      "title": "Etapas do Fluxo",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ordem": {
+            "type": "number"
+          },
+          "nome": {
+            "type": "string",
+            "title": "Nome da Etapa"
+          },
+          "chave": {
+            "type": "string",
+            "title": "Chave (campo a coletar)"
+          },
+          "pergunta": {
+            "type": "string",
+            "title": "Pergunta a Fazer"
+          },
+          "obrigatoria": {
+            "type": "boolean",
+            "default": true
+          },
+          "tipo_dado": {
+            "type": "string",
+            "enum": [
+              "texto",
+              "numero",
+              "data",
+              "lista",
+              "endereco",
+              "booleano"
+            ],
+            "default": "texto"
+          },
+          "opcoes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "validacao": {
+            "type": "string",
+            "title": "Regra de Valida\u00e7\u00e3o"
+          },
+          "dica_ia": {
+            "type": "string",
+            "title": "Instru\u00e7\u00e3o para a IA nesta etapa"
+          }
+        }
+      }
+    },
+    "campos_estruturados": {
+      "type": "array",
+      "title": "Campos Estruturados (dados a coletar)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "chave": {
+            "type": "string",
+            "title": "Chave do Campo"
+          },
+          "label": {
+            "type": "string",
+            "title": "Nome do Campo"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "texto",
+              "numero",
+              "data",
+              "lista",
+              "endereco",
+              "booleano"
+            ],
+            "default": "texto"
+          },
+          "obrigatorio": {
+            "type": "boolean",
+            "default": true
+          },
+          "descricao": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "regras_especificas": {
+      "type": "array",
+      "title": "Regras Espec\u00edficas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string",
+            "title": "Descri\u00e7\u00e3o da Regra"
+          },
+          "ativa": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "respostas_proibidas": {
+      "type": "array",
+      "title": "Respostas/A\u00e7\u00f5es Proibidas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "ativa": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "transferencia_humana_condicoes": {
+      "type": "array",
+      "title": "Condi\u00e7\u00f5es para Transfer\u00eancia Humana",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "condicao": {
+            "type": "string",
+            "title": "Condi\u00e7\u00e3o"
+          },
+          "ativa": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      }
+    },
+    "mensagem_inicio": {
+      "type": "string",
+      "title": "Mensagem de In\u00edcio do Fluxo"
+    },
+    "mensagem_conclusao": {
+      "type": "string",
+      "title": "Mensagem de Conclus\u00e3o / Resumo"
+    },
+    "mensagem_aguardando": {
+      "type": "string",
+      "title": "Mensagem de Aguardo"
+    },
+    "instrucao_resumo": {
+      "type": "string",
+      "title": "Instru\u00e7\u00e3o para Gera\u00e7\u00e3o do Resumo Operacional"
+    },
+    "prompt_adicional": {
+      "type": "string",
+      "title": "Prompt Adicional (contexto extra para a IA)"
+    },
+    "prioridade": {
+      "type": "number",
+      "title": "Prioridade de Ativa\u00e7\u00e3o (menor = maior prioridade)",
+      "default": 10
+    }
+  },
+  "required": [
+    "nome",
+    "tipo"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
