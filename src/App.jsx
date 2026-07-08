@@ -1,12 +1,13 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
 import Layout from './components/Layout';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Clients from './pages/Clients';
 import ClientForm from './pages/ClientForm';
@@ -42,18 +43,19 @@ import MigrationFix from './pages/MigrationFix';
 const queryClient = new QueryClient();
 
 const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const { isAuthenticated, isLoadingAuth, authError } = useAuth();
 
-  const isPublicRoute = window.location.pathname === '/privacy';
+  const isPublicRoute = window.location.pathname === '/privacy' || window.location.pathname === '/login';
   if (isPublicRoute) {
     return (
       <Routes>
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
       </Routes>
     );
   }
 
-  if (isLoadingPublicSettings || isLoadingAuth) {
+  if (isLoadingAuth) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
@@ -61,18 +63,14 @@ const AuthenticatedApp = () => {
     );
   }
 
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
-    }
+  if (!isAuthenticated || authError) {
+    return <Navigate to="/login" />;
   }
 
   return (
     <Routes>
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/login" element={<Navigate to="/" />} />
       <Route element={<Layout />}>
         <Route path="/"                            element={<Dashboard />} />
         <Route path="/clientes"                    element={<Clients />} />
