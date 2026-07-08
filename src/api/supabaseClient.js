@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://sotluugxlslvmhfmoidm.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNvdGx1dWd4bHNsdm1oZm1vaWRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyNDk2NzUsImV4cCI6MjA5ODgyNTY3NX0.VCGcAQgtgrKBgAqsBZzGnAkG4e63P-TmXKCxxevg8wk';
 
 if (!supabaseUrl || !supabaseKey) {
   throw new Error('Supabase URL and Anon Key must be provided in .env file');
