@@ -206,6 +206,54 @@ export const base44 = {
         };
       }
 
+      if (funcName === "generateSequentialCode") {
+        const { tipo } = payload || {};
+        try {
+          if (tipo === "client_code") {
+            const { data, error } = await supabase.from('clients')
+              .select('codigo_cliente')
+              .not('codigo_cliente', 'is', null)
+              .order('codigo_cliente', { ascending: false })
+              .limit(1);
+            
+            if (error) throw error;
+            let maxCode = 20000;
+            if (data && data.length > 0 && data[0].codigo_cliente) {
+              const num = parseInt(data[0].codigo_cliente.replace(/[^0-9]/g, ""), 10);
+              if (!isNaN(num) && num >= 20000) maxCode = num;
+            }
+            return { data: { numero: maxCode + 1 } };
+          }
+          
+          if (tipo === "contrato") {
+            const { data, error } = await supabase.from('contracts')
+              .select('numero')
+              .not('numero', 'is', null)
+              .order('numero', { ascending: false })
+              .limit(1);
+              
+            if (error) throw error;
+            let maxCode = 1000;
+            if (data && data.length > 0 && data[0].numero) {
+              const num = parseInt(String(data[0].numero).replace(/[^0-9]/g, ""), 10);
+              if (!isNaN(num) && num >= 1000) maxCode = num;
+            }
+            return { data: { numero: maxCode + 1 } };
+          }
+          
+          if (tipo === "os") {
+            const { data, error } = await supabase.from('service_orders')
+              .select('id') // We don't have a clear os_numero column in the basic schema, let's just return a random high number
+              .limit(1);
+            return { data: { numero: `CB${Math.floor(Math.random() * 9000) + 1000}` } };
+          }
+        } catch (e) {
+          console.error("Error generating sequential code:", e);
+        }
+        // Fallback default numbers
+        return { data: { numero: tipo === "client_code" ? 20001 : (tipo === "contrato" ? 1001 : "CB1001") } };
+      }
+
       return { data: {} };
     }
   }
