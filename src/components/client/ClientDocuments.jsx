@@ -46,11 +46,17 @@ export default function ClientDocuments({ clientId, fotoUrl, onFotoChange }) {
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) { toast.error("Imagem deve ter no máximo 5MB"); return; }
     setUploadingFoto(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    await base44.entities.Client.update(clientId, { foto_url: file_url });
-    onFotoChange?.(file_url);
-    toast.success("Foto atualizada!");
-    setUploadingFoto(false);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      await base44.entities.Client.update(clientId, { foto_url: file_url });
+      onFotoChange?.(file_url);
+      toast.success("Foto atualizada!");
+    } catch (err) {
+      console.error("Erro no upload da foto:", err);
+      toast.error("Erro ao enviar foto. Verifique se o Storage 'arquivos' está configurado.");
+    } finally {
+      setUploadingFoto(false);
+    }
   };
 
   const handleDocUpload = async (e) => {
@@ -58,20 +64,26 @@ export default function ClientDocuments({ clientId, fotoUrl, onFotoChange }) {
     if (!file) return;
     if (file.size > 20 * 1024 * 1024) { toast.error("Arquivo deve ter no máximo 20MB"); return; }
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
-    const user = currentUser;
-    const newDoc = {
-      nome: file.name,
-      url: file_url,
-      tipo: tipoNovo,
-      data: new Date().toISOString(),
-      usuario: user?.full_name || user?.email || "Sistema",
-    };
-    const updated = [...docs, newDoc];
-    await saveDocs(updated);
-    toast.success("Documento enviado!");
-    setUploading(false);
-    e.target.value = "";
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const user = currentUser;
+      const newDoc = {
+        nome: file.name,
+        url: file_url,
+        tipo: tipoNovo,
+        data: new Date().toISOString(),
+        usuario: user?.full_name || user?.email || "Sistema",
+      };
+      const updated = [...docs, newDoc];
+      await saveDocs(updated);
+      toast.success("Documento enviado!");
+    } catch (err) {
+      console.error("Erro no upload do documento:", err);
+      toast.error("Erro ao enviar arquivo. Verifique se o Storage 'arquivos' está configurado.");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
 
   const handleDelete = async (idx) => {
