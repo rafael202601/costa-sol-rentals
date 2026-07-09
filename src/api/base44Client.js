@@ -71,13 +71,19 @@ function createEntityAdapter(entityName) {
     
     create: async (payload) => {
       const { data, error } = await supabase.from(tableName).insert([payload]).select();
-      if (error) throw error;
+      if (error) {
+        console.error("ERRO SUPABASE INSERT:", error);
+        throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);
+      }
       return data[0];
     },
     
     update: async (id, payload) => {
       const { data, error } = await supabase.from(tableName).update(payload).eq('id', id).select();
-      if (error) throw error;
+      if (error) {
+        console.error("ERRO SUPABASE UPDATE:", error);
+        throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);
+      }
       return data[0];
     },
     
