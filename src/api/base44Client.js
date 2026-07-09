@@ -153,6 +153,59 @@ export const base44 = {
         if (error) console.warn("Error counting clients:", error);
         return { data: { total: count || 0 } };
       }
+      
+      if (funcName === "searchClients") {
+        const { query = "", field = "todos", tipo = "todos", sort = "recentes", page = 1, page_size = 50 } = payload || {};
+        
+        let dbQuery = supabase.from('clients').select('*', { count: 'exact' });
+        
+        // Filter by tipo
+        if (tipo !== "todos") {
+          dbQuery = dbQuery.eq('tipo_perfil', tipo);
+        }
+        
+        // Search query
+        if (query.trim()) {
+          if (field === "todos") {
+            dbQuery = dbQuery.or(`nome_razao_social.ilike.%${query}%,codigo_cliente.ilike.%${query}%,cpf_cnpj.ilike.%${query}%,fantasia.ilike.%${query}%`);
+          } else {
+            // Se for um field específico de json (obras, pessoas_liberadas) fica mais complexo, 
+            // mas pro text normal podemos usar ilike
+            if (["obras", "pessoas_liberadas", "etiquetas"].includes(field)) {
+              // fallback simples se for json
+              dbQuery = dbQuery.textSearch(field, query); // ou ignore para não quebrar
+            } else {
+              dbQuery = dbQuery.ilike(field, `%${query}%`);
+            }
+          }
+        }
+        
+        // Sort
+        if (sort === "recentes") dbQuery = dbQuery.order('created_at', { ascending: false });
+        else if (sort === "antigos") dbQuery = dbQuery.order('created_at', { ascending: true });
+        else if (sort === "a-z") dbQuery = dbQuery.order('nome_razao_social', { ascending: true });
+        else if (sort === "z-a") dbQuery = dbQuery.order('nome_razao_social', { ascending: false });
+        
+        // Pagination
+        const from = (page - 1) * page_size;
+        const to = from + page_size - 1;
+        dbQuery = dbQuery.range(from, to);
+        
+        const { data, count, error } = await dbQuery;
+        if (error) {
+          console.error("Error searchClients:", error);
+          return { data: { items: [], total: 0, totalPages: 1 } };
+        }
+        
+        return { 
+          data: { 
+            items: data || [], 
+            total: count || 0, 
+            totalPages: Math.ceil((count || 0) / page_size) || 1 
+          } 
+        };
+      }
+
       return { data: {} };
     }
   }
