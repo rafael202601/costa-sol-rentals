@@ -40,9 +40,21 @@ export async function getNextOSNumber() {
   return await gerarCodigoBackend("os");
 }
 
+export async function getNextQuoteNumber() {
+  return await gerarCodigoBackend("orcamento");
+}
+
+export async function getNextSaleNumber() {
+  return await gerarCodigoBackend("venda");
+}
+
+export async function getNextBillingNoteNumber() {
+  return await gerarCodigoBackend("fatura");
+}
+
 /**
  * Compatibilidade: getNextNumber(tipo) — usado em ContractForm e ServiceOrderForm.
- * tipo: "contrato" | "os"
+ * tipo: "contrato" | "os" | "orcamento" | "venda" | "fatura"
  *
  * Retorna:
  *   - "contrato" → number
@@ -51,9 +63,12 @@ export async function getNextOSNumber() {
 export async function getNextNumber(tipo) {
   if (tipo === "contrato") return await getNextContractNumber();
   if (tipo === "os") return await getNextOSNumber();
-  const res = await base44.functions.invoke("generateSequentialCode", { tipo });
-  if (!res?.data?.numero) throw new Error(`Falha ao gerar número para '${tipo}'`);
-  return res.data.numero;
+  if (tipo === "orcamento") return await getNextQuoteNumber();
+  if (tipo === "venda") return await getNextSaleNumber();
+  if (tipo === "fatura") return await getNextBillingNoteNumber();
+  
+  // fallback geral
+  return await gerarCodigoBackend(tipo);
 }
 
 /**

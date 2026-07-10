@@ -216,17 +216,25 @@ export default function Quotes() {
     if (!form.client_nome?.trim()) { toast.error("Informe o nome do cliente"); return; }
     setSaving(true);
     let data = { ...form };
-    if (!data.numero) {
-      const count = quotes.length + 1;
-      data.numero = String(2000 + count);
+    
+    try {
+      if (!data.numero) {
+        data.numero = await base44.functions.invoke("generateSequentialCode", { tipo: "orcamento" })
+          .then(res => res?.data?.numero || String(Math.floor(Math.random() * 9000) + 1000));
+      }
+      
+      if (editId) {
+        await base44.entities.Quote.update(editId, data);
+        toast.success("Orçamento atualizado!");
+      } else {
+        await base44.entities.Quote.create(data);
+        toast.success(`Orçamento #${data.numero} criado!`);
+      }
+    } catch (err) {
+      toast.error("Erro ao salvar orçamento");
+      console.error(err);
     }
-    if (editId) {
-      await base44.entities.Quote.update(editId, data);
-      toast.success("Orçamento atualizado!");
-    } else {
-      await base44.entities.Quote.create(data);
-      toast.success(`Orçamento #${data.numero} criado!`);
-    }
+    
     setSaving(false); setDialog(false);
     if (hasSearched) doSearch();
   };

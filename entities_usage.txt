@@ -1,0 +1,284 @@
+src\components\billing\BillingNoteDetailDialog.jsx:    await base44.entities.PaymentRequest.create({
+src\components\billing\BillingNoteDetailDialog.jsx:    const updated = await base44.entities.BillingNote.update(note.id, { pagamentos });
+src\components\billing\BillingNoteDetailDialog.jsx:    const updated = await base44.entities.BillingNote.update(note.id, {
+src\components\billing\BillingNoteDetailDialog.jsx:    const updated = await base44.entities.BillingNote.update(note.id, { anexos });
+src\components\billing\BillingNoteDetailDialog.jsx:        await base44.entities.BillingNote.update(note.id, {
+src\components\billing\BillingNoteDetailDialog.jsx:    const updated = await base44.entities.BillingNote.update(note.id, { historico_observacoes: historico });
+src\components\billing\BillingNoteDialog.jsx:      const counters = await base44.entities.Counter.filter({ tipo: "nota_cobranca" });
+src\components\billing\BillingNoteDialog.jsx:        await base44.entities.Counter.update(counters[0].id, { ultimo_numero: next });
+src\components\billing\BillingNoteDialog.jsx:        await base44.entities.Counter.create({ tipo: "nota_cobranca", ultimo_numero: 1001 });
+src\components\billing\BillingNoteDialog.jsx:    const note = await base44.entities.BillingNote.create({
+src\components\billing\BillingNoteDialog.jsx:      await base44.entities.Contract.update(c.id, { ultima_nota_gerada_em: new Date().toISOString().slice(0, 10) }).catch(() => {});
+src\components\billing\BillingNoteDialog.jsx:      await base44.entities.Sale.update(v.id, { nota_vinculada_id: note.id, nota_vinculada_numero: note.numero }).catch(() => {});
+src\components\billing\FinancialDocumentsTab.jsx:    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+src\components\billing\FinancialDocumentsTab.jsx:    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+src\components\billing\FinancialDocumentsTab.jsx:    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+src\components\billing\NFeBoletoPainel.jsx:      const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+src\components\billing\NFeBoletoPainel.jsx:      const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+src\components\cashflow\CashAutoConfigPanel.jsx:      await base44.entities.CashAutoConfig.update(configId, payload);
+src\components\cashflow\CashAutoConfigPanel.jsx:      const created = await base44.entities.CashAutoConfig.create(payload);
+src\components\cashflow\EditRequestDialog.jsx:    await base44.entities.CashEntry.update(entry.id, {
+src\components\cashflow\EditRequestDialog.jsx:    await base44.entities.CashEntry.update(entry.id, {
+src\components\cashflow\EditRequestDialog.jsx:    await base44.entities.CashEntry.update(entry.id, { solicitacoes_edicao: solicitacoes });
+src\components\client\BloqueioClienteDialog.jsx:      await base44.entities.ActivityLog.create({
+src\components\client\ClientDocuments.jsx:    await base44.entities.Client.update(clientId, { documentos: newDocs });
+src\components\client\ClientDocuments.jsx:      await base44.entities.Client.update(clientId, { foto_url: file_url });
+src\components\client\ClientDocuments.jsx:              <button onClick={async () => { await base44.entities.Client.update(clientId, { foto_url: "" }); onFotoChange?.(""); toast.success("Foto removida."); }}
+src\components\client\ClientImportModal.jsx:      const chunk = await base44.entities.Client.list("-created_date", PAGE_SIZE, page * PAGE_SIZE).catch(() => []);
+src\components\client\ClientImportModal.jsx:          await base44.entities.Client.update(existing.id, dataToSave);
+src\components\client\ClientImportModal.jsx:          const newClient = await base44.entities.Client.create(dataToSave);
+src\components\client\ClientTagsField.jsx:    const created = await base44.entities.ClientTag.create({ nome: newTag.trim(), cor });
+src\components\client\FichaCadastralDialog.jsx:      await base44.entities.Client.update(client.id, { documentos: [...docsAtuais, novoDoc] });
+src\components\client\FichaCadastralDialog.jsx:    await base44.entities.Client.update(client.id, { documentos: updated });
+src\components\contracts\ContractImportModal.jsx:            await base44.entities.Contract.update(existingContract.id, dataToSave);
+src\components\contracts\ContractImportModal.jsx:          const novo = await base44.entities.Contract.create(dataToSave);
+src\components\contracts\DynamicBillingCard.jsx:    await base44.entities.Contract.update(contract.id, {
+src\components\driver\DriverStatusActions.jsx:        await base44.entities.Contract.update(parada.docId, updates);
+src\components\driver\DriverStatusActions.jsx:        await base44.entities.ServiceOrder.update(parada.docId, updates);
+src\components\driver\DriverStatusActions.jsx:      await base44.entities.ActivityLog.create({
+src\components\driver\DriverStatusActions.jsx:        await base44.entities.Contract.update(parada.docId, updates);
+src\components\driver\DriverStatusActions.jsx:        await base44.entities.ServiceOrder.update(parada.docId, updates);
+src\components\driver\DriverStatusActions.jsx:      await base44.entities.ActivityLog.create({
+src\components\driver\DriverStatusActions.jsx:        const [doc] = await base44.entities.Contract.filter({ id: parada.docId });
+src\components\driver\DriverStatusActions.jsx:        await base44.entities.Contract.update(parada.docId, {
+src\components\driver\DriverStatusActions.jsx:        const [doc] = await base44.entities.ServiceOrder.filter({ id: parada.docId });
+src\components\driver\DriverStatusActions.jsx:        await base44.entities.ServiceOrder.update(parada.docId, {
+src\components\driver\DriverStatusActions.jsx:      await base44.entities.ActivityLog.create({
+src\components\driver\TrocaStatusActions.jsx:        await base44.entities.ActivityLog.create({
+src\components\fluxos\FluxosIAManager.jsx:    const data = await base44.entities.FluxoIA.list("-created_date", 100);
+src\components\fluxos\FluxosIAManager.jsx:      await base44.entities.FluxoIA.update(form.id, form);
+src\components\fluxos\FluxosIAManager.jsx:      await base44.entities.FluxoIA.create(form);
+src\components\fluxos\FluxosIAManager.jsx:    await base44.entities.FluxoIA.update(fluxo.id, { ativo });
+src\components\fluxos\FluxosIAManager.jsx:    await base44.entities.FluxoIA.delete(deletando.id);
+src\components\fluxos\FluxosIAManager.jsx:      await base44.entities.FluxoIA.create(f);
+src\components\notifications\NotificationBell.jsx:        contracts = await base44.entities.Contract.list("-data_inicio", 200);
+src\components\operacional\AlterarStatusDialog.jsx:        await base44.entities.Contract.update(doc.id, {
+src\components\operacional\AlterarStatusDialog.jsx:        await base44.entities.ServiceOrder.update(doc.id, {
+src\components\operacional\AlterarStatusDialog.jsx:      await base44.entities.ActivityLog.create({
+src\components\portal\ContractSignatureDialog.jsx:      await base44.entities.Contract.update(contract.id, {
+src\components\portal\FeedbackTab.jsx:    const list = await base44.entities.Feedback.filter({ client_id: client.id });
+src\components\portal\FeedbackTab.jsx:    await base44.entities.Feedback.create({
+src\components\settings\AgenteHistoricoConversas.jsx:        await base44.entities.Intervention.update(intervencao.id, {
+src\components\settings\AgenteHistoricoConversas.jsx:        await base44.entities.Intervention.create({
+src\components\settings\AgenteHistoricoConversas.jsx:      await base44.entities.Intervention.update(intervencao.id, {
+src\components\settings\AgenteHistoricoConversas.jsx:      await base44.entities.Intervention.update(intervencao.id, { status: "ia_retomada", ia_pausada: false });
+src\components\settings\AgenteHistoricoConversas.jsx:      await base44.entities.Intervention.update(intervencao.id, {
+src\components\settings\AgenteHistoricoConversas.jsx:      await base44.entities.Intervention.update(intervencao.id, {
+src\components\settings\AgenteHistoricoConversas.jsx:    const items = await base44.entities.WhatsappLog.list("-created_date", 1000).catch(() => []);
+src\components\settings\AgenteHistoricoConversas.jsx:    const items = await base44.entities.Intervention.list("-created_date", 200).catch(() => []);
+src\components\settings\AgenteIASettings.jsx:      const items = await base44.entities.Intervention.list("-created_date", 100).catch(() => []);
+src\components\settings\AgenteIASettings.jsx:    const list = await base44.entities.AgentSettings.list().catch(() => []);
+src\components\settings\AgenteIASettings.jsx:    const items = await base44.entities.WhatsappLog.list("-created_date", 50).catch(() => []);
+src\components\settings\AgenteIASettings.jsx:      await base44.entities.AgentSettings.update(settingsId, patch);
+src\components\settings\AgenteIASettings.jsx:      const created = await base44.entities.AgentSettings.create({ ...DEFAULTS, [field]: value });
+src\components\settings\AgenteIASettings.jsx:      await base44.entities.AgentSettings.update(settingsId, payload);
+src\components\settings\AgenteIASettings.jsx:      const created = await base44.entities.AgentSettings.create(payload);
+src\components\settings\AgenteMemoriaOperacional.jsx:      const lista = await base44.entities.ConversationState.list('-ultima_interacao', 50);
+src\components\settings\AgenteMemoriaOperacional.jsx:    await base44.entities.ConversationState.delete(id);
+src\components\settings\AwsWebhookSettings.jsx:      const data = await base44.entities.IntegraWebhookAWS.list("-created_date", 50);
+src\components\settings\CentralIntervencoes.jsx:      await base44.entities.Intervention.update(item.id, {
+src\components\settings\CentralIntervencoes.jsx:      await base44.entities.Intervention.update(item.id, {
+src\components\settings\CentralIntervencoes.jsx:      await base44.entities.Intervention.update(item.id, {
+src\components\settings\CentralIntervencoes.jsx:      await base44.entities.Intervention.update(item.id, {
+src\components\settings\CentralIntervencoes.jsx:      await base44.entities.Intervention.update(item.id, {
+src\components\settings\CentralIntervencoes.jsx:    const items = await base44.entities.Intervention.list("-created_date", 200).catch(() => []);
+src\components\tasks\TaskDialog.jsx:      await base44.entities.Task.update(form.id, data);
+src\components\tasks\TaskDialog.jsx:      await base44.entities.Task.create(data);
+src\components\tasks\TaskKanban.jsx:    await base44.entities.Task.update(taskId, updateData);
+src\components\tasks\TaskKanban.jsx:    await base44.entities.Task.update(task.id, {
+src\components\tasks\TaskListView.jsx:    await base44.entities.Task.update(task.id, {
+src\components\troca\TrocaEquipamentoDialog.jsx:          const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\components\troca\TrocaEquipamentoDialog.jsx:          await base44.entities.Equipment.update(item.equipamento_id, {
+src\components\troca\TrocaEquipamentoDialog.jsx:          const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\components\troca\TrocaEquipamentoDialog.jsx:          await base44.entities.Equipment.update(item.equipamento_id, {
+src\components\troca\TrocaEquipamentoDialog.jsx:              const [eq] = await base44.entities.Equipment.filter({ id: itemEntrando.equipamento_id });
+src\components\troca\TrocaEquipamentoDialog.jsx:        await base44.entities.Contract.update(doc.id, updatePayload);
+src\components\troca\TrocaEquipamentoDialog.jsx:        await base44.entities.ServiceOrder.update(doc.id, updatePayload);
+src\components\troca\TrocaEquipamentoDialog.jsx:        await base44.entities.ActivityLog.create({
+src\components\WhatsAppSendDialog.jsx:      await base44.entities.ActivityLog.create({
+src\lib\activityLog.js:    await base44.entities.ActivityLog.create({
+src\lib\releaseEquipmentSerials.js:      const res = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\lib\releaseEquipmentSerials.js:    await base44.entities.Equipment.update(item.equipamento_id, updates);
+src\lib\sequentialNumber.js:  const existing = await base44.entities.Client.filter({ codigo_cliente: String(codigo) }).catch(() => []);
+src\pages\Announcements.jsx:    const d = await base44.entities.Announcement.list("-data");
+src\pages\Announcements.jsx:      await base44.entities.Announcement.update(editing, data);
+src\pages\Announcements.jsx:      await base44.entities.Announcement.create(data);
+src\pages\Announcements.jsx:    await base44.entities.Announcement.delete(id);
+src\pages\Announcements.jsx:    await base44.entities.Announcement.update(item.id, { ativo: false, status: "arquivado" });
+src\pages\Announcements.jsx:    await base44.entities.Announcement.update(item.id, { ativo: true, status, data_fim: "" });
+src\pages\Announcements.jsx:    await base44.entities.Announcement.update(item.id, { fixado: !item.fixado });
+src\pages\Calendar.jsx:        await base44.entities.Contract.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.Contract.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.ServiceOrder.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.ServiceOrder.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.Contract.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.Contract.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.ServiceOrder.update(ev.draggableId, update);
+src\pages\Calendar.jsx:        await base44.entities.ServiceOrder.update(ev.draggableId, update);
+src\pages\CashFlow.jsx:    await base44.entities.CashEntry.create({
+src\pages\CashFlow.jsx:    await base44.entities.CashEntry.create({
+src\pages\CashFlow.jsx:    await base44.entities.CashEntry.create({
+src\pages\CashFlow.jsx:    await base44.entities.CashRegister.create({
+src\pages\CashFlow.jsx:    await base44.entities.CashRegister.update(openCash.id, {
+src\pages\CashFlow.jsx:    await base44.entities.PaymentRequest.update(req.id, {
+src\pages\CashFlow.jsx:      await base44.entities.CashEntry.create({
+src\pages\CashFlow.jsx:        ? await base44.entities.BillingNote.filter({ id: notaIdAntes }).catch(() => [])
+src\pages\CashFlow.jsx:          ? await base44.entities.BillingNote.filter({ numero: notaNumMatchAntes[1] }).catch(() => [])
+src\pages\CashFlow.jsx:          const [ct] = await base44.entities.Contract.filter({ id: item.id });
+src\pages\CashFlow.jsx:            await base44.entities.Contract.update(item.id, updates);
+src\pages\CashFlow.jsx:              const notasExistentes = await base44.entities.BillingNote.list("-created_date", 20);
+src\pages\CashFlow.jsx:                  const counters = await base44.entities.Counter.filter({ tipo: "nota_cobranca" });
+src\pages\CashFlow.jsx:                    await base44.entities.Counter.update(counters[0].id, { ultimo_numero: next });
+src\pages\CashFlow.jsx:                    await base44.entities.Counter.create({ tipo: "nota_cobranca", ultimo_numero: 1001 });
+src\pages\CashFlow.jsx:                await base44.entities.BillingNote.create({
+src\pages\CashFlow.jsx:          await base44.entities.ServiceOrder.update(item.id, { status_pagamento: "pago" });
+src\pages\CashFlow.jsx:        ? await base44.entities.BillingNote.filter({ id: notaId }).catch(() => [])
+src\pages\CashFlow.jsx:          ? await base44.entities.BillingNote.filter({ numero: notaNumMatch[1] }).catch(() => [])
+src\pages\CashFlow.jsx:        await base44.entities.BillingNote.update(notaVinculada.id, {
+src\pages\CashFlow.jsx:        ? await base44.entities.BillingNote.filter({ id: notaId }).catch(() => [])
+src\pages\CashFlow.jsx:          ? await base44.entities.BillingNote.filter({ numero: notaNumMatch[1] }).catch(() => [])
+src\pages\CashFlow.jsx:        await base44.entities.BillingNote.update(notaVinculada.id, { pagamentos: pagsAtualizados });
+src\pages\ClientDetail.jsx:    const settings = await base44.entities.CompanySettings.list().then((l) => l[0] || null);
+src\pages\ClientDetail.jsx:    const settings = await base44.entities.CompanySettings.list().then((l) => l[0] || null);
+src\pages\ClientForm.jsx:    const existing = await base44.entities.Client.filter({ cpf_cnpj: cpfFormatted }).catch(() => []);
+src\pages\ClientForm.jsx:    const existing = await base44.entities.Client.filter({ cpf_cnpj: cnpjFormatted }).catch(() => []);
+src\pages\ClientForm.jsx:    const existing = await base44.entities.Client.filter({ cpf_cnpj: cpfCnpj }).catch(() => []);
+src\pages\ClientForm.jsx:        await base44.entities.Client.update(clientId, data);
+src\pages\ClientForm.jsx:        await base44.entities.Client.create(data);
+src\pages\ClientForm.jsx:    await base44.entities.Client.delete(clientId);
+src\pages\ClientPortal.jsx:      const clients = await base44.entities.Client.filter({ email: user.email });
+src\pages\ClientPortal.jsx:    await base44.entities.PaymentRequest.create({
+src\pages\ClientPortal.jsx:    const reqs = await base44.entities.PaymentRequest.filter({ client_id: client.id });
+src\pages\ContractDetail.jsx:      const res = await base44.entities.Contract.filter({ id: contractId });
+src\pages\ContractDetail.jsx:        const all = await base44.entities.Contract.list("-created_date", 2000);
+src\pages\ContractDetail.jsx:        const res = await base44.entities.Client.filter({ id: c.client_id });
+src\pages\ContractDetail.jsx:        const res = await base44.entities.Client.filter({ codigo_cliente: codigo });
+src\pages\ContractDetail.jsx:          await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:        const allClients = await base44.entities.Client.list("-created_date", 500);
+src\pages\ContractDetail.jsx:          await base44.entities.Contract.update(contractId, { client_id: cl.id });
+src\pages\ContractDetail.jsx:    const allReqs = await base44.entities.PaymentRequest.list("-created_date", 50);
+src\pages\ContractDetail.jsx:            const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\pages\ContractDetail.jsx:      const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\pages\ContractDetail.jsx:        await base44.entities.Equipment.update(item.equipamento_id, {
+src\pages\ContractDetail.jsx:        await base44.entities.Equipment.update(item.equipamento_id, {
+src\pages\ContractDetail.jsx:      await base44.entities.Contract.update(contractId, { status, ...extraData });
+src\pages\ContractDetail.jsx:        await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:        await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:    await base44.entities.PaymentRequest.create({
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, updates);
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:      await base44.entities.Contract.update(contractId, recolhaUpdate);
+src\pages\ContractDetail.jsx:      await base44.entities.Contract.update(contractId, recolhaUpdate);
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:        const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, { assinatura_data: dataHoraAssinatura });
+src\pages\ContractDetail.jsx:    await base44.entities.ActivityLog.create({
+src\pages\ContractDetail.jsx:    const freshSettings = await base44.entities.CompanySettings.list().then((l) => l[0] || null);
+src\pages\ContractDetail.jsx:    await base44.entities.Contract.update(contractId, {
+src\pages\ContractDetail.jsx:    await base44.entities.ActivityLog.create({
+src\pages\ContractDetail.jsx:    await base44.entities.ActivityLog.create({
+src\pages\ContractDetail.jsx:                        await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] });
+src\pages\ContractDetail.jsx:                        await base44.entities.Contract.update(contractId, { fotos: updated });
+src\pages\ContractDetail.jsx:                        await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...fotosEntregaExist, ...tagged] });
+src\pages\ContractDetail.jsx:                        await base44.entities.Contract.update(contractId, { fotos: updated });
+src\pages\ContractDetail.jsx:                          await base44.entities.Contract.update(contractId, { fotos: [...fotosTyped, ...newPhotos] });
+src\pages\ContractDetail.jsx:                          await base44.entities.Contract.update(contractId, { fotos: updated });
+src\pages\ContractForm.jsx:            const [cl] = await base44.entities.Client.filter({ id: c.client_id });
+src\pages\ContractForm.jsx:      const contratos = await base44.entities.Contract.filter({ client_id: client.id });
+src\pages\ContractForm.jsx:        const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
+src\pages\ContractForm.jsx:        await base44.entities.Equipment.update(item.equipamento_id, { numeracoes: updatedNumeracoes });
+src\pages\ContractForm.jsx:        await base44.entities.Contract.update(contractId, data);
+src\pages\ContractForm.jsx:        await base44.entities.ActivityLog.create({
+src\pages\ContractForm.jsx:        const created = await base44.entities.Contract.create(data);
+src\pages\ContractForm.jsx:        await base44.entities.ActivityLog.create({
+src\pages\Contracts.jsx:      const rawContracts = await base44.entities.Contract.list("-created_date", 300);
+src\pages\Contracts.jsx:    const data = await base44.entities.Contract.list("-created_date", 300);
+src\pages\DriverPanel.jsx:          allDrivers = await base44.entities.Driver.list();
+src\pages\Drivers.jsx:      await base44.entities.Driver.update(editId, form);
+src\pages\Drivers.jsx:      await base44.entities.Driver.create(form);
+src\pages\Drivers.jsx:    await base44.entities.Driver.update(d.id, { status: d.status === "ativo" ? "inativo" : "ativo" });
+src\pages\Equipment.jsx:      await base44.entities.Equipment.update(editing.id, dataToSave);
+src\pages\Equipment.jsx:      await base44.entities.Equipment.create(dataToSave);
+src\pages\Equipment.jsx:    await base44.entities.Equipment.delete(id);
+src\pages\EquipmentSerials.jsx:    const data = await base44.entities.Equipment.list("-nome", 1000);
+src\pages\EquipmentSerials.jsx:      const allEquip = await base44.entities.Equipment.list("-nome", 1000);
+src\pages\EquipmentSerials.jsx:      await base44.entities.Equipment.update(eq.id, {
+src\pages\FeedbackAdmin.jsx:    const list = await base44.entities.Feedback.list("-created_date", 200);
+src\pages\FeedbackAdmin.jsx:    await base44.entities.Feedback.update(detail.id, {
+src\pages\FeedbackAdmin.jsx:    await base44.entities.Feedback.update(id, { status: "arquivado" });
+src\pages\Kanban.jsx:      await base44.entities.Contract.update(id, { motorista_entrega: driverName });
+src\pages\Kanban.jsx:      await base44.entities.ServiceOrder.update(id, { motorista_entrega: driverName });
+src\pages\Kanban.jsx:      await base44.entities.Contract.update(id, { veiculo_entrega: placa });
+src\pages\Kanban.jsx:      await base44.entities.ServiceOrder.update(id, { veiculo_entrega: placa });
+src\pages\MigrationFix.jsx:      const all = await base44.entities.Equipment.list("-nome", 1000);
+src\pages\MigrationFix.jsx:      contratos = await base44.entities.Contract.list("-created_date", 3000);
+src\pages\MigrationFix.jsx:      ordens = await base44.entities.ServiceOrder.list("-created_date", 3000);
+src\pages\MigrationFix.jsx:          await base44.entities.Equipment.update(eq.id, {
+src\pages\MigrationFix.jsx:      allClients = await base44.entities.Client.list("-created_date", 2000);
+src\pages\MigrationFix.jsx:      osList = await base44.entities.ServiceOrder.list("-created_date", 2000);
+src\pages\MigrationFix.jsx:          await base44.entities.ServiceOrder.update(os.id, {
+src\pages\MigrationFix.jsx:      contractList = await base44.entities.Contract.list("-created_date", 2000);
+src\pages\MigrationFix.jsx:          await base44.entities.Contract.update(ct.id, {
+src\pages\MigrationFix.jsx:      clientsForDedup = await base44.entities.Client.list("created_date", 5000);
+src\pages\MigrationFix.jsx:          await base44.entities.Client.update(sorted[i].id, { codigo_cliente: novoCodigo });
+src\pages\Products.jsx:      await base44.entities.Product.update(editId, form);
+src\pages\Products.jsx:      await base44.entities.Product.create(form);
+src\pages\Quotes.jsx:    const all = await base44.entities.Quote.list("-created_date", 500);
+src\pages\Quotes.jsx:      await base44.entities.Quote.update(editId, data);
+src\pages\Quotes.jsx:      await base44.entities.Quote.create(data);
+src\pages\Sales.jsx:    const all = await base44.entities.Sale.list("-created_date", 500);
+src\pages\Sales.jsx:    const all = await base44.entities.Sale.list("-created_date", 1);
+src\pages\Sales.jsx:      await base44.entities.Sale.update(editingId, {
+src\pages\Sales.jsx:      await base44.entities.Sale.create(saleData);
+src\pages\Sales.jsx:        const prods = await base44.entities.Product.filter({ id: item.produto_id });
+src\pages\Sales.jsx:          await base44.entities.Product.update(p.id, {
+src\pages\Sales.jsx:    await base44.entities.Sale.update(sale.id, {
+src\pages\Sales.jsx:      await base44.entities.CashEntry.create({
+src\pages\Sales.jsx:      await base44.entities.CashEntry.create({
+src\pages\Sales.jsx:      await base44.entities.Client.update(sale.client_id, { pendencia_financeira: true });
+src\pages\Sales.jsx:    await base44.entities.Sale.update(sale.id, { status: "cancelado" });
+src\pages\ServiceOrderDetail.jsx:      const res = await base44.entities.ServiceOrder.filter({ id: osId });
+src\pages\ServiceOrderDetail.jsx:        const all = await base44.entities.ServiceOrder.list("-created_date", 2000);
+src\pages\ServiceOrderDetail.jsx:      const allReqs = await base44.entities.PaymentRequest.list("-created_date", 50);
+src\pages\ServiceOrderDetail.jsx:        const res = await base44.entities.Client.filter({ id: o.client_id });
+src\pages\ServiceOrderDetail.jsx:        const res = await base44.entities.Client.filter({ codigo_cliente: codigo });
+src\pages\ServiceOrderDetail.jsx:          await base44.entities.ServiceOrder.update(osId, {
+src\pages\ServiceOrderDetail.jsx:        const allClients = await base44.entities.Client.list("-created_date", 500);
+src\pages\ServiceOrderDetail.jsx:          await base44.entities.ServiceOrder.update(osId, { client_id: cl.id });
+src\pages\ServiceOrderDetail.jsx:      await base44.entities.ServiceOrder.update(osId, { status, ...extra });
+src\pages\ServiceOrderDetail.jsx:    await base44.entities.PaymentRequest.create({
+src\pages\ServiceOrderDetail.jsx:    await base44.entities.ServiceOrder.update(osId, {
+src\pages\ServiceOrderDetail.jsx:    await base44.entities.ServiceOrder.update(osId, {
+src\pages\ServiceOrderDetail.jsx:    await base44.entities.ServiceOrder.update(osId, {
+src\pages\ServiceOrderDetail.jsx:    await base44.entities.ServiceOrder.update(osId, {
+src\pages\ServiceOrderDetail.jsx:    await base44.entities.ServiceOrder.update(osId, {
+src\pages\ServiceOrderDetail.jsx:    const settings = await base44.entities.CompanySettings.list().then((l) => l[0] || null);
+src\pages\ServiceOrderDetail.jsx:                        await base44.entities.ServiceOrder.update(osId, { status: "finalizada" });
+src\pages\ServiceOrderDetail.jsx:                  await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] });
+src\pages\ServiceOrderDetail.jsx:                  await base44.entities.ServiceOrder.update(osId, { fotos: updated });
+src\pages\ServiceOrderDetail.jsx:                  await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...fotosEntrega, ...tagged] });
+src\pages\ServiceOrderDetail.jsx:                  await base44.entities.ServiceOrder.update(osId, { fotos: updated });
+src\pages\ServiceOrderDetail.jsx:                    await base44.entities.ServiceOrder.update(osId, { fotos: [...fotosTyped, ...newPhotos] });
+src\pages\ServiceOrderDetail.jsx:                    await base44.entities.ServiceOrder.update(osId, { fotos: updated });
+src\pages\ServiceOrderForm.jsx:        await base44.entities.ServiceOrder.update(actualId, data);
+src\pages\ServiceOrderForm.jsx:        const created = await base44.entities.ServiceOrder.create(data);
+src\pages\ServiceOrderForm.jsx:            const [osOrigem] = await base44.entities.ServiceOrder.filter({ id: data.os_origem_id });
+src\pages\ServiceOrderForm.jsx:              await base44.entities.ServiceOrder.update(data.os_origem_id, {
+src\pages\ServiceOrders.jsx:      const rawOrders = await base44.entities.ServiceOrder.list("-created_date", 300);
+src\pages\ServiceOrders.jsx:    const data = await base44.entities.ServiceOrder.list("-created_date", 300);
+src\pages\Settings.jsx:      await base44.entities.CompanySettings.update(settingsId, form);
+src\pages\Settings.jsx:      const created = await base44.entities.CompanySettings.create(form);
+src\pages\TasksDay.jsx:    const all = await base44.entities.Task.list("-created_date", 300);
+src\pages\TasksDay.jsx:    const all = await base44.entities.MuralPost.list("-created_date", 50);
+src\pages\TasksDay.jsx:    await base44.entities.Task.delete(id);
+src\pages\TasksDay.jsx:    await base44.entities.MuralPost.create({
+src\pages\TasksDay.jsx:    await base44.entities.MuralPost.delete(id);
+src\pages\Users.jsx:      await base44.entities.User.update(editId, {
+src\pages\Vehicles.jsx:      await base44.entities.Vehicle.update(editId, form);
+src\pages\Vehicles.jsx:      await base44.entities.Vehicle.create(form);
+src\pages\Vehicles.jsx:    await base44.entities.VehicleExpense.create(expForm);
+src\pages\Vehicles.jsx:      await base44.entities.Vehicle.update(selectedVehicle.id, { km_atual: expForm.km });
+src\pages\Vehicles.jsx:    await base44.entities.VehicleExpense.delete(id);

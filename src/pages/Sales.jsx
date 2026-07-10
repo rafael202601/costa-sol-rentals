@@ -240,11 +240,8 @@ export default function Sales() {
   };
 
   const getNextNumber = async () => {
-    const all = await base44.entities.Sale.list("-created_date", 1);
-    if (all.length === 0) return "V-0001";
-    const last = all[0].numero || "V-0000";
-    const num = parseInt(last.replace(/\D/g, "")) + 1;
-    return `V-${String(num).padStart(4, "0")}`;
+    return await base44.functions.invoke("generateSequentialCode", { tipo: "venda" })
+      .then(res => res?.data?.numero || `V-${Math.floor(Math.random() * 9000) + 1000}`);
   };
 
   const openNew = () => {

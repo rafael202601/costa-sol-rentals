@@ -175,8 +175,9 @@ export default function Equipment() {
       if (unicos.size !== seriais.length) { toast.error("Existem seriais duplicados. Corrija antes de salvar."); return; }
     }
 
-    // Salva tipos como array; mantém 'tipo' como primeiro da lista para compatibilidade
-    const dataToSave = { ...form, tipo: form.tipos[0] };
+    // Prepara dados e remove campos que não existem no PostgreSQL (ex: tipo antigo)
+    const dataToSave = { ...form };
+    delete dataToSave.tipo;
 
     if (editing) {
       await base44.entities.Equipment.update(editing.id, dataToSave);

@@ -263,6 +263,60 @@ export const base44 = {
             // Retorna algo parecido com CB1001
             return { data: { numero: `CB${maxCode + 1}` } };
           }
+
+          if (tipo === "orcamento") {
+            const { data, error } = await supabase.from('quotes')
+              .select('numero')
+              .not('numero', 'is', null)
+              .catch(() => ({ data: [] }));
+
+            let maxCode = 2000;
+            if (data && data.length > 0) {
+              for (const row of data) {
+                if (row.numero) {
+                  const num = parseInt(String(row.numero).replace(/[^0-9]/g, ""), 10);
+                  if (!isNaN(num) && num > maxCode) maxCode = num;
+                }
+              }
+            }
+            return { data: { numero: String(maxCode + 1) } };
+          }
+
+          if (tipo === "venda") {
+            const { data, error } = await supabase.from('sales')
+              .select('numero')
+              .not('numero', 'is', null)
+              .catch(() => ({ data: [] }));
+
+            let maxCode = 0;
+            if (data && data.length > 0) {
+              for (const row of data) {
+                if (row.numero) {
+                  const num = parseInt(String(row.numero).replace(/[^0-9]/g, ""), 10);
+                  if (!isNaN(num) && num > maxCode) maxCode = num;
+                }
+              }
+            }
+            return { data: { numero: `V-${String(maxCode + 1).padStart(4, "0")}` } };
+          }
+
+          if (tipo === "fatura") {
+            const { data, error } = await supabase.from('billing_notes')
+              .select('numero')
+              .not('numero', 'is', null)
+              .catch(() => ({ data: [] }));
+
+            let maxCode = 0;
+            if (data && data.length > 0) {
+              for (const row of data) {
+                if (row.numero) {
+                  const num = parseInt(String(row.numero).replace(/[^0-9]/g, ""), 10);
+                  if (!isNaN(num) && num > maxCode) maxCode = num;
+                }
+              }
+            }
+            return { data: { numero: `FT${String(maxCode + 1).padStart(3, "0")}` } };
+          }
         } catch (e) {
           console.error("Error generating sequential code:", e);
         }
