@@ -33,13 +33,25 @@ const getTableName = (entityName) => {
 function createEntityAdapter(entityName) {
   const tableName = getTableName(entityName);
   
+  const mapLegacyDates = (item) => {
+    if (!item) return item;
+    if (!item.created_date && item.created_at) {
+      item.created_date = item.created_at;
+    }
+    return item;
+  };
+
   return {
     list: async (orderBy, limit) => {
       let query = supabase.from(tableName).select('*');
       
       if (orderBy) {
         const desc = orderBy.startsWith('-');
-        const col = desc ? orderBy.substring(1) : orderBy;
+        let col = desc ? orderBy.substring(1) : orderBy;
+        
+        // Tradução de order by legado
+        if (col === 'created_date') col = 'created_at';
+        
         query = query.order(col, { ascending: !desc });
       }
       if (limit) {
@@ -51,14 +63,25 @@ function createEntityAdapter(entityName) {
         console.warn(`Erro no adapter list para ${tableName}:`, error);
         return [];
       }
-      return data;
+      return data.map(mapLegacyDates);
     },
     
-    filter: async (filters) => {
+    filter: async (filters, orderBy, limit) => {
       let query = supabase.from(tableName).select('*');
       
       for (const [key, value] of Object.entries(filters)) {
         query = query.eq(key, value);
+      }
+      
+      if (orderBy) {
+        const desc = orderBy.startsWith('-');
+        let col = desc ? orderBy.substring(1) : orderBy;
+        if (col === 'created_date') col = 'created_at';
+        query = query.order(col, { ascending: !desc });
+      }
+      
+      if (limit) {
+        query = query.limit(limit);
       }
       
       const { data, error } = await query;
@@ -66,7 +89,7 @@ function createEntityAdapter(entityName) {
         console.warn(`Erro no adapter filter para ${tableName}:`, error);
         return [];
       }
-      return data;
+      return data.map(mapLegacyDates);
     },
     
     create: async (payload) => {
@@ -75,7 +98,7 @@ function createEntityAdapter(entityName) {
         console.error("ERRO SUPABASE INSERT:", error);
         throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);
       }
-      return data[0];
+      return mapLegacyDates(data[0]);
     },
     
     update: async (id, payload) => {
@@ -84,7 +107,7 @@ function createEntityAdapter(entityName) {
         console.error("ERRO SUPABASE UPDATE:", error);
         throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);
       }
-      return data[0];
+      return mapLegacyDates(data[0]);
     },
     
     delete: async (id) => {
