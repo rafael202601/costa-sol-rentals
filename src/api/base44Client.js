@@ -212,15 +212,17 @@ export const base44 = {
           if (tipo === "client_code") {
             const { data, error } = await supabase.from('clients')
               .select('codigo_cliente')
-              .not('codigo_cliente', 'is', null)
-              .order('codigo_cliente', { ascending: false })
-              .limit(1);
+              .not('codigo_cliente', 'is', null);
             
             if (error) throw error;
             let maxCode = 20000;
-            if (data && data.length > 0 && data[0].codigo_cliente) {
-              const num = parseInt(data[0].codigo_cliente.replace(/[^0-9]/g, ""), 10);
-              if (!isNaN(num) && num >= 20000) maxCode = num;
+            if (data && data.length > 0) {
+              for (const row of data) {
+                if (row.codigo_cliente) {
+                  const num = parseInt(row.codigo_cliente.replace(/[^0-9]/g, ""), 10);
+                  if (!isNaN(num) && num > maxCode) maxCode = num;
+                }
+              }
             }
             return { data: { numero: maxCode + 1 } };
           }
@@ -228,24 +230,38 @@ export const base44 = {
           if (tipo === "contrato") {
             const { data, error } = await supabase.from('contracts')
               .select('numero')
-              .not('numero', 'is', null)
-              .order('numero', { ascending: false })
-              .limit(1);
+              .not('numero', 'is', null);
               
             if (error) throw error;
             let maxCode = 1000;
-            if (data && data.length > 0 && data[0].numero) {
-              const num = parseInt(String(data[0].numero).replace(/[^0-9]/g, ""), 10);
-              if (!isNaN(num) && num >= 1000) maxCode = num;
+            if (data && data.length > 0) {
+              for (const row of data) {
+                if (row.numero) {
+                  const num = parseInt(String(row.numero).replace(/[^0-9]/g, ""), 10);
+                  if (!isNaN(num) && num > maxCode) maxCode = num;
+                }
+              }
             }
             return { data: { numero: maxCode + 1 } };
           }
           
           if (tipo === "os") {
             const { data, error } = await supabase.from('service_orders')
-              .select('id') // We don't have a clear os_numero column in the basic schema, let's just return a random high number
-              .limit(1);
-            return { data: { numero: `CB${Math.floor(Math.random() * 9000) + 1000}` } };
+              .select('codigo_os')
+              .not('codigo_os', 'is', null)
+              .catch(() => ({ data: [] })); // fallbacks
+              
+            let maxCode = 1000;
+            if (data && data.length > 0) {
+              for (const row of data) {
+                if (row.codigo_os) {
+                  const num = parseInt(String(row.codigo_os).replace(/[^0-9]/g, ""), 10);
+                  if (!isNaN(num) && num > maxCode) maxCode = num;
+                }
+              }
+            }
+            // Retorna algo parecido com CB1001
+            return { data: { numero: `CB${maxCode + 1}` } };
           }
         } catch (e) {
           console.error("Error generating sequential code:", e);
