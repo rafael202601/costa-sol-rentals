@@ -20,7 +20,18 @@ const tableMap = {
   CashEntry: 'cash_entries',
   BillingNote: 'billing_notes',
   Announcement: 'announcements',
-  Feedback: 'feedbacks'
+  Feedback: 'feedbacks',
+  ActivityLog: 'activity_logs',
+  AgentSettings: 'agent_settings',
+  CashAutoConfig: 'cash_auto_configs',
+  CashRegister: 'cash_registers',
+  ClientTag: 'client_tags',
+  ConversationState: 'conversation_states',
+  Counter: 'counters',
+  FluxoIA: 'fluxos_ia',
+  IntegraWebhookAWS: 'integra_webhooks_aws',
+  Intervention: 'interventions',
+  WhatsappLog: 'whatsapp_logs'
 };
 
 const getTableName = (entityName) => {
