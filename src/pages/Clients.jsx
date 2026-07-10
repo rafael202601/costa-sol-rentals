@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, memo } from "react";
+import { useState, useCallback, useRef, memo, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link, useNavigate } from "react-router-dom";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -152,20 +152,19 @@ export default function Clients() {
       debounceRef.current = setTimeout(() => runSearch(val, searchField, tipoFilter, sort, 1), 600);
     }
     if (val.trim().length === 0) {
-      setItems([]);
-      setTotal(0);
-      setSearched(false);
-      setPage(1);
+      debounceRef.current = setTimeout(() => runSearch("", searchField, tipoFilter, sort, 1), 600);
     }
   };
 
   const handleClear = () => {
     setQuery("");
-    setItems([]);
-    setTotal(0);
-    setSearched(false);
-    setPage(1);
+    runSearch("", searchField, tipoFilter, sort, 1);
   };
+
+  // Carrega a listagem inicial
+  useEffect(() => {
+    runSearch("", searchField, tipoFilter, sort, 1);
+  }, []);
 
   const goToPage = (pg) => {
     runSearch(query, searchField, tipoFilter, sort, pg);
