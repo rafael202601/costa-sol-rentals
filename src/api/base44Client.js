@@ -104,7 +104,16 @@ function createEntityAdapter(entityName) {
     },
     
     create: async (payload) => {
-      const { data, error } = await supabase.from(tableName).insert([payload]).select();
+      const cleanPayload = { ...payload };
+      if (cleanPayload.id === "") delete cleanPayload.id;
+      // Remove other empty UUIDs to prevent PGRST errors
+      Object.keys(cleanPayload).forEach(key => {
+        if (key.endsWith('_id') && cleanPayload[key] === "") {
+          cleanPayload[key] = null;
+        }
+      });
+
+      const { data, error } = await supabase.from(tableName).insert([cleanPayload]).select();
       if (error) {
         console.error("ERRO SUPABASE INSERT:", error);
         throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);
@@ -113,7 +122,15 @@ function createEntityAdapter(entityName) {
     },
     
     update: async (id, payload) => {
-      const { data, error } = await supabase.from(tableName).update(payload).eq('id', id).select();
+      const cleanPayload = { ...payload };
+      if (cleanPayload.id === "") delete cleanPayload.id;
+      Object.keys(cleanPayload).forEach(key => {
+        if (key.endsWith('_id') && cleanPayload[key] === "") {
+          cleanPayload[key] = null;
+        }
+      });
+
+      const { data, error } = await supabase.from(tableName).update(cleanPayload).eq('id', id).select();
       if (error) {
         console.error("ERRO SUPABASE UPDATE:", error);
         throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);

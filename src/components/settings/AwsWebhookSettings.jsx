@@ -15,7 +15,7 @@ export default function AwsWebhookSettings() {
   const [connectionStatus, setConnectionStatus] = useState("checking");
 
   const appId = window.__BASE44_APP_ID__ || "[APP_ID]";
-  const endpoint = `https://api.base44.app/api/apps/${appId}/entities/IntegraWebhookAWS`;
+  const endpoint = `https://sotluugxlslvmhfmoidm.supabase.co/rest/v1/integra_webhooks_aws`;
 
   useEffect(() => {
     loadLogs();

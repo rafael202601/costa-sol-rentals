@@ -524,7 +524,7 @@ export default function AgenteIASettings() {
           <div className="p-3 rounded-xl bg-violet-50 border border-violet-200 text-xs text-violet-800 space-y-1">
             <p className="font-semibold flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Webhook URL para configurar na Meta:</p>
             <code className="block bg-white px-2 py-1.5 rounded border text-[11px] break-all font-mono">
-              https://andaimes.base44.app/api/functions/webhookWhatsapp
+              https://sotluugxlslvmhfmoidm.supabase.co/functions/v1/webhook-whatsapp
             </code>
             <p>Verify Token: <code className="bg-violet-100 px-1 rounded">{form.whatsapp_verify_token || "andaimes_verify_token"}</code></p>
           </div>
@@ -537,7 +537,7 @@ export default function AgenteIASettings() {
           <p className="font-semibold mb-1">ℹ️ Como funciona</p>
           <p>Configure aqui um segundo número WhatsApp via Z-API, Evolution API ou qualquer API compatível. A IA responderá de volta pela mesma API que recebeu a mensagem. Configure o webhook desta API apontando para:</p>
           <code className="block bg-white mt-1.5 px-2 py-1.5 rounded border text-[11px] break-all font-mono">
-            https://andaimes.base44.app/api/functions/webhookWhatsapp
+            https://sotluugxlslvmhfmoidm.supabase.co/functions/v1/webhook-whatsapp
           </code>
         </div>
 
@@ -721,7 +721,7 @@ export default function AgenteIASettings() {
           <ol className="space-y-0.5 list-decimal list-inside">
             <li>Acesse <strong>developers.facebook.com</strong> → Seu App</li>
             <li>Vá em <strong>WhatsApp → Configuration → Webhooks</strong></li>
-            <li>Cole a URL: <code className="bg-amber-100 px-1 rounded text-[11px]">https://andaimes.base44.app/api/functions/webhookWhatsapp</code></li>
+            <li>Cole a URL: <code className="bg-amber-100 px-1 rounded text-[11px]">https://sotluugxlslvmhfmoidm.supabase.co/functions/v1/webhook-whatsapp</code></li>
             <li>Cole o Verify Token configurado acima</li>
             <li>Selecione o campo: <strong>messages</strong></li>
             <li>Clique em <strong>Verify and Save</strong></li>
