@@ -654,7 +654,12 @@ export default function ServiceOrderDetail() {
               <p className="text-sm font-medium">{order.motorista_entrega || "—"}</p>
               {order.data_entrega && (
                 <p className="text-xs text-emerald-700 mt-1 flex items-center gap-1 font-medium">
-                  <Calendar className="w-3 h-3" /> ✓ {format(parseISO(order.data_entrega), "dd/MM/yyyy 'às' HH:mm")}
+                  <Calendar className="w-3 h-3" /> ✓ {(() => {
+                    try {
+                      const d = parseISO(order.data_entrega);
+                      return isNaN(d) ? "—" : format(d, "dd/MM/yyyy 'às' HH:mm");
+                    } catch { return "—"; }
+                  })()}
                 </p>
               )}
             </CardContent>
@@ -665,7 +670,12 @@ export default function ServiceOrderDetail() {
               <p className="text-sm font-medium">{order.motorista_recolhimento || "—"}</p>
               {order.data_recolhimento && (
                 <p className="text-xs text-amber-700 mt-1 flex items-center gap-1 font-medium">
-                  <Calendar className="w-3 h-3" /> ✓ {format(parseISO(order.data_recolhimento), "dd/MM/yyyy 'às' HH:mm")}
+                  <Calendar className="w-3 h-3" /> ✓ {(() => {
+                    try {
+                      const d = parseISO(order.data_recolhimento);
+                      return isNaN(d) ? "—" : format(d, "dd/MM/yyyy 'às' HH:mm");
+                    } catch { return "—"; }
+                  })()}
                 </p>
               )}
             </CardContent>

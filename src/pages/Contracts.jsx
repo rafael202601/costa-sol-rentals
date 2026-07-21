@@ -112,14 +112,25 @@ const ContractCard = ({ contract }) => {
                   {contract.data_inicio && (
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {["na_obra", "em_transito", "aguardando_recolha", "devolvido_parcial", "devolvido_pendente", "finalizado"].includes(contract.status)
-                        ? `Entrega: ${format(parseISO(contract.data_inicio), "dd/MM/yyyy")}`
-                        : `Solicitação: ${format(parseISO(contract.data_inicio), "dd/MM/yyyy")}`
-                      }
+                      {(() => {
+                        try {
+                          const d = parseISO(contract.data_inicio);
+                          if (isNaN(d)) return "—";
+                          const dStr = format(d, "dd/MM/yyyy");
+                          return ["na_obra", "em_transito", "aguardando_recolha", "devolvido_parcial", "devolvido_pendente", "finalizado"].includes(contract.status)
+                            ? `Entrega: ${dStr}`
+                            : `Solicitação: ${dStr}`;
+                        } catch { return "—"; }
+                      })()}
                     </span>
                   )}
                   {contract.data_prevista_termino && (
-                    <span>→ {format(parseISO(contract.data_prevista_termino), "dd/MM/yyyy")}</span>
+                    <span>→ {(() => {
+                      try {
+                        const d = parseISO(contract.data_prevista_termino);
+                        return isNaN(d) ? "—" : format(d, "dd/MM/yyyy");
+                      } catch { return "—"; }
+                    })()}</span>
                   )}
                 </div>
                 {(contract.client_etiquetas || []).length > 0 && (

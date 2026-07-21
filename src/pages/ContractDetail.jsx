@@ -814,7 +814,15 @@ export default function ContractDetail() {
       .replace("{{numero_contrato}}", contract.numero || "")
       .replace("{{nome_empresa}}", settings?.nome_fantasia || settings?.nome_social || "")
       .replace("{{valor_total}}", `R$ ${(contract.valor_total || 0).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`)
-      .replace("{{data_fim}}", contract.data_prevista_termino ? format(parseISO(contract.data_prevista_termino), "dd/MM/yyyy") : "—");
+      .replace("{{data_fim}}", (() => {
+        if (!contract.data_prevista_termino) return "—";
+        try {
+          const d = parseISO(contract.data_prevista_termino);
+          return isNaN(d) ? "—" : format(d, "dd/MM/yyyy");
+        } catch {
+          return "—";
+        }
+      })());
   };
 
   const whatsappDebt = contract && (contract.saldo_pagar || 0) > 0

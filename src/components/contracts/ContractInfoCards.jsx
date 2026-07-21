@@ -21,10 +21,26 @@ export default function ContractInfoCards({ contract, valorTotalCorreto, calcRes
             <Calendar className="w-3.5 h-3.5" /> Período
           </div>
           <p className="text-sm font-semibold">
-            {contract.data_inicio ? format(parseISO(contract.data_inicio), "dd/MM/yyyy") : "—"}
+            {(() => {
+              if (!contract.data_inicio) return "—";
+              try {
+                const d = parseISO(contract.data_inicio);
+                return isNaN(d) ? "—" : format(d, "dd/MM/yyyy");
+              } catch {
+                return "—";
+              }
+            })()}
           </p>
           <p className="text-xs text-muted-foreground">
-            até {contract.data_prevista_termino ? format(parseISO(contract.data_prevista_termino), "dd/MM/yyyy") : "—"}
+            até {(() => {
+              if (!contract.data_prevista_termino) return "—";
+              try {
+                const d = parseISO(contract.data_prevista_termino);
+                return isNaN(d) ? "—" : format(d, "dd/MM/yyyy");
+              } catch {
+                return "—";
+              }
+            })()}
           </p>
         </CardContent>
       </Card>
