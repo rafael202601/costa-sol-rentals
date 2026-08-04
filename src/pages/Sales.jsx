@@ -210,7 +210,7 @@ export default function Sales() {
   };
 
   const updateItem = (i, field, val) => {
-    const itens = form.itens.map((it, idx) => {
+    const itens = (form.itens || []).map((it, idx) => {
       if (idx !== i) return it;
       const updated = { ...it, [field]: val };
       if (field === "quantidade" || field === "valor_unitario") {
@@ -660,7 +660,7 @@ export default function Sales() {
                   <span>Produto</span><span>Qtd</span><span>Unit.</span><span>Total</span>
                   <span className="text-emerald-700">Lucro</span><span></span>
                 </div>
-                {form.itens.map((item, i) => {
+                {(form.itens || []).map((item, i) => {
                   const lucroItem = (item.total || 0) - (item.custo_unitario || 0) * (item.quantidade || 1);
                   return (
                     <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-2 p-2 border-t items-center">

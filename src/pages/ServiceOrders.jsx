@@ -378,7 +378,7 @@ export default function ServiceOrders() {
                       )}
                       {(order.client_etiquetas || []).length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {order.client_etiquetas.slice(0, 3).map((et, i) => (
+                          {(order.client_etiquetas || []).slice(0, 3).map((et, i) => (
                             <span key={i} className="inline-flex items-center gap-0.5 text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-full font-medium">
                               <Tag className="w-2.5 h-2.5" />{et}
                             </span>

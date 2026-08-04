@@ -1244,7 +1244,7 @@ export default function ContractDetail() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {contract.historico_recolhas.map((rec, i) => (
+              {(contract.historico_recolhas || []).map((rec, i) => (
                 <div key={i} className="p-3 rounded-xl bg-muted/40 border text-sm space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">{rec.tipo === "parcial" ? "🔄 Recolha Parcial" : "📦 Recolha Total"}</span>
@@ -1256,7 +1256,7 @@ export default function ContractDetail() {
                   {rec.motorista && rec.tipo !== "cancelamento" && <p className="text-xs text-muted-foreground">Motorista: {rec.motorista}</p>}
                   {rec.itens?.length > 0 && rec.tipo !== "cancelamento" && (
                     <ul className="text-xs space-y-0.5 mt-1">
-                      {rec.itens.map((it, j) => (
+                      {(rec.itens || []).map((it, j) => (
                         <li key={j} className="flex justify-between">
                           <span>{it.nome}</span>
                           <span className="font-medium">{it.quantidade} un.</span>

@@ -961,7 +961,7 @@ export default function ServiceOrderDetail() {
                 onAdd={async (newPhotos) => {
                   const fotosRecolha = (order.fotos || []).filter(f => f.tipo === "recolha");
                   const outrasExistentes = (order.fotos || []).filter(f => !f.tipo);
-                  const tagged = newPhotos.map(p => p.tipo ? p : { ...p, tipo: "entrega" });
+                  const tagged = (newPhotos || []).map(p => p.tipo ? p : { ...p, tipo: "entrega" });
                   await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] });
                   load();
                 }}
@@ -987,7 +987,7 @@ export default function ServiceOrderDetail() {
                 onAdd={async (newPhotos) => {
                   const fotosEntrega = (order.fotos || []).filter(f => f.tipo === "entrega");
                   const outrasExistentes = (order.fotos || []).filter(f => !f.tipo);
-                  const tagged = newPhotos.map(p => p.tipo ? p : { ...p, tipo: "recolha" });
+                  const tagged = (newPhotos || []).map(p => p.tipo ? p : { ...p, tipo: "recolha" });
                   await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...fotosEntrega, ...tagged] });
                   load();
                 }}
