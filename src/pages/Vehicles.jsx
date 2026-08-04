@@ -138,12 +138,18 @@ export default function Vehicles() {
   const saveVehicle = async () => {
     if (!form.placa || !form.modelo) { toast.error("Placa e modelo obrigatórios"); return; }
     setSaving(true);
-    if (editId) {
-      await base44.entities.Vehicle.update(editId, form);
-      toast.success("Veículo atualizado!");
-    } else {
-      await base44.entities.Vehicle.create(form);
-      toast.success("Veículo cadastrado!");
+    try {
+      if (editId) {
+        await base44.entities.Vehicle.update(editId, form);
+        toast.success("Veículo atualizado!");
+      } else {
+        await base44.entities.Vehicle.create(form);
+        toast.success("Veículo cadastrado!");
+      }
+    } catch (e) {
+      toast.error(e.message);
+      setSaving(false);
+      return;
     }
     setVehicleDialog(false);
     setSaving(false);
@@ -155,9 +161,15 @@ export default function Vehicles() {
     if (!expForm.tipo) { toast.error("Tipo obrigatório"); return; }
     if (expForm.km < 0) { toast.error("KM não pode ser negativo"); return; }
     setSaving(true);
-    await base44.entities.VehicleExpense.create(expForm);
-    if (expForm.km > 0 && selectedVehicle) {
-      await base44.entities.Vehicle.update(selectedVehicle.id, { km_atual: expForm.km });
+    try {
+      await base44.entities.VehicleExpense.create(expForm);
+      if (expForm.km > 0 && selectedVehicle) {
+        await base44.entities.Vehicle.update(selectedVehicle.id, { km_atual: expForm.km });
+      }
+    } catch (e) {
+      toast.error(e.message);
+      setSaving(false);
+      return;
     }
     toast.success("Despesa registrada!");
     setExpenseDialog(false);

@@ -300,15 +300,22 @@ export default function ClientDetail() {
 
       setContracts(contratosEnriquecidos);
       setLoading(false);
+    }).catch(e => {
+      console.error(e);
+      setLoading(false);
     });
   }, [clientId]);
 
-  if (loading || !client) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
       </div>
     );
+  }
+
+  if (!client) {
+    return <div className="p-8 text-center text-muted-foreground">Cliente não encontrado ou erro ao carregar.</div>;
   }
 
   const ProfileIcon = profileIcons[client.tipo_perfil || "comum"] || User;
@@ -390,7 +397,7 @@ export default function ClientDetail() {
     if (chosenContracts.length === 0 && chosenOrders.length === 0) { toast.error("Selecione ao menos um item"); return; }
     const settings = await base44.entities.CompanySettings.list().then((l) => l[0] || null);
     const doc = generateCobrancaPDF({ client, contracts: chosenContracts, orders: chosenOrders, settings });
-    doc.save(`cobranca_${client.nome_razao_social?.replace(/\s+/g, "_")}.pdf`);
+    doc.save(`cobranca_${client.nome_razao_social?.replace(/const clientObras = Array.isArray(client.obras) ? client.obras : [];s+/g, "_")}.pdf`);
     toast.success("PDF de cobrança gerado!");
     setCobrancaDialog(false);
   };
@@ -405,7 +412,7 @@ export default function ClientDetail() {
     if (chosenContracts.length === 0 && chosenOrders.length === 0) { toast.error("Selecione ao menos um item"); return; }
     const settings = await base44.entities.CompanySettings.list().then((l) => l[0] || null);
     const doc = generateCobrancaPDF({ client, contracts: chosenContracts, orders: chosenOrders, settings });
-    doc.save(`cobranca_${client.nome_razao_social?.replace(/\s+/g, "_")}.pdf`);
+    doc.save(`cobranca_${client.nome_razao_social?.replace(/const clientObras = Array.isArray(client.obras) ? client.obras : [];s+/g, "_")}.pdf`);
     toast.success("PDF de cobrança gerado!");
     setCobrancaDialog(false);
   };

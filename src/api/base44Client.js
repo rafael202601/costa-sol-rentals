@@ -123,7 +123,9 @@ function createEntityAdapter(entityName) {
     
     update: async (id, payload) => {
       const cleanPayload = { ...payload };
-      if (cleanPayload.id === "") delete cleanPayload.id;
+      delete cleanPayload.id;
+      delete cleanPayload.created_at;
+      delete cleanPayload.created_date;
       Object.keys(cleanPayload).forEach(key => {
         if (key.endsWith('_id') && cleanPayload[key] === "") {
           cleanPayload[key] = null;

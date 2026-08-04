@@ -100,6 +100,7 @@ export default function ContractDetail() {
   }, []);
 
   const load = async () => {
+  try {
     let c = null;
     try {
       const res = await base44.entities.Contract.filter({ id: contractId });
@@ -150,7 +151,10 @@ export default function ContractDetail() {
       } catch { /* ignore */ }
     }
     setClient(cl);
-    const allReqs = await base44.entities.PaymentRequest.list("-created_date", 50);
+    let allReqs = [];
+    try {
+      allReqs = await base44.entities.PaymentRequest.list("-created_date", 50);
+    } catch { /* ignore */ }
     const pendentes = allReqs.filter(r =>
       r.status === "aguardando_confirmacao" &&
       (r.itens || []).some(i => i.id === contractId || i.numero === c?.numero)
@@ -185,7 +189,11 @@ export default function ContractDetail() {
     if (c?.assinatura_entrega_url) {
       setSignatureDataUrl(c.assinatura_entrega_url);
     }
+  } catch (e) {
+    console.error(e);
+  } finally {
     setLoading(false);
+  }
   };
 
   useEffect(() => { load(); }, [contractId]);
