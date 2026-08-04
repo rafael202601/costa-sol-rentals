@@ -47,16 +47,22 @@ export default function Drivers() {
   const handleSave = async () => {
     if (!form.nome) { toast.error("Nome obrigatório"); return; }
     setSaving(true);
-    if (editId) {
-      await base44.entities.Driver.update(editId, form);
-      toast.success("Motorista atualizado!");
-    } else {
-      await base44.entities.Driver.create(form);
-      toast.success("Motorista cadastrado!");
+    try {
+      if (editId) {
+        await base44.entities.Driver.update(editId, form);
+        toast.success("Motorista atualizado!");
+      } else {
+        await base44.entities.Driver.create(form);
+        toast.success("Motorista cadastrado!");
+      }
+      setDialog(false);
+      load();
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao salvar: " + e.message);
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-    setDialog(false);
-    load();
   };
 
   const toggleStatus = async (d) => {

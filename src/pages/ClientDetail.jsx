@@ -763,7 +763,7 @@ export default function ClientDetail() {
                         )}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        {s.created_date ? format(new Date(s.created_date), "dd/MM/yyyy") : "—"} · {(s.itens || []).length} produto(s) · {s.forma_pagamento}
+                        {(() => { try { return s.created_date ? format(new Date(s.created_date), "dd/MM/yyyy") : "—"; } catch { return s.created_date || "—"; } })()} · {(Array.isArray(s.itens) ? s.itens : []).length} produto(s) · {s.forma_pagamento}
                       </p>
                       {saldoPendente > 0 && s.status === "aprovado" && (
                         <p className="text-xs font-semibold text-amber-700 mt-0.5">
