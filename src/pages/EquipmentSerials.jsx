@@ -50,41 +50,47 @@ export default function EquipmentSerials() {
     setHasSearched(true);
     setPage(1);
 
-    const equipment = await getEquipment();
-    const q = term.toLowerCase().trim();
+    try {
+      const equipment = await getEquipment();
+      const q = term.toLowerCase().trim();
 
-    const allSerials = equipment.flatMap((eq) =>
-      (eq.numeracoes || []).map((n) => ({
-        ...n,
-        equipamento_nome: eq.nome,
-        equipamento_id: eq.id,
-        equipamento_foto: eq.foto_url,
-        equipamento_codigo: eq.codigo || "",
-      }))
-    );
-
-    const filtered = allSerials.filter((s) => {
-      const matchStatus = status === "todos" || s.status === status;
-      if (!matchStatus) return false;
-      if (!q) return true;
-
-      return (
-        (s.serial || "").toLowerCase().includes(q) ||
-        (s.equipamento_nome || "").toLowerCase().includes(q) ||
-        (s.equipamento_codigo || "").toLowerCase().includes(q) ||
-        (s.contrato_numero || "").toLowerCase().includes(q) ||
-        (s.contrato_id || "").toLowerCase().includes(q) ||
-        // search historico for client/contract/OS info
-        (s.historico || []).some(h =>
-          (h.contrato_numero || "").toLowerCase().includes(q) ||
-          (h.evento || "").toLowerCase().includes(q) ||
-          (h.observacao || "").toLowerCase().includes(q)
-        )
+      const allSerials = equipment.flatMap((eq) =>
+        (Array.isArray(eq.numeracoes) ? eq.numeracoes : []).map((n) => ({
+          ...n,
+          equipamento_nome: eq.nome,
+          equipamento_id: eq.id,
+          equipamento_foto: eq.foto_url,
+          equipamento_codigo: eq.codigo || "",
+        }))
       );
-    });
 
-    setResults(filtered);
-    setLoading(false);
+      const filtered = allSerials.filter((s) => {
+        const matchStatus = status === "todos" || s.status === status;
+        if (!matchStatus) return false;
+        if (!q) return true;
+
+        return (
+          (s.serial || "").toLowerCase().includes(q) ||
+          (s.equipamento_nome || "").toLowerCase().includes(q) ||
+          (s.equipamento_codigo || "").toLowerCase().includes(q) ||
+          (s.contrato_numero || "").toLowerCase().includes(q) ||
+          (s.contrato_id || "").toLowerCase().includes(q) ||
+          // search historico for client/contract/OS info
+          (Array.isArray(s.historico) ? s.historico : []).some(h =>
+            (h.contrato_numero || "").toLowerCase().includes(q) ||
+            (h.evento || "").toLowerCase().includes(q) ||
+            (h.observacao || "").toLowerCase().includes(q)
+          )
+        );
+      });
+
+      setResults(filtered);
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao buscar seriais");
+    } finally {
+      setLoading(false);
+    }
   }, [getEquipment]);
 
   // Debounce search on text change

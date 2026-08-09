@@ -22,7 +22,7 @@ const STATUS_COLOR = {
  *  - serialsJaNaContrato: seriais já neste contrato (para edição)
  */
 export default function SerialSelector({ numeracoes = [], selected = [], onChange, max = 1, serialsJaNaContrato = [] }) {
-  const disponiveis = numeracoes.filter(n =>
+  const disponiveis = (Array.isArray(numeracoes) ? numeracoes : []).filter(n =>
     n.status === "disponivel" || serialsJaNaContrato.includes(n.serial)
   );
 
@@ -49,7 +49,7 @@ export default function SerialSelector({ numeracoes = [], selected = [], onChang
         Selecione {max} serial(is) — {selected.length}/{max} selecionado(s)
       </p>
       <div className="grid grid-cols-2 gap-1.5 max-h-48 overflow-y-auto pr-1">
-        {disponiveis.map((n) => {
+        {(Array.isArray(disponiveis) ? disponiveis : []).map((n) => {
           const isSelected = selected.includes(n.serial);
           const isDisabled = !isSelected && selected.length >= max;
           return (

@@ -170,7 +170,7 @@ export default function Equipment() {
 
     // Valida seriais duplicados
     if (form.controle_individual && form.numeracoes?.length > 0) {
-      const seriais = form.numeracoes.map(n => n.serial);
+      const seriais = (Array.isArray(form.numeracoes) ? form.numeracoes : []).map(n => n.serial);
       const unicos = new Set(seriais);
       if (unicos.size !== seriais.length) { toast.error("Existem seriais duplicados. Corrija antes de salvar."); return; }
     }
@@ -179,22 +179,32 @@ export default function Equipment() {
     const dataToSave = { ...form };
     delete dataToSave.tipo;
 
-    if (editing) {
-      await base44.entities.Equipment.update(editing.id, dataToSave);
-      toast.success("Equipamento atualizado");
-    } else {
-      await base44.entities.Equipment.create(dataToSave);
-      toast.success("Equipamento cadastrado");
+    try {
+      if (editing) {
+        await base44.entities.Equipment.update(editing.id, dataToSave);
+        toast.success("Equipamento atualizado");
+      } else {
+        await base44.entities.Equipment.create(dataToSave);
+        toast.success("Equipamento cadastrado");
+      }
+      setDialogOpen(false);
+      load();
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao salvar equipamento: " + e.message);
     }
-    setDialogOpen(false);
-    load();
   };
 
   const handleDelete = async (id) => {
     if (!confirm("Excluir este equipamento?")) return;
-    await base44.entities.Equipment.delete(id);
-    toast.success("Equipamento excluído");
-    load();
+    try {
+      await base44.entities.Equipment.delete(id);
+      toast.success("Equipamento excluído");
+      load();
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao excluir equipamento: " + e.message);
+    }
   };
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
@@ -280,7 +290,7 @@ export default function Equipment() {
 
       {/* Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filtered.map((item) => {
+        {(Array.isArray(filtered) ? filtered : []).map((item) => {
           const tipos = normalizeTipos(item);
           return (
             <Card key={item.id} className="border-0 shadow-sm overflow-hidden hover:shadow-lg transition-all">

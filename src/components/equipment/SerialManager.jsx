@@ -40,7 +40,7 @@ export default function SerialManager({ numeracoes = [], onChange, quantidadeTot
   };
 
   const updateStatus = (idx, status) => {
-    const updated = numeracoes.map((n, i) => i === idx ? { ...n, status } : n);
+    const updated = (Array.isArray(numeracoes) ? numeracoes : []).map((n, i) => i === idx ? { ...n, status } : n);
     onChange(updated);
   };
 
@@ -110,7 +110,7 @@ export default function SerialManager({ numeracoes = [], onChange, quantidadeTot
         </p>
       ) : (
         <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
-          {numeracoes.map((n, idx) => (
+          {(Array.isArray(numeracoes) ? numeracoes : []).map((n, idx) => (
             <div key={idx} className="rounded-xl border bg-card overflow-hidden">
               <div className="flex items-center gap-2 p-2.5">
                 <span className="font-mono font-bold text-sm flex-1">{n.serial}</span>

@@ -18,7 +18,7 @@ export default function EquipmentItemSearch({ equipment = [], onSelect, getAvail
   // Filter synchronously — no debounce, so Enter always sees current results
   const results = useMemo(() => {
     const q = query.toLowerCase().trim();
-    return equipment.filter((e) => {
+    return (Array.isArray(equipment) ? equipment : []).filter((e) => {
       if (!q) return true;
       return (
         e.nome?.toLowerCase().includes(q) ||
