@@ -358,7 +358,7 @@ export default function Reports() {
                 <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
                     <Pie data={pieData} cx="50%" cy="50%" outerRadius={80} dataKey="value" label>
-                      {pieData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                      {(Array.isArray(pieData) ? pieData : []).map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                     </Pie>
                     <Legend />
                     <Tooltip />
@@ -484,7 +484,7 @@ export default function Reports() {
                     </tr>
                     </thead>
                     <tbody>
-                    {filteredContracts.map((c) => {
+                    {(Array.isArray(filteredContracts) ? filteredContracts : []).map((c) => {
                      const dias = c.data_inicio ? differenceInDays(today, parseISO(c.data_inicio)) : null;
                      return (
                      <tr key={c.id} className="border-b border-dashed hover:bg-muted/20">
@@ -594,7 +594,7 @@ export default function Reports() {
                 </CardContent>
               </Card>
             )}
-            {groupedArray.map((group) => (
+            {(Array.isArray(groupedArray) ? groupedArray : []).map((group) => (
               <Card key={group.key} className="border-0 shadow-sm">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -620,7 +620,7 @@ export default function Reports() {
                       </tr>
                     </thead>
                     <tbody>
-                      {group.items.map((item, i) => (
+                      {(Array.isArray(group.items) ? group.items : []).map((item, i) => (
                         <tr key={i} className="border-b border-dashed last:border-0 hover:bg-muted/20">
                           <td className="py-1.5 font-medium">{item.equipamento}</td>
                           <td className="py-1.5 text-muted-foreground">{item.cliente}</td>

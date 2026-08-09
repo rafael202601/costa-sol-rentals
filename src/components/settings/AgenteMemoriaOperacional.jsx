@@ -80,7 +80,7 @@ function ConvCard({ estado, onDelete }) {
         {/* Resumo rápido dos dados coletados */}
         {dadosEntradas.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {dadosEntradas.map(([k, v]) => <DadosBadge key={k} chave={k} valor={v} />)}
+            {(Array.isArray(dadosEntradas) ? dadosEntradas : []).map(([k, v]) => <DadosBadge key={k} chave={k} valor={v} />)}
           </div>
         )}
       </CardHeader>
@@ -254,7 +254,7 @@ export default function AgenteMemoriaOperacional() {
             <p className="text-sm text-muted-foreground text-center py-8">Nenhuma conversa encontrada</p>
           ) : (
             <div className="space-y-2">
-              {filtrados.map(e => (
+              {(Array.isArray(filtrados) ? filtrados : []).map(e => (
                 <div key={e.id} onClick={() => setSelectedId(e.id === selectedId ? null : e.id)}>
                   <ConvCard estado={e} onDelete={deletar} />
                 </div>
@@ -269,7 +269,7 @@ export default function AgenteMemoriaOperacional() {
               <p className="text-xs font-semibold text-muted-foreground uppercase">Selecione uma conversa</p>
               <ScrollArea className="h-96">
                 <div className="space-y-1 pr-2">
-                  {filtrados.map(e => (
+                  {(Array.isArray(filtrados) ? filtrados : []).map(e => (
                     <button
                       key={e.id}
                       onClick={() => setSelectedId(e.id)}

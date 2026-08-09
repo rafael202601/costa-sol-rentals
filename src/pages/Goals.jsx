@@ -156,7 +156,7 @@ export default function Goals() {
                 <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `R$${(v/1000).toFixed(0)}k`} />
                 <Tooltip formatter={(v) => `R$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`} />
                 <Bar dataKey="value" radius={[4,4,0,0]}>
-                  {chartData.map((entry, index) => (
+                  {(Array.isArray(chartData) ? chartData : []).map((entry, index) => (
                     <Cell key={index} fill={entry.fill} />
                   ))}
                 </Bar>
@@ -224,7 +224,7 @@ export default function Goals() {
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {despesas.length === 0 && <p className="text-sm text-muted-foreground text-center py-3">Nenhuma despesa cadastrada</p>}
-              {despesas.map((d) => (
+              {(Array.isArray(despesas) ? despesas : []).map((d) => (
                 <div key={d.id} className="flex items-center justify-between p-2.5 rounded-lg bg-muted/50">
                   <div>
                     <p className="text-sm font-medium">{d.nome}</p>
@@ -255,7 +255,7 @@ export default function Goals() {
             <Button size="sm" onClick={addMeta} className="gap-1 w-full"><Plus className="w-3.5 h-3.5" /> Adicionar Meta</Button>
             <div className="space-y-3 max-h-48 overflow-y-auto">
               {metas.length === 0 && <p className="text-sm text-muted-foreground text-center py-3">Nenhuma meta cadastrada</p>}
-              {metas.map((m) => {
+              {(Array.isArray(metas) ? metas : []).map((m) => {
                 const pct = Math.min(100, (Math.max(0, lucroLiquido) / m.valor) * 100);
                 return (
                   <div key={m.id} className="p-3 rounded-xl bg-muted/50">

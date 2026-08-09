@@ -405,7 +405,7 @@ function PainelConversa({ contato, intervencoes, logs, onVoltar, onCarregar, use
 
   // Merge logs e histórico de intervenção em ordem cronológica
   const todasMensagens = [
-    ...contato.mensagens.map(m => ({ ...m, _tipo: "log" })),
+    ...(Array.isArray(contato.mensagens) ? contato.mensagens : []).map(m => ({ ...m, _tipo: "log" })),
   ];
   const histInterv = intervencao?.historico_mensagens || [];
 
@@ -493,7 +493,7 @@ function PainelConversa({ contato, intervencoes, logs, onVoltar, onCarregar, use
         {todasMensagens.length === 0 && histInterv.length === 0 && (
           <div className="text-center py-10 text-sm text-muted-foreground">Nenhuma mensagem</div>
         )}
-        {todasMensagens.map((log, i) => <BolhaMensagem key={i} log={log} />)}
+        {(Array.isArray(todasMensagens) ? todasMensagens : []).map((log, i) => <BolhaMensagem key={i} log={log} />)}
 
         {/* Separador de intervenção */}
         {histInterv.length > 0 && (
@@ -507,7 +507,7 @@ function PainelConversa({ contato, intervencoes, logs, onVoltar, onCarregar, use
         )}
 
         {/* Histórico de intervenção */}
-        {histInterv.map((msg, i) => <BolhaHumana key={i} msg={msg} />)}
+        {(Array.isArray(histInterv) ? histInterv : []).map((msg, i) => <BolhaHumana key={i} msg={msg} />)}
       </div>
 
       {/* Área de resposta (modo humano) */}
@@ -751,7 +751,7 @@ export default function AgenteHistoricoConversas() {
                     <MessageSquare className="w-10 h-10 text-muted-foreground/30 mb-3" />
                     <p className="text-sm text-muted-foreground">Nenhuma conversa encontrada</p>
                   </div>
-                ) : contatosPaginados.map(c => (
+                ) : (Array.isArray(contatosPaginados) ? contatosPaginados : []).map(c => (
                   <LinhaContato key={c.telefone} contato={c}
                     ativo={selecionado?.telefone === c.telefone}
                     onSelecionar={handleSelecionar}

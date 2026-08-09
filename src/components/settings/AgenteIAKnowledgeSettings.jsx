@@ -52,7 +52,7 @@ export default function AgenteIAKnowledgeSettings({ form, up }) {
     up("ia_aprendizados", aprendizados.filter((a) => a.id !== id));
 
   const toggleAprendizado = (id) =>
-    up("ia_aprendizados", aprendizados.map((a) => a.id === id ? { ...a, ativo: !a.ativo } : a));
+    up("ia_aprendizados", (Array.isArray(aprendizados) ? aprendizados : []).map((a) => a.id === id ? { ...a, ativo: !a.ativo } : a));
 
   // ── Respostas prontas ────────────────────────────────────────────────────
   const respostas = form.ia_respostas_prontas || [];
@@ -76,7 +76,7 @@ export default function AgenteIAKnowledgeSettings({ form, up }) {
     up("ia_regras_operacionais", [...regras, { id: Date.now(), tipo, descricao: "", ativo: true }]);
 
   const updateRegra = (id, field, val) =>
-    up("ia_regras_operacionais", regras.map((r) => r.id === id ? { ...r, [field]: val } : r));
+    up("ia_regras_operacionais", (Array.isArray(regras) ? regras : []).map((r) => r.id === id ? { ...r, [field]: val } : r));
 
   const removeRegra = (id) =>
     up("ia_regras_operacionais", regras.filter((r) => r.id !== id));
@@ -163,7 +163,7 @@ export default function AgenteIAKnowledgeSettings({ form, up }) {
         )}
 
         <div className="space-y-2">
-          {regras.map((r) => (
+          {(Array.isArray(regras) ? regras : []).map((r) => (
             <div key={r.id}
               className={`flex items-center gap-2 p-2.5 rounded-xl border ${
                 r.tipo === "pode"
@@ -235,7 +235,7 @@ export default function AgenteIAKnowledgeSettings({ form, up }) {
         )}
 
         <div className="space-y-2">
-          {respostas.map((r) => (
+          {(Array.isArray(respostas) ? respostas : []).map((r) => (
             <div key={r.id} className="p-3 rounded-xl border bg-white/80 space-y-1">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
@@ -299,7 +299,7 @@ export default function AgenteIAKnowledgeSettings({ form, up }) {
         )}
 
         <div className="space-y-2">
-          {aprendizados.map((a, idx) => (
+          {(Array.isArray(aprendizados) ? aprendizados : []).map((a, idx) => (
             <div key={a.id}
               className={`flex items-start gap-2 p-2.5 rounded-xl border transition-all ${
                 a.ativo ? "bg-white/80 border-border" : "bg-muted/30 border-border/40 opacity-50"

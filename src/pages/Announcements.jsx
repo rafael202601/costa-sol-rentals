@@ -342,7 +342,7 @@ export default function Announcements() {
 function AnnouncementGrid({ items, onEdit, onDelete, onArchive, onReactivate, onPin, isArchived = false }) {
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {items.map(item => {
+      {(Array.isArray(items) ? items : []).map(item => {
         const pc = PRIORIDADE_CFG[item.prioridade] || PRIORIDADE_CFG.normal;
         const cc = CATEGORIA_CFG[item.categoria] || CATEGORIA_CFG.geral;
         const sc = STATUS_CFG[item.status] || STATUS_CFG.ativo;

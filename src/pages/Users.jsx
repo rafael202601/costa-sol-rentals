@@ -267,7 +267,7 @@ export default function Users() {
       )}
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {visibleUsers.map((user) => {
+        {(Array.isArray(visibleUsers) ? visibleUsers : []).map((user) => {
           const rc = roleConfig(user.role);
           return (
             <Card key={user.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">
@@ -410,7 +410,7 @@ export default function Users() {
                                 {group.group}
                               </td>
                             </tr>
-                            {group.items.map((p) => {
+                            {(Array.isArray(group.items) ? group.items : []).map((p) => {
                               const active = currentPerms(p.key);
                               return (
                                 <tr key={p.key} className="border-b border-dashed hover:bg-muted/20">

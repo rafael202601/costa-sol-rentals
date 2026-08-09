@@ -145,7 +145,7 @@ export default function BaseConhecimentoIA({ arquivos, onUpdate }) {
   };
 
   const toggleAtivo = (id) => {
-    onUpdate((arquivos || []).map((a) => a.id === id ? { ...a, ativo: !a.ativo } : a));
+    onUpdate((Array.isArray(arquivos) ? arquivos : []).map((a) => a.id === id ? { ...a, ativo: !a.ativo } : a));
   };
 
   const remover = (id) => {
@@ -154,12 +154,12 @@ export default function BaseConhecimentoIA({ arquivos, onUpdate }) {
 
   const salvarNome = (id) => {
     if (!editNome.trim()) return;
-    onUpdate((arquivos || []).map((a) => a.id === id ? { ...a, nome: editNome.trim() } : a));
+    onUpdate((Array.isArray(arquivos) ? arquivos : []).map((a) => a.id === id ? { ...a, nome: editNome.trim() } : a));
     setEditandoNomeId(null);
   };
 
   const salvarDescricao = (id, descricao) => {
-    onUpdate((arquivos || []).map((a) => a.id === id ? { ...a, descricao } : a));
+    onUpdate((Array.isArray(arquivos) ? arquivos : []).map((a) => a.id === id ? { ...a, descricao } : a));
     toast.success("Contexto salvo!");
   };
 
@@ -236,7 +236,7 @@ export default function BaseConhecimentoIA({ arquivos, onUpdate }) {
           </div>
         ) : (
           <div className="space-y-3">
-            {(arquivos || []).map((arq) => {
+            {(Array.isArray(arquivos) ? arquivos : []).map((arq) => {
               const tipo = tipoArquivo(arq.nome);
               const tipoInfo = TIPO_ICONE[tipo] || { icon: File, color: "text-slate-500", bg: "bg-slate-50" };
               const IconeTipo = tipoInfo.icon;

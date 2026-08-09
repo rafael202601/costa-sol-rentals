@@ -399,7 +399,7 @@ export default function Settings() {
                   {(form.tabela_frete_bairros || []).length === 0 && (
                     <p className="text-sm text-muted-foreground text-center py-4">Nenhum local cadastrado</p>
                   )}
-                  {(form.tabela_frete_bairros || []).map((item, i) => (
+                  {(Array.isArray(form.tabela_frete_bairros) ? form.tabela_frete_bairros : []).map((item, i) => (
                     <div key={i} className="flex gap-2 items-center">
                       <Input
                         placeholder="Bairro ou Cidade"

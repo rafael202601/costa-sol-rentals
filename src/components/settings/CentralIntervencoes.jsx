@@ -279,7 +279,7 @@ function InterventionCard({ item, user, onUpdate, settings }) {
               <div>
                 <p className="text-xs font-semibold text-slate-500 mb-2">Histórico da conversa</p>
                 <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                  {item.historico_mensagens.map((m, i) => (
+                  {(Array.isArray(item.historico_mensagens) ? item.historico_mensagens : []).map((m, i) => (
                     <div key={i} className={`flex gap-2 ${m.role === "humano" ? "justify-end" : m.role === "sistema" ? "justify-center" : "justify-start"}`}>
                       {m.role === "sistema" ? (
                         <div className="text-[10px] text-muted-foreground bg-slate-100 px-2 py-1 rounded-full">{m.conteudo}</div>
@@ -513,7 +513,7 @@ export default function CentralIntervencoes({ settings, onSaveSettings, form, up
             </p>
           </div>
         )}
-        {filtradas.map(item => (
+        {(Array.isArray(filtradas) ? filtradas : []).map(item => (
           <InterventionCard key={item.id} item={item} user={user} onUpdate={carregar} settings={settings} />
         ))}
       </div>

@@ -42,7 +42,7 @@ export default function AwsWebhookSettings() {
 
   const limparLogs = async () => {
     if (!confirm("Deseja apagar todos os logs de integração? Esta ação não pode ser desfeita.")) return;
-    await Promise.all(logs.map(l => base44.entities.IntegraWebhookAWS.delete(l.id)));
+    await Promise.all((Array.isArray(logs) ? logs : []).map(l => base44.entities.IntegraWebhookAWS.delete(l.id)));
     setLogs([]);
     toast.success("Logs limpos!");
   };
@@ -159,7 +159,7 @@ export default function AwsWebhookSettings() {
             <p className="text-sm text-muted-foreground text-center py-6">Nenhum registro recebido ainda.</p>
           ) : (
             <div className="space-y-2 max-h-96 overflow-y-auto">
-              {logs.map(log => (
+              {(Array.isArray(logs) ? logs : []).map(log => (
                 <div key={log.id} className="p-3 rounded-xl border bg-muted/20 text-xs space-y-1">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-medium text-foreground">{log.remetente}</span>
