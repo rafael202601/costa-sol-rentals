@@ -87,7 +87,7 @@ export default function ServiceOrders() {
   }, []);
 
   const enrichRecords = useCallback((records, map) =>
-    records.map(r => ({
+    (Array.isArray(records) ? records : []).map(r => ({
       ...r,
       _codigo_resolvido: r.customer_code || resolveCode(r, map),
     })), [resolveCode]);
@@ -95,10 +95,16 @@ export default function ServiceOrders() {
   useEffect(() => {
     const init = async () => {
       setDataLoading(true);
-      // Carrega OS primeiro — exibe assim que chegar
-      const rawOrders = await base44.entities.ServiceOrder.list("-created_date", 300);
-      setOrders(rawOrders.map(r => ({ ...r, _codigo_resolvido: r.customer_code || "" })));
-      setDataLoading(false);
+      try {
+        // Carrega OS primeiro — exibe assim que chegar
+        const rawOrders = await base44.entities.ServiceOrder.list("-created_date", 300);
+        setOrders((Array.isArray(rawOrders) ? rawOrders : []).map(r => ({ ...r, _codigo_resolvido: r.customer_code || "" })));
+      } catch (e) {
+        console.error(e);
+        toast.error("Erro ao carregar ordens de serviço");
+      } finally {
+        setDataLoading(false);
+      }
       // Carrega clientes e tags em background para enriquecer dados
       Promise.all([
         base44.entities.Client.list("nome_razao_social", 5000).catch(() => []),
@@ -348,7 +354,7 @@ export default function ServiceOrders() {
         </div>
       ) : (
       <div className="space-y-3">
-        {filtered.map((order) => (
+        {(Array.isArray(filtered) ? filtered : []).map((order) => (
           <Link key={order.id} to={`/ordens-servico/${order.id}`}>
             <Card className="border-0 shadow-sm hover:shadow-lg transition-all cursor-pointer">
               <CardContent className="p-4 sm:p-5">
@@ -378,7 +384,7 @@ export default function ServiceOrders() {
                       )}
                       {(order.client_etiquetas || []).length > 0 && (
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {(order.client_etiquetas || []).slice(0, 3).map((et, i) => (
+                          {(Array.isArray(order.client_etiquetas) ? order.client_etiquetas : []).slice(0, 3).map((et, i) => (
                             <span key={i} className="inline-flex items-center gap-0.5 text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-full font-medium">
                               <Tag className="w-2.5 h-2.5" />{et}
                             </span>

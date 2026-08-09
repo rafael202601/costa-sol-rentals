@@ -171,7 +171,7 @@ export default function ContractImportModal({ open, onClose, onDone }) {
       }
 
       // Resolver equipamentos
-      const itens = (row._itens || []).map((item, idx) => {
+      const itens = (Array.isArray(row._itens) ? row._itens : []).map((item, idx) => {
         const codigoKey = (item.equipamento_codigo || "").toLowerCase();
         const nomeKey = (item.equipamento_nome || "").toLowerCase();
         const eq = equipByCodigo[codigoKey] || equipByNome[nomeKey] || null;
@@ -196,7 +196,7 @@ export default function ContractImportModal({ open, onClose, onDone }) {
       // Avisar sobre equipamentos não encontrados (mas não bloquear)
       const naoEncontrados = itens.filter(it => it._equipNaoEncontrado && it._equipLabel);
       if (naoEncontrados.length > 0) {
-        errors.push({ row: lineNum, nome: label, reason: `Equipamento(s) não encontrado(s): ${naoEncontrados.map(e => e._equipLabel).join(", ")} — item importado sem vínculo` });
+        errors.push({ row: lineNum, nome: label, reason: `Equipamento(s) não encontrado(s): ${(Array.isArray(naoEncontrados) ? naoEncontrados : []).map(e => e._equipLabel).join(", ")} — item importado sem vínculo` });
       }
 
       // Montar dados do contrato
@@ -223,7 +223,7 @@ export default function ContractImportModal({ open, onClose, onDone }) {
         motorista_entrega: row.motorista_entrega || "",
         veiculo_entrega: row.veiculo_entrega || "",
         observacoes: row.observacoes || "",
-        itens: itens.map(({ _equipNaoEncontrado, _equipLabel, ...rest }) => rest),
+        itens: (Array.isArray(itens) ? itens : []).map(({ _equipNaoEncontrado, _equipLabel, ...rest }) => rest),
       };
 
       // Verificar se contrato já existe pelo número
@@ -406,7 +406,7 @@ export default function ContractImportModal({ open, onClose, onDone }) {
                   <AlertCircle className="w-4 h-4" /> Avisos e erros
                 </p>
                 <div className="max-h-48 overflow-y-auto rounded-xl border divide-y text-xs">
-                  {result.errors.map((e, i) => (
+                  {(Array.isArray(result.errors) ? result.errors : []).map((e, i) => (
                     <div key={i} className="px-3 py-2 flex gap-3">
                       <span className="text-muted-foreground shrink-0">Linha {e.row}</span>
                       <span className="font-medium truncate">{e.nome}</span>

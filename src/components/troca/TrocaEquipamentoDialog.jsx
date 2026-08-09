@@ -63,7 +63,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
     setAssinatura(null);
     setRegraCobranca("manter");
 
-    const initialSaindo = itensDoc.map((item, idx) => ({
+    const initialSaindo = (Array.isArray(itensDoc) ? itensDoc : []).map((item, idx) => ({
       idx,
       equipamento_id: item.equipamento_id || "",
       equipamento_nome: item.equipamento_nome || "Equipamento",
@@ -89,7 +89,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
   const valorNovo = itensEntrandoValidos[0]?.eq_obj?.valor_diario || itensEntrandoValidos[0]?.eq_obj?.valor_mensal || 0;
 
   const handleSelectEqEntrando = (idx, eq) => {
-    setItensEntrando(prev => prev.map((item, i) => {
+    setItensEntrando(prev => (Array.isArray(prev) ? prev : []).map((item, i) => {
       if (i !== idx) return item;
       if (!eq) return { ...item, equipamento_id: "", equipamento_nome: "", eq_obj: null, valor_diario: 0, valor_unitario: 0 };
       return {
@@ -154,8 +154,8 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
         motorista: motorista || "",
         usuario: currentUser?.full_name || currentUser?.email || "—",
         observacao: observacoes || "",
-        itens_saindo: itensSaindoSelecionados.map(i => ({ nome: i.equipamento_nome, quantidade: i.quantidade, equipamento_id: i.equipamento_id })),
-        itens_entrando: itensEntrandoValidos.map(i => ({ nome: i.equipamento_nome, quantidade: i.quantidade, equipamento_id: i.equipamento_id })),
+        itens_saindo: (Array.isArray(itensSaindoSelecionados) ? itensSaindoSelecionados : []).map(i => ({ nome: i.equipamento_nome, quantidade: i.quantidade, equipamento_id: i.equipamento_id })),
+        itens_entrando: (Array.isArray(itensEntrandoValidos) ? itensEntrandoValidos : []).map(i => ({ nome: i.equipamento_nome, quantidade: i.quantidade, equipamento_id: i.equipamento_id })),
         assinatura_url: assinaturaUrl || "",
         // "pendente" = agendada futura, "concluida" = executada agora
         status: dataTroca && dataTroca > format(new Date(), "yyyy-MM-dd") ? "pendente" : "concluida",
@@ -269,7 +269,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
           modulo: docTipo === "contrato" ? "contrato" : "os",
           referencia_id: doc.id,
           referencia_numero: doc.numero,
-          detalhes: `Troca registrada. Motivo: ${motivoFinal}. Saindo: ${itensSaindoSelecionados.map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}. Entrando: ${itensEntrandoValidos.map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}. Cobrança: ${regraLabel}.`,
+          detalhes: `Troca registrada. Motivo: ${motivoFinal}. Saindo: ${(Array.isArray(itensSaindoSelecionados) ? itensSaindoSelecionados : []).map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}. Entrando: ${(Array.isArray(itensEntrandoValidos) ? itensEntrandoValidos : []).map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}. Cobrança: ${regraLabel}.`,
           data_hora: now,
         });
       } catch (_) {}
@@ -359,7 +359,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
                     <SelectTrigger className="mt-1"><SelectValue placeholder="Selecione o motorista..." /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="__none__">Sem motorista</SelectItem>
-                      {drivers.map(d => <SelectItem key={d.id} value={d.nome}>{d.nome}{d.veiculo ? ` — ${d.veiculo}` : ""}</SelectItem>)}
+                      {(Array.isArray(drivers) ? drivers : []).map(d => <SelectItem key={d.id} value={d.nome}>{d.nome}{d.veiculo ? ` — ${d.veiculo}` : ""}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -382,7 +382,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
                 <Package className="w-3.5 h-3.5" /> Equipamentos que SAEM (a trocar)
               </p>
               <div className="space-y-2">
-                {itensSaindo.map((item, idx) => (
+                {(Array.isArray(itensSaindo) ? itensSaindo : []).map((item, idx) => (
                   <div key={idx} className="p-3 rounded-xl bg-red-50 border border-red-200">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 min-w-0">
@@ -390,16 +390,16 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
                         <p className="text-xs text-muted-foreground">Disponível para trocar: {item.max} un.{item.valor_diario ? ` · R$ ${Number(item.valor_diario).toFixed(2).replace(".", ",")}/dia` : ""}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <button type="button" onClick={() => setItensSaindo(prev => prev.map((it, i) => i === idx ? { ...it, quantidade: Math.max(0, it.quantidade - 1) } : it))}
+                        <button type="button" onClick={() => setItensSaindo(prev => (Array.isArray(prev) ? prev : []).map((it, i) => i === idx ? { ...it, quantidade: Math.max(0, it.quantidade - 1) } : it))}
                           className="w-7 h-7 rounded-lg border bg-white flex items-center justify-center font-bold text-red-600 hover:bg-red-50">
                           <Minus className="w-3 h-3" />
                         </button>
                         <span className="w-8 text-center font-semibold text-sm">{item.quantidade}</span>
-                        <button type="button" onClick={() => setItensSaindo(prev => prev.map((it, i) => i === idx ? { ...it, quantidade: Math.min(it.max, it.quantidade + 1) } : it))}
+                        <button type="button" onClick={() => setItensSaindo(prev => (Array.isArray(prev) ? prev : []).map((it, i) => i === idx ? { ...it, quantidade: Math.min(it.max, it.quantidade + 1) } : it))}
                           className="w-7 h-7 rounded-lg border bg-white flex items-center justify-center font-bold text-red-600 hover:bg-red-50">
                           <Plus className="w-3 h-3" />
                         </button>
-                        <button type="button" onClick={() => setItensSaindo(prev => prev.map((it, i) => i === idx ? { ...it, quantidade: it.max } : it))}
+                        <button type="button" onClick={() => setItensSaindo(prev => (Array.isArray(prev) ? prev : []).map((it, i) => i === idx ? { ...it, quantidade: it.max } : it))}
                           className="text-xs text-red-600 hover:underline ml-1">
                           Todos
                         </button>
@@ -421,7 +421,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
                 </button>
               </div>
               <div className="space-y-2">
-                {itensEntrando.map((item, idx) => (
+                {(Array.isArray(itensEntrando) ? itensEntrando : []).map((item, idx) => (
                   <div key={idx} className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
                     <div className="flex items-start gap-2">
                       <div className="flex-1 space-y-1.5">
@@ -437,7 +437,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
                           <Input
                             placeholder="Ou digitar nome manualmente..."
                             value={item.equipamento_nome}
-                            onChange={e => setItensEntrando(prev => prev.map((it, i) => i === idx ? { ...it, equipamento_nome: e.target.value } : it))}
+                            onChange={e => setItensEntrando(prev => (Array.isArray(prev) ? prev : []).map((it, i) => i === idx ? { ...it, equipamento_nome: e.target.value } : it))}
                             className="h-8 text-xs"
                           />
                         )}
@@ -453,7 +453,7 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
                         <Input
                           type="number" min={1}
                           value={item.quantidade}
-                          onChange={e => setItensEntrando(prev => prev.map((it, i) => i === idx ? { ...it, quantidade: parseInt(e.target.value) || 1 } : it))}
+                          onChange={e => setItensEntrando(prev => (Array.isArray(prev) ? prev : []).map((it, i) => i === idx ? { ...it, quantidade: parseInt(e.target.value) || 1 } : it))}
                           className="mt-0.5 h-8 w-16 text-xs text-center"
                         />
                       </div>
@@ -531,8 +531,8 @@ export default function TrocaEquipamentoDialog({ open, onClose, doc, docTipo = "
             {canProceed && (
               <div className="p-3 rounded-xl bg-orange-50 border border-orange-200 text-sm space-y-1">
                 <p className="font-semibold text-orange-800 text-xs">📋 Resumo da Troca</p>
-                <p className="text-xs text-orange-700"><strong>Saindo:</strong> {itensSaindoSelecionados.map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}</p>
-                <p className="text-xs text-orange-700"><strong>Entrando:</strong> {itensEntrandoValidos.map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}</p>
+                <p className="text-xs text-orange-700"><strong>Saindo:</strong> {(Array.isArray(itensSaindoSelecionados) ? itensSaindoSelecionados : []).map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}</p>
+                <p className="text-xs text-orange-700"><strong>Entrando:</strong> {(Array.isArray(itensEntrandoValidos) ? itensEntrandoValidos : []).map(i => `${i.quantidade}x ${i.equipamento_nome}`).join(", ")}</p>
                 <p className="text-xs text-orange-700"><strong>Motivo:</strong> {MOTIVOS.find(m => m.value === motivo)?.label || motivo}</p>
                 {docTipo === "contrato" && (
                   <p className="text-xs text-orange-700"><strong>Cobrança:</strong> {regraCobranca === "manter" ? "Mantida (sem alteração)" : `Atualizada → ${fmtVal(valorNovo)}/dia`}</p>

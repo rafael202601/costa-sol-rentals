@@ -77,7 +77,7 @@ export default function Drivers() {
       </PageHeader>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {drivers.map((d) => {
+        {(Array.isArray(drivers) ? drivers : []).map((d) => {
           const ativos = contractsByDriver[d.nome]?.length || 0;
           return (
             <Card key={d.id} className="border-0 shadow-sm hover:shadow-md transition-shadow">

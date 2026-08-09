@@ -164,7 +164,7 @@ export default function ContractDetail() {
     if (c?.itens?.length) {
       const itensNeedEnrich = c.itens.some(i => i.equipamento_id && i.aplica_valor_minimo === undefined);
       if (itensNeedEnrich) {
-        const enriched = await Promise.all(c.itens.map(async (item) => {
+        const enriched = await Promise.all((Array.isArray(c.itens) ? c.itens : []).map(async (item) => {
           if (!item.equipamento_id || item.aplica_valor_minimo !== undefined) return item;
           try {
             const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
@@ -704,7 +704,7 @@ export default function ContractDetail() {
 
   const enrichContractItens = async (itens) => {
     if (!itens?.length) return itens || [];
-    const enriched = await Promise.all(itens.map(async (item) => {
+    const enriched = await Promise.all((Array.isArray(itens) ? itens : []).map(async (item) => {
       if (!item.equipamento_id) return item;
       try {
         const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
@@ -1264,7 +1264,7 @@ export default function ContractDetail() {
                   {rec.motorista && rec.tipo !== "cancelamento" && <p className="text-xs text-muted-foreground">Motorista: {rec.motorista}</p>}
                   {rec.itens?.length > 0 && rec.tipo !== "cancelamento" && (
                     <ul className="text-xs space-y-0.5 mt-1">
-                      {(rec.itens || []).map((it, j) => (
+                      {(Array.isArray(rec.itens) ? rec.itens : []).map((it, j) => (
                         <li key={j} className="flex justify-between">
                           <span>{it.nome}</span>
                           <span className="font-medium">{it.quantidade} un.</span>
@@ -1759,18 +1759,18 @@ export default function ContractDetail() {
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => setRecolhaItens((prev) => prev.map((r) => r.idx === idx ? { ...r, quantidade: Math.max(0, r.quantidade - 1) } : r))}
+                          onClick={() => setRecolhaItens((prev) => (Array.isArray(prev) ? prev : []).map((r) => r.idx === idx ? { ...r, quantidade: Math.max(0, r.quantidade - 1) } : r))}
                           className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold"
                         >−</button>
                         <span className="w-10 text-center font-semibold text-sm">{qtd}</span>
                         <button
                           type="button"
-                          onClick={() => setRecolhaItens((prev) => prev.map((r) => r.idx === idx ? { ...r, quantidade: Math.min(emAberto, r.quantidade + 1) } : r))}
+                          onClick={() => setRecolhaItens((prev) => (Array.isArray(prev) ? prev : []).map((r) => r.idx === idx ? { ...r, quantidade: Math.min(emAberto, r.quantidade + 1) } : r))}
                           className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold"
                         >+</button>
                         <button
                           type="button"
-                          onClick={() => setRecolhaItens((prev) => prev.map((r) => r.idx === idx ? { ...r, quantidade: emAberto } : r))}
+                          onClick={() => setRecolhaItens((prev) => (Array.isArray(prev) ? prev : []).map((r) => r.idx === idx ? { ...r, quantidade: emAberto } : r))}
                           className="text-xs text-primary hover:underline ml-1"
                         >Todos</button>
                       </div>
@@ -1805,7 +1805,7 @@ export default function ContractDetail() {
                   <SelectValue placeholder="Definir depois pela logística..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {drivers.map((d) => (
+                  {(Array.isArray(drivers) ? drivers : []).map((d) => (
                     <SelectItem key={d.id} value={d.nome}>{d.nome}{d.veiculo ? ` — ${d.veiculo}` : ""}</SelectItem>
                   ))}
                 </SelectContent>
@@ -1950,13 +1950,13 @@ export default function ContractDetail() {
                         <div className="flex items-center gap-2 shrink-0">
                           <button
                             type="button"
-                            onClick={() => setDevItens((prev) => prev.map((d) => d.idx === idx ? { ...d, quantidade: Math.max(0, d.quantidade - 1) } : d))}
+                            onClick={() => setDevItens((prev) => (Array.isArray(prev) ? prev : []).map((d) => d.idx === idx ? { ...d, quantidade: Math.max(0, d.quantidade - 1) } : d))}
                             className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold text-lg"
                           >−</button>
                           <span className="w-8 text-center font-semibold text-sm">{qtd}</span>
                           <button
                             type="button"
-                            onClick={() => setDevItens((prev) => prev.map((d) => d.idx === idx ? { ...d, quantidade: Math.min(emAberto, d.quantidade + 1) } : d))}
+                            onClick={() => setDevItens((prev) => (Array.isArray(prev) ? prev : []).map((d) => d.idx === idx ? { ...d, quantidade: Math.min(emAberto, d.quantidade + 1) } : d))}
                             className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold text-lg"
                           >+</button>
                         </div>
@@ -1980,7 +1980,7 @@ export default function ContractDetail() {
                           <SerialSelector
                             numeracoes={numsMock}
                             selected={selecionados}
-                            onChange={(v) => setDevItens(prev => prev.map(d =>
+                            onChange={(v) => setDevItens(prev => (Array.isArray(prev) ? prev : []).map(d =>
                               d.idx === idx ? { ...d, seriais_devolvidos: v, quantidade: v.length } : d
                             ))}
                             max={serialsAtivos.length}

@@ -38,7 +38,7 @@ export default function HistoricoTrocas({ historico = [], doc, client, settings 
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {historico.map((reg, idx) => (
+        {(Array.isArray(historico) ? historico : []).map((reg, idx) => (
           <div key={idx} className="border rounded-xl overflow-hidden">
             {/* Header da troca */}
             <button
@@ -84,7 +84,7 @@ export default function HistoricoTrocas({ historico = [], doc, client, settings 
                       ↑ EQUIPAMENTOS RETIRADOS
                     </p>
                     <div className="space-y-1">
-                      {(reg.itens_saindo || []).map((item, i) => (
+                      {(Array.isArray(reg.itens_saindo) ? reg.itens_saindo : []).map((item, i) => (
                         <div key={i} className="flex justify-between text-xs bg-red-50 rounded px-2 py-1">
                           <span className="font-medium">{item.nome}</span>
                           <span className="font-bold text-red-700">{item.quantidade} un.</span>
@@ -98,7 +98,7 @@ export default function HistoricoTrocas({ historico = [], doc, client, settings 
                       ↓ EQUIPAMENTOS ENTREGUES
                     </p>
                     <div className="space-y-1">
-                      {(reg.itens_entrando || []).map((item, i) => (
+                      {(Array.isArray(reg.itens_entrando) ? reg.itens_entrando : []).map((item, i) => (
                         <div key={i} className="flex justify-between text-xs bg-emerald-50 rounded px-2 py-1">
                           <span className="font-medium">{item.nome}</span>
                           <span className="font-bold text-emerald-700">{item.quantidade} un.</span>

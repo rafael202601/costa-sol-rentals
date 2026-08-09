@@ -685,7 +685,7 @@ export default function Calendar() {
       if (ev.draggableType === "contract_start") {
         const update = { data_inicio: newDateStr, motorista_entrega: motorista, veiculo_entrega: veiculo, status: "em_transito" };
         await base44.entities.Contract.update(ev.draggableId, update);
-        setContracts(prev => prev.map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
+        setContracts(prev => (Array.isArray(prev) ? prev : []).map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
         toast.success("Entrega reagendada! Status → Em Rota.");
 
       } else if (ev.draggableType === "contract_end") {
@@ -702,14 +702,14 @@ export default function Calendar() {
         };
         await base44.entities.Contract.update(ev.draggableId, update);
         // Atualiza estado local para re-render imediato sem precisar recarregar
-        setContracts(prev => prev.map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
+        setContracts(prev => (Array.isArray(prev) ? prev : []).map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
         toast.success(motorista ? "Recolha reagendada com motorista!" : "Recolha reagendada — aguardando definição de motorista.");
 
       } else if (ev.draggableType === "os_entrega") {
         const newDT = `${newDateStr}T08:00`;
         const update = { data_entrega: newDT, motorista_entrega: motorista, veiculo_entrega: veiculo, status: "em_transito" };
         await base44.entities.ServiceOrder.update(ev.draggableId, update);
-        setOrders(prev => prev.map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
+        setOrders(prev => (Array.isArray(prev) ? prev : []).map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
         toast.success("OS reagendada! Status → Em Trânsito.");
 
       } else if (ev.draggableType === "os_recolha") {
@@ -725,7 +725,7 @@ export default function Calendar() {
           ...(veiculo ? { veiculo_entrega: veiculo } : {}),
         };
         await base44.entities.ServiceOrder.update(ev.draggableId, update);
-        setOrders(prev => prev.map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
+        setOrders(prev => (Array.isArray(prev) ? prev : []).map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
         toast.success(motorista ? "Recolha da OS reagendada!" : "Recolha da OS reagendada — aguardando motorista.");
       }
 
@@ -748,7 +748,7 @@ export default function Calendar() {
       if (ev.draggableType === "contract_start") {
         const update = { data_inicio: newDateStr, ...(motorista ? { motorista_entrega: motorista } : {}), ...(veiculo ? { veiculo_entrega: veiculo } : {}), status: "em_transito" };
         await base44.entities.Contract.update(ev.draggableId, update);
-        setContracts(prev => prev.map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
+        setContracts(prev => (Array.isArray(prev) ? prev : []).map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
         toast.success("Entrega reagendada! Status → Em Rota.");
 
       } else if (ev.draggableType === "contract_end") {
@@ -763,14 +763,14 @@ export default function Calendar() {
           ...(veiculo && veiculo !== "__sem_veiculo__" ? { veiculo_entrega: veiculo } : {}),
         };
         await base44.entities.Contract.update(ev.draggableId, update);
-        setContracts(prev => prev.map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
+        setContracts(prev => (Array.isArray(prev) ? prev : []).map(c => c.id === ev.draggableId ? { ...c, ...update } : c));
         toast.success(motorista ? "Recolha reagendada com motorista!" : "Recolha reagendada!");
 
       } else if (ev.draggableType === "os_entrega") {
         const newDT = `${newDateStr}T08:00`;
         const update = { data_entrega: newDT, ...(motorista ? { motorista_entrega: motorista } : {}), ...(veiculo ? { veiculo_entrega: veiculo } : {}), status: "em_transito" };
         await base44.entities.ServiceOrder.update(ev.draggableId, update);
-        setOrders(prev => prev.map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
+        setOrders(prev => (Array.isArray(prev) ? prev : []).map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
         toast.success("OS reagendada! Status → Em Trânsito.");
 
       } else if (ev.draggableType === "os_recolha") {
@@ -786,7 +786,7 @@ export default function Calendar() {
           ...(veiculo ? { veiculo_entrega: veiculo } : {}),
         };
         await base44.entities.ServiceOrder.update(ev.draggableId, update);
-        setOrders(prev => prev.map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
+        setOrders(prev => (Array.isArray(prev) ? prev : []).map(o => o.id === ev.draggableId ? { ...o, ...update } : o));
         toast.success(motorista ? "Recolha da OS reagendada!" : "Recolha da OS reagendada!");
       }
     } catch {

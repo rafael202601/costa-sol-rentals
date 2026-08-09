@@ -36,7 +36,7 @@ export default function ContractAuditTab({ contractId, contractNumero }) {
       .finally(() => setLoading(false));
   }, [contractId]);
 
-  const actionTypes = ["todos", ...new Set(logs.map((l) => l.acao?.split(" ")[0] || "").filter(Boolean))];
+  const actionTypes = ["todos", ...new Set((Array.isArray(logs) ? logs : []).map((l) => l.acao?.split(" ")[0] || "").filter(Boolean))];
 
   const filtered = logs.filter((l) => {
     const matchUser = !filterUser || (l.usuario || "").toLowerCase().includes(filterUser.toLowerCase());
@@ -83,7 +83,7 @@ export default function ContractAuditTab({ contractId, contractNumero }) {
       <div className="relative">
         <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-border" />
         <div className="space-y-4 pl-10">
-          {filtered.map((log, i) => (
+          {(Array.isArray(filtered) ? filtered : []).map((log, i) => (
             <div key={log.id || i} className="relative">
               {/* Dot */}
               <div className="absolute -left-6 top-1.5 w-3 h-3 rounded-full border-2 border-background bg-primary shadow-sm" />

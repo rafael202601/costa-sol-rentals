@@ -50,13 +50,23 @@ export default function TasksDay() {
   }, []);
 
   const loadTasks = useCallback(async () => {
-    const all = await base44.entities.Task.list("-created_date", 300);
-    setTasks(all);
+    try {
+      const all = await base44.entities.Task.list("-created_date", 300);
+      setTasks(all);
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao carregar tarefas");
+    }
   }, []);
 
   const loadMural = useCallback(async () => {
-    const all = await base44.entities.MuralPost.list("-created_date", 50);
-    setMural(all);
+    try {
+      const all = await base44.entities.MuralPost.list("-created_date", 50);
+      setMural(all);
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao carregar mural");
+    }
   }, []);
 
   const openNew = (dateStr) => {
@@ -70,27 +80,43 @@ export default function TasksDay() {
   };
 
   const deleteTask = async (id) => {
-    await base44.entities.Task.delete(id);
-    toast.success("Tarefa removida");
-    loadTasks();
+    try {
+      await base44.entities.Task.delete(id);
+      toast.success("Tarefa removida");
+      loadTasks();
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao remover tarefa");
+    }
   };
 
   const postMural = async () => {
     if (!muralText.trim()) return;
     setPostingMural(true);
-    await base44.entities.MuralPost.create({
-      conteudo: muralText, tipo: muralTipo,
-      usuario_email: user?.email || "",
-      usuario_nome: user?.full_name || user?.email || "",
-    });
-    setMuralText("");
-    setPostingMural(false);
-    loadMural();
+    try {
+      await base44.entities.MuralPost.create({
+        conteudo: muralText, tipo: muralTipo,
+        usuario_email: user?.email || "",
+        usuario_nome: user?.full_name || user?.email || "",
+      });
+      setMuralText("");
+      loadMural();
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao publicar no mural");
+    } finally {
+      setPostingMural(false);
+    }
   };
 
   const deleteMural = async (id) => {
-    await base44.entities.MuralPost.delete(id);
-    loadMural();
+    try {
+      await base44.entities.MuralPost.delete(id);
+      loadMural();
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao remover publicação");
+    }
   };
 
   // ─── Filtros ──────────────────────────────────────────────────────────────
@@ -249,7 +275,7 @@ export default function TasksDay() {
                 </div>
               </CardContent>
             </Card>
-            {mural.map(post => {
+            {(Array.isArray(mural) ? mural : []).map(post => {
               const cfg = MURAL_TIPOS[post.tipo] || MURAL_TIPOS.info;
               return (
                 <Card key={post.id} className="border-0 shadow-sm">

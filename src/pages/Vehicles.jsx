@@ -227,7 +227,7 @@ export default function Vehicles() {
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {vehicles.map((v) => {
+              {(Array.isArray(vehicles) ? vehicles : []).map((v) => {
                 const vExpenses = expenses.filter(e => e.vehicle_id === v.id);
                 const totalGasto = totalExpenses(v.id);
                 return (

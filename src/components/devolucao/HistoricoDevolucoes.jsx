@@ -23,9 +23,9 @@ export default function HistoricoDevolucoes({ historico = [], doc, client, setti
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {historico.map((rec, i) => {
+        {(Array.isArray(historico) ? historico : []).map((rec, i) => {
           // Normaliza os itens para o formato do recibo
-          const itensDevolucao = (rec.itens || []).map(it => ({
+          const itensDevolucao = (Array.isArray(rec.itens) ? rec.itens : []).map(it => ({
             nome: it.nome || it.equipamento_nome || "—",
             quantidade: it.quantidade || 1,
             unidade: it.unidade || "un.",
@@ -77,7 +77,7 @@ export default function HistoricoDevolucoes({ historico = [], doc, client, setti
               )}
               {itensDevolucao.length > 0 && (
                 <ul className="text-xs space-y-0.5 mt-1 pl-2 border-l-2 border-purple-200">
-                  {itensDevolucao.map((it, j) => (
+                  {(Array.isArray(itensDevolucao) ? itensDevolucao : []).map((it, j) => (
                     <li key={j} className="flex justify-between">
                       <span>{it.nome}</span>
                       <span className="font-medium text-purple-700">{it.quantidade} un.</span>

@@ -90,7 +90,7 @@ export default function Products() {
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map(p => (
+        {(Array.isArray(filtered) ? filtered : []).map(p => (
           <Card key={p.id} className={`border-0 shadow-sm ${!p.ativo ? "opacity-60" : ""}`}>
             <CardContent className="p-4 space-y-2">
               <div className="flex items-start justify-between">

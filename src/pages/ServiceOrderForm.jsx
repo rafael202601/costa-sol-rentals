@@ -389,7 +389,7 @@ export default function ServiceOrderForm() {
                 <Select value={form.os_origem_id} onValueChange={(v) => update("os_origem_id", v)}>
                   <SelectTrigger className="mt-1"><SelectValue placeholder="Selecionar OS original..." /></SelectTrigger>
                   <SelectContent>
-                    {ossDoCliente.map((o) => <SelectItem key={o.id} value={o.id}>OS #{o.numero} — {o.local_entrega}</SelectItem>)}
+                    {(Array.isArray(ossDoCliente) ? ossDoCliente : []).map((o) => <SelectItem key={o.id} value={o.id}>OS #{o.numero} — {o.local_entrega}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -407,7 +407,7 @@ export default function ServiceOrderForm() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="__manual__">✏️ Digitação manual</SelectItem>
-                    {cacambas.map(c => (
+                    {(Array.isArray(cacambas) ? cacambas : []).map(c => (
                       <SelectItem key={c.id} value={c.id}>
                         {c.nome}
                         {(c.valor_diario || c.valor_mensal) ? ` — R$ ${(c.valor_diario || c.valor_mensal).toFixed(2)}` : ""}

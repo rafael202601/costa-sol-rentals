@@ -71,7 +71,7 @@ export default function EquipamentoSearchInput({ equipamentos = [], value, onSel
       </div>
       {open && filtered.length > 0 && (
         <div className="absolute z-50 top-full mt-1 left-0 right-0 bg-white border rounded-lg shadow-lg max-h-56 overflow-y-auto">
-          {filtered.map(eq => (
+          {(Array.isArray(filtered) ? filtered : []).map(eq => (
             <button
               key={eq.id}
               type="button"
@@ -84,7 +84,7 @@ export default function EquipamentoSearchInput({ equipamentos = [], value, onSel
                   {eq.codigo && <span className="font-mono bg-slate-100 px-1 rounded">#{eq.codigo}</span>}
                   {eq.marca && <span>{eq.marca}</span>}
                   {eq.modelo && <span>{eq.modelo}</span>}
-                  {(eq.numeracoes || []).filter(n => (n.serial || "").toLowerCase().includes(query.toLowerCase())).slice(0, 2).map(n => (
+                  {(Array.isArray(eq.numeracoes) ? eq.numeracoes : []).filter(n => (n.serial || "").toLowerCase().includes(query.toLowerCase())).slice(0, 2).map(n => (
                     <span key={n.serial} className="font-mono bg-blue-50 text-blue-700 px-1 rounded">S: {n.serial}</span>
                   ))}
                 </p>

@@ -180,7 +180,7 @@ function RequestItemsDetail({ req }) {
       </button>
       {open && (
         <div className="mt-2 space-y-2">
-          {req.itens.map((item, i) => (
+          {(Array.isArray(req.itens) ? req.itens : []).map((item, i) => (
             <div key={i} className="p-3 rounded-xl bg-muted/40 text-xs space-y-1 border">
               <div className="flex justify-between items-start">
                 <div>

@@ -151,7 +151,7 @@ function ContratosTab({ contracts, clientObras }) {
         )}
       </div>
       {filtered.length === 0 && <p className="text-muted-foreground text-sm text-center py-8">Nenhum contrato encontrado</p>}
-      {filtered.map((c) => (
+      {(Array.isArray(filtered) ? filtered : []).map((c) => (
         <a key={c.id} href={`/contratos/${c.id}`}>
           <div className="flex items-center justify-between p-4 rounded-xl bg-card border border-border/50 hover:shadow-md transition-all">
             <div className="flex items-center gap-3">
@@ -160,7 +160,7 @@ function ContratosTab({ contracts, clientObras }) {
                 <p className="font-medium text-sm">Contrato #{c.numero || "—"}</p>
                 <p className="text-xs text-muted-foreground">{c.data_inicio ? (() => { try { return format(parseISO(c.data_inicio), "dd/MM/yyyy"); } catch { return c.data_inicio; } })() : "—"}{c.endereco_entrega ? ` · ${c.endereco_entrega}` : ""}</p>
                 {c.obra_nome && <p className="text-xs text-muted-foreground">🏗 {c.obra_nome}</p>}
-                {c.itens?.length > 0 && <p className="text-xs text-muted-foreground">{c.itens.map(i => i.equipamento_nome).filter(Boolean).join(", ")}</p>}
+                {c.itens?.length > 0 && <p className="text-xs text-muted-foreground">{(Array.isArray(c.itens) ? c.itens : []).map(i => i.equipamento_nome).filter(Boolean).join(", ")}</p>}
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
@@ -209,7 +209,7 @@ function OsTab({ orders, clientObras }) {
         )}
       </div>
       {filtered.length === 0 && <p className="text-muted-foreground text-sm text-center py-8">Nenhuma OS encontrada</p>}
-      {filtered.map((o) => (
+      {(Array.isArray(filtered) ? filtered : []).map((o) => (
         <a key={o.id} href={`/ordens-servico/${o.id}`}>
           <div className="flex items-center justify-between p-4 rounded-xl bg-card border border-border/50 hover:shadow-md transition-all">
             <div className="flex items-center gap-3">

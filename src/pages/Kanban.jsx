@@ -157,7 +157,7 @@ function ContractCard({ contract, drivers, vehicles, driversMap, onAssignDriver,
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={null}>Sem motorista</SelectItem>
-                  {drivers.map((d) => <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>)}
+                  {(Array.isArray(drivers) ? drivers : []).map((d) => <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>)}
                 </SelectContent>
               </Select>
               <Select value={contract.veiculo_entrega || ""} onValueChange={(v) => onAssignVehicle(contract.id, v, "contract")}>
@@ -167,7 +167,7 @@ function ContractCard({ contract, drivers, vehicles, driversMap, onAssignDriver,
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={null}>Sem veículo</SelectItem>
-                  {vehicles.map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
+                  {(Array.isArray(vehicles) ? vehicles : []).map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
                 </SelectContent>
               </Select>
             </>
@@ -239,7 +239,7 @@ function OSCard({ os, drivers, vehicles, driversMap, onAssignDriver, onAssignVeh
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={null}>Sem motorista</SelectItem>
-                  {drivers.map((d) => <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>)}
+                  {(Array.isArray(drivers) ? drivers : []).map((d) => <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>)}
                 </SelectContent>
               </Select>
               <Select value={os.veiculo_entrega || ""} onValueChange={(v) => onAssignVehicle(os.id, v, "os")}>
@@ -249,7 +249,7 @@ function OSCard({ os, drivers, vehicles, driversMap, onAssignDriver, onAssignVeh
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={null}>Sem veículo</SelectItem>
-                  {vehicles.map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
+                  {(Array.isArray(vehicles) ? vehicles : []).map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
                 </SelectContent>
               </Select>
             </>
@@ -317,15 +317,15 @@ export default function Kanban() {
   useEffect(() => { load(); }, []);
 
   // Map nome → driver object para cores
-  const driversMap = Object.fromEntries(drivers.map((d) => [d.nome, d]));
+  const driversMap = Object.fromEntries((Array.isArray(drivers) ? drivers : []).map((d) => [d.nome, d]));
 
   const handleAssignDriver = async (id, driverName, type) => {
     if (type === "contract") {
       await base44.entities.Contract.update(id, { motorista_entrega: driverName });
-      setContracts((prev) => prev.map((c) => c.id === id ? { ...c, motorista_entrega: driverName } : c));
+      setContracts((prev) => (Array.isArray(prev) ? prev : []).map((c) => c.id === id ? { ...c, motorista_entrega: driverName } : c));
     } else {
       await base44.entities.ServiceOrder.update(id, { motorista_entrega: driverName });
-      setOrders((prev) => prev.map((o) => o.id === id ? { ...o, motorista_entrega: driverName } : o));
+      setOrders((prev) => (Array.isArray(prev) ? prev : []).map((o) => o.id === id ? { ...o, motorista_entrega: driverName } : o));
     }
     toast.success(driverName ? `Motorista "${driverName}" atribuído!` : "Motorista removido.");
   };
@@ -333,10 +333,10 @@ export default function Kanban() {
   const handleAssignVehicle = async (id, placa, type) => {
     if (type === "contract") {
       await base44.entities.Contract.update(id, { veiculo_entrega: placa });
-      setContracts((prev) => prev.map((c) => c.id === id ? { ...c, veiculo_entrega: placa } : c));
+      setContracts((prev) => (Array.isArray(prev) ? prev : []).map((c) => c.id === id ? { ...c, veiculo_entrega: placa } : c));
     } else {
       await base44.entities.ServiceOrder.update(id, { veiculo_entrega: placa });
-      setOrders((prev) => prev.map((o) => o.id === id ? { ...o, veiculo_entrega: placa } : o));
+      setOrders((prev) => (Array.isArray(prev) ? prev : []).map((o) => o.id === id ? { ...o, veiculo_entrega: placa } : o));
     }
     toast.success(placa ? `Veículo "${placa}" atribuído!` : "Veículo removido.");
   };
@@ -412,7 +412,7 @@ export default function Kanban() {
       {/* Legenda de motoristas */}
       {drivers.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
-          {drivers.map((d) => {
+          {(Array.isArray(drivers) ? drivers : []).map((d) => {
             const color = getDriverColor(d.nome, driversMap);
             return (
               <div key={d.id} className="flex items-center gap-1.5 bg-card rounded-full px-2.5 py-1 shadow-sm border text-xs">
@@ -486,7 +486,7 @@ export default function Kanban() {
                   <SelectContent>
                     <SelectItem value="todos">Todos</SelectItem>
                     <SelectItem value="sem_motorista">Sem motorista</SelectItem>
-                    {drivers.map((d) => <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>)}
+                    {(Array.isArray(drivers) ? drivers : []).map((d) => <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
@@ -499,7 +499,7 @@ export default function Kanban() {
                   <SelectContent>
                     <SelectItem value="todos">Todos</SelectItem>
                     <SelectItem value="sem_veiculo">Sem veículo</SelectItem>
-                    {vehicles.map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa}{v.nome || v.modelo ? ` — ${v.nome || v.modelo}` : ""}</SelectItem>)}
+                    {(Array.isArray(vehicles) ? vehicles : []).map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa}{v.nome || v.modelo ? ` — ${v.nome || v.modelo}` : ""}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>

@@ -866,7 +866,7 @@ export default function DriverPanel() {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                {drivers.map((d) => (
+                {(Array.isArray(drivers) ? drivers : []).map((d) => (
                   <SelectItem key={d.id} value={d.nome}>{d.nome}</SelectItem>
                 ))}
               </SelectContent>
@@ -882,7 +882,7 @@ export default function DriverPanel() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="__none__">Sem veículo</SelectItem>
-                {vehicles.map((v) => (
+                {(Array.isArray(vehicles) ? vehicles : []).map((v) => (
                   <SelectItem key={v.id} value={v.placa}>{v.placa}{v.nome || v.modelo ? ` — ${v.nome || v.modelo}` : ""}</SelectItem>
                 ))}
               </SelectContent>

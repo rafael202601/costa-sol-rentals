@@ -155,7 +155,7 @@ export default function FeedbackAdmin() {
         </div>
       ) : (
         <div className="space-y-3">
-          {filtered.map(fb => {
+          {(Array.isArray(filtered) ? filtered : []).map(fb => {
             const cc = CATEGORIA_CFG[fb.categoria] || CATEGORIA_CFG.atendimento;
             const sc = STATUS_CFG[fb.status] || STATUS_CFG.novo;
             const Icon = cc.icon;

@@ -99,7 +99,7 @@ export default function FreightCalculator({ settings, value, onChange }) {
                 {tabela.length === 0 && (
                   <SelectItem value="__empty__" disabled>Nenhum bairro cadastrado</SelectItem>
                 )}
-                {tabela.map((t, i) => (
+                {(Array.isArray(tabela) ? tabela : []).map((t, i) => (
                   <SelectItem key={i} value={t.local}>
                     {t.local} — R$ {(t.valor || 0).toFixed(2)}
                   </SelectItem>

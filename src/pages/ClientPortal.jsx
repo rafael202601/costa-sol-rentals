@@ -450,7 +450,7 @@ export default function ClientPortal() {
                     <div className="mt-2 border-t pt-2">
                       <p className="text-[10px] font-semibold text-muted-foreground uppercase mb-1">Materiais</p>
                       <div className="space-y-1">
-                        {c.itens.map((item, i) => (
+                        {(Array.isArray(c.itens) ? c.itens : []).map((item, i) => (
                           <div key={i} className="flex justify-between text-xs">
                             <span className="text-muted-foreground">{item.equipamento_nome} <span className="text-foreground font-medium">× {item.quantidade_retirada}</span></span>
                             <span className="font-medium">R$ {((item.quantidade_retirada * item.valor_unitario) - (item.desconto || 0)).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
@@ -560,7 +560,7 @@ export default function ClientPortal() {
           contract={signatureDialog.contract}
           currentUser={currentUser}
           onSigned={(contractId, dataUrl, data) => {
-            setContracts(prev => prev.map(c =>
+            setContracts(prev => (Array.isArray(prev) ? prev : []).map(c =>
               c.id === contractId
                 ? { ...c, assinatura_cliente: dataUrl, assinatura_entrega_url: dataUrl, assinatura_data: data }
                 : c

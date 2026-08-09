@@ -240,7 +240,7 @@ export default function Contracts() {
   }, []);
 
   const enrichRecords = useCallback((records, map) =>
-    records.map(r => ({ ...r, _codigo_resolvido: r.customer_code || resolveCode(r, map) })),
+    (Array.isArray(records) ? records : []).map(r => ({ ...r, _codigo_resolvido: r.customer_code || resolveCode(r, map) })),
   [resolveCode]);
 
   // ─── Carga inicial: página abre imediatamente, dados chegam em background ─────

@@ -31,7 +31,7 @@ export default function ActivityLogs() {
     base44.entities.ActivityLog.list("-data_hora", 500).then((l) => { setLogs(l); setLoading(false); });
   }, []);
 
-  const usuarios = [...new Set(logs.map((l) => l.usuario).filter(Boolean))];
+  const usuarios = [...new Set((Array.isArray(logs) ? logs : []).map((l) => l.usuario).filter(Boolean))];
 
   const filtered = logs.filter((l) => {
     if (modulo !== "todos" && l.modulo !== modulo) return false;
@@ -79,7 +79,7 @@ export default function ActivityLogs() {
         </div>
       ) : (
         <div className="space-y-2">
-          {filtered.map((log) => (
+          {(Array.isArray(filtered) ? filtered : []).map((log) => (
             <Card key={log.id} className="border-0 shadow-sm">
               <CardContent className="p-3 flex items-start gap-3">
                 <div className={`w-2 h-2 rounded-full mt-2 shrink-0 ${MODULE_COLOR[log.modulo]?.replace("text-", "bg-").replace(/\s.*/, "") || "bg-muted"}`} />

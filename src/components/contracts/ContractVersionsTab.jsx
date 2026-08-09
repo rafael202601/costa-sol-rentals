@@ -37,7 +37,7 @@ export default function ContractVersionsTab({ contractId, onRestore, isAdmin }) 
       <p className="text-xs text-muted-foreground mb-3">
         {versions.length} versão(ões) registrada(s) — do mais recente para o mais antigo.
       </p>
-      {versions.map((v, i) => (
+      {(Array.isArray(versions) ? versions : []).map((v, i) => (
         <div key={v.id || i} className="border border-border rounded-xl overflow-hidden">
           <button
             className="w-full flex items-center justify-between p-3 hover:bg-muted/40 transition-colors text-left"

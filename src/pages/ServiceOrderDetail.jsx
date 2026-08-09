@@ -336,9 +336,9 @@ export default function ServiceOrderDetail() {
     const isTotal = novaQtdAtiva === 0;
 
     // Marca a última solicitação pendente como confirmada
-    const historicoAtualizado = (order.historico_recolhas || []).map((r, idx, arr) => {
+    const historicoAtualizado = (Array.isArray(order.historico_recolhas) ? order.historico_recolhas : []).map((r, idx, arr) => {
       // Confirma o último item de solicitação não confirmado
-      if (!r.confirmada && r.tipo === "solicitacao" && idx === arr.map(x => x.tipo === "solicitacao" && !x.confirmada).lastIndexOf(true)) {
+      if (!r.confirmada && r.tipo === "solicitacao" && idx === (Array.isArray(arr) ? arr : []).map(x => x.tipo === "solicitacao" && !x.confirmada).lastIndexOf(true)) {
         return { ...r, confirmada: true, data_confirmacao: format(new Date(), "dd/MM/yyyy HH:mm") };
       }
       return r;
@@ -897,7 +897,7 @@ export default function ServiceOrderDetail() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {(order.historico_recolhas || []).map((r, i) => {
+              {(Array.isArray(order.historico_recolhas) ? order.historico_recolhas : []).map((r, i) => {
                 const isSol = r.tipo === "solicitacao" || !r.tipo;
                 const isConf = r.tipo === "confirmacao";
                 return (
@@ -961,7 +961,7 @@ export default function ServiceOrderDetail() {
                 onAdd={async (newPhotos) => {
                   const fotosRecolha = (order.fotos || []).filter(f => f.tipo === "recolha");
                   const outrasExistentes = (order.fotos || []).filter(f => !f.tipo);
-                  const tagged = (newPhotos || []).map(p => p.tipo ? p : { ...p, tipo: "entrega" });
+                  const tagged = (Array.isArray(newPhotos) ? newPhotos : []).map(p => p.tipo ? p : { ...p, tipo: "entrega" });
                   await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] });
                   load();
                 }}
@@ -987,7 +987,7 @@ export default function ServiceOrderDetail() {
                 onAdd={async (newPhotos) => {
                   const fotosEntrega = (order.fotos || []).filter(f => f.tipo === "entrega");
                   const outrasExistentes = (order.fotos || []).filter(f => !f.tipo);
-                  const tagged = (newPhotos || []).map(p => p.tipo ? p : { ...p, tipo: "recolha" });
+                  const tagged = (Array.isArray(newPhotos) ? newPhotos : []).map(p => p.tipo ? p : { ...p, tipo: "recolha" });
                   await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...fotosEntrega, ...tagged] });
                   load();
                 }}
@@ -1324,7 +1324,7 @@ export default function ServiceOrderDetail() {
                 <SelectTrigger className="mt-1"><SelectValue placeholder="Definir depois..." /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="__nenhum__">Sem veículo (definir depois)</SelectItem>
-                  {vehicles.map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
+                  {(Array.isArray(vehicles) ? vehicles : []).map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -1436,7 +1436,7 @@ export default function ServiceOrderDetail() {
                 <SelectTrigger className="mt-1"><SelectValue placeholder="Selecionar..." /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="__nenhum__">Não informado</SelectItem>
-                  {vehicles.map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
+                  {(Array.isArray(vehicles) ? vehicles : []).map((v) => <SelectItem key={v.id} value={v.placa}>{v.placa} — {v.modelo}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>

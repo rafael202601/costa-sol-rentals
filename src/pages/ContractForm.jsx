@@ -89,7 +89,7 @@ export default function ContractForm() {
             });
             if (!updated.itens) updated.itens = [];
             // Normalizar itens carregados para campos vazios editáveis
-            updated.itens = updated.itens.map((i) => ({
+            updated.itens = (Array.isArray(updated.itens) ? updated.itens : []).map((i) => ({
               ...i,
               valor_unitario: i.valor_unitario === 0 ? "" : (i.valor_unitario ?? ""),
               desconto: i.desconto === 0 ? "" : (i.desconto ?? ""),
@@ -123,7 +123,7 @@ export default function ContractForm() {
       enrichedRef.current = true;
       return {
         ...prev,
-        itens: prev.itens.map((i) => {
+        itens: (Array.isArray(prev.itens) ? prev.itens : []).map((i) => {
           // Só toca em itens que NUNCA tiveram o campo definido (contratos legados)
           if (!i.equipamento_id || i.aplica_valor_minimo !== undefined) return i;
           const eq = equipment.find((e) => e.id === i.equipamento_id);
