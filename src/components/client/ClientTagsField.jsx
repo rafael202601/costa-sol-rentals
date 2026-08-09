@@ -30,15 +30,21 @@ export default function ClientTagsField({ value = [], onChange }) {
   const handleCreate = async () => {
     if (!newTag.trim()) return;
     setCreating(true);
-    const cor = PALETA[allTags.length % PALETA.length];
-    const created = await base44.entities.ClientTag.create({ nome: newTag.trim(), cor });
-    const updated = [...allTags, created];
-    setAllTags(updated);
-    onChange([...selectedIds, created.id]);
-    setNewTag("");
-    setShowInput(false);
-    setCreating(false);
-    toast.success("Etiqueta criada!");
+    try {
+      const cor = PALETA[allTags.length % PALETA.length];
+      const created = await base44.entities.ClientTag.create({ nome: newTag.trim(), cor });
+      const updated = [...allTags, created];
+      setAllTags(updated);
+      onChange([...selectedIds, created.id]);
+      setNewTag("");
+      setShowInput(false);
+      toast.success("Etiqueta criada!");
+    } catch (e) {
+      console.error(e);
+      toast.error("Erro ao criar etiqueta");
+    } finally {
+      setCreating(false);
+    }
   };
 
   const selectedTags = allTags.filter(t => selectedIds.includes(t.id));
