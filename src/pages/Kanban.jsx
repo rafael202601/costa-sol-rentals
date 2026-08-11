@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DollarSign, Clock, Search, FileText, Truck, User, MapPin, Car, RefreshCw, Filter, X, CalendarDays } from "lucide-react";
 import { OpenLocationButton } from "../components/LocationField";
-import { differenceInDays, parseISO, format, isWithinInterval, startOfDay, endOfDay } from "date-fns";
-import { getDataOperacional, getTipoOperacional, STATUS_RECOLHA } from "../lib/dataOperacional";
+import { differenceInDays, parseISO, format } from "date-fns";
+import { getDataOperacional, STATUS_RECOLHA } from "../lib/dataOperacional";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -321,10 +321,10 @@ export default function Kanban() {
 
   const handleAssignDriver = async (id, driverName, type) => {
     if (type === "contract") {
-      await base44.entities.Contract.update(id, { motorista_entrega: driverName });
+      await base44.entities.Contract.update(id, { motorista_entrega: driverName }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setContracts((prev) => (Array.isArray(prev) ? prev : []).map((c) => c.id === id ? { ...c, motorista_entrega: driverName } : c));
     } else {
-      await base44.entities.ServiceOrder.update(id, { motorista_entrega: driverName });
+      await base44.entities.ServiceOrder.update(id, { motorista_entrega: driverName }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setOrders((prev) => (Array.isArray(prev) ? prev : []).map((o) => o.id === id ? { ...o, motorista_entrega: driverName } : o));
     }
     toast.success(driverName ? `Motorista "${driverName}" atribuído!` : "Motorista removido.");
@@ -332,10 +332,10 @@ export default function Kanban() {
 
   const handleAssignVehicle = async (id, placa, type) => {
     if (type === "contract") {
-      await base44.entities.Contract.update(id, { veiculo_entrega: placa });
+      await base44.entities.Contract.update(id, { veiculo_entrega: placa }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setContracts((prev) => (Array.isArray(prev) ? prev : []).map((c) => c.id === id ? { ...c, veiculo_entrega: placa } : c));
     } else {
-      await base44.entities.ServiceOrder.update(id, { veiculo_entrega: placa });
+      await base44.entities.ServiceOrder.update(id, { veiculo_entrega: placa }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setOrders((prev) => (Array.isArray(prev) ? prev : []).map((o) => o.id === id ? { ...o, veiculo_entrega: placa } : o));
     }
     toast.success(placa ? `Veículo "${placa}" atribuído!` : "Veículo removido.");

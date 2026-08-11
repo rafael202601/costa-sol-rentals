@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Hash, History, Package, Wrench, CheckCircle2 } from "lucide-react";
+import { Search, Hash, History, Package, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 

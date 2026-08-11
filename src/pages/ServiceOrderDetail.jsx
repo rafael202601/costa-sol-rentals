@@ -3,7 +3,6 @@ import { base44 } from "@/api/base44Client";
 import { useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
-import WhatsAppButton from "../components/WhatsAppButton";
 import DriverSelect from "../components/DriverSelect";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -766,7 +765,7 @@ export default function ServiceOrderDetail() {
                   <div className="flex flex-col gap-1">
                     <Button
                       onClick={async () => {
-                        await base44.entities.ServiceOrder.update(osId, { status: "finalizada" });
+                        await base44.entities.ServiceOrder.update(osId, { status: "finalizada" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         toast.success("OS finalizada operacionalmente. Cobrança permanece pendente no financeiro.");
                         load();
                       }}
@@ -962,14 +961,14 @@ export default function ServiceOrderDetail() {
                   const fotosRecolha = (order.fotos || []).filter(f => f.tipo === "recolha");
                   const outrasExistentes = (order.fotos || []).filter(f => !f.tipo);
                   const tagged = (Array.isArray(newPhotos) ? newPhotos : []).map(p => p.tipo ? p : { ...p, tipo: "entrega" });
-                  await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] });
+                  await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                   load();
                 }}
                 onRemove={async (idx) => {
                   const fotosEntrega = (order.fotos || []).filter(f => f.tipo === "entrega");
                   const urlToRemove = fotosEntrega[idx]?.url;
                   const updated = (order.fotos || []).filter(f => f.url !== urlToRemove);
-                  await base44.entities.ServiceOrder.update(osId, { fotos: updated });
+                  await base44.entities.ServiceOrder.update(osId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                   load();
                 }}
               />
@@ -988,14 +987,14 @@ export default function ServiceOrderDetail() {
                   const fotosEntrega = (order.fotos || []).filter(f => f.tipo === "entrega");
                   const outrasExistentes = (order.fotos || []).filter(f => !f.tipo);
                   const tagged = (Array.isArray(newPhotos) ? newPhotos : []).map(p => p.tipo ? p : { ...p, tipo: "recolha" });
-                  await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...fotosEntrega, ...tagged] });
+                  await base44.entities.ServiceOrder.update(osId, { fotos: [...outrasExistentes, ...fotosEntrega, ...tagged] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                   load();
                 }}
                 onRemove={async (idx) => {
                   const fotosRecolha = (order.fotos || []).filter(f => f.tipo === "recolha");
                   const urlToRemove = fotosRecolha[idx]?.url;
                   const updated = (order.fotos || []).filter(f => f.url !== urlToRemove);
-                  await base44.entities.ServiceOrder.update(osId, { fotos: updated });
+                  await base44.entities.ServiceOrder.update(osId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                   load();
                 }}
               />
@@ -1012,14 +1011,14 @@ export default function ServiceOrderDetail() {
                   canDelete={isOperador}
                   onAdd={async (newPhotos) => {
                     const fotosTyped = (order.fotos || []).filter(f => f.tipo);
-                    await base44.entities.ServiceOrder.update(osId, { fotos: [...fotosTyped, ...newPhotos] });
+                    await base44.entities.ServiceOrder.update(osId, { fotos: [...fotosTyped, ...newPhotos] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                     load();
                   }}
                   onRemove={async (idx) => {
                     const fotosOutras = (order.fotos || []).filter(f => !f.tipo);
                     const urlToRemove = fotosOutras[idx]?.url;
                     const updated = (order.fotos || []).filter(f => f.url !== urlToRemove);
-                    await base44.entities.ServiceOrder.update(osId, { fotos: updated });
+                    await base44.entities.ServiceOrder.update(osId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                     load();
                   }}
                 />

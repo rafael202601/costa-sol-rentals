@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback } from "react";
 import { Camera, Upload, X, ZoomIn, Download, ChevronLeft, ChevronRight, ImagePlus, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { base44 } from "@/api/base44Client";
 import { format } from "date-fns";
 import { toast } from "sonner";

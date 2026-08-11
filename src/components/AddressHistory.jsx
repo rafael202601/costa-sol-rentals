@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { MapPin, ChevronDown, ChevronUp, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 /**
  * Exibe histórico de endereços anteriores do cliente para seleção rápida.

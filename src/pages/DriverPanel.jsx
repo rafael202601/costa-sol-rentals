@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { format, addDays, subDays, startOfMonth } from "date-fns";
-import { getDataOperacional, STATUS_RECOLHA } from "../lib/dataOperacional";
+import { getDataOperacional } from "../lib/dataOperacional";
 import CargaResumo from "../components/driver/CargaResumo";
 import ParadaCard from "../components/driver/ParadaCard";
 import ChecklistCarga from "../components/driver/ChecklistCarga";

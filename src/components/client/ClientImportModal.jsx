@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Upload, FileText, CheckCircle2, AlertCircle, RefreshCw, Download } from "lucide-react";
+import { Upload, FileText, CheckCircle2, RefreshCw, Download } from "lucide-react";
 
 const HEADER_MAP = {
   // Padrão novo (inglês)

@@ -135,7 +135,7 @@ export function ApproveEditDialog({ open, onClose, entry, currentUser, onDone })
   const handleReject = async () => {
     setSaving(true);
     const solicitacoes = await updateSolicitacao("rejeitado", { motivo_rejeicao: rejMotivo });
-    await base44.entities.CashEntry.update(entry.id, { solicitacoes_edicao: solicitacoes });
+    await base44.entities.CashEntry.update(entry.id, { solicitacoes_edicao: solicitacoes }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     setSaving(false);
     toast.success("Solicitação rejeitada.");
     onDone?.();

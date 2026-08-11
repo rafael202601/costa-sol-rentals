@@ -11,10 +11,10 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Plus, Pencil, Trash2, Star, Eye, EyeOff, ImageIcon, Pin, Archive,
-  RotateCcw, Bell, Clock, AlertTriangle, Paperclip, X, Search, Filter
+  Plus, Pencil, Trash2, ImageIcon, Pin, Archive,
+  RotateCcw, Bell, Paperclip, X, Search
 } from "lucide-react";
-import { format, parseISO, isAfter, isBefore, isToday } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { toast } from "sonner";
 
 const PRIORIDADE_CFG = {
@@ -88,10 +88,10 @@ export default function Announcements() {
     const status = computeStatus(form);
     const data = { ...form, status };
     if (editing) {
-      await base44.entities.Announcement.update(editing, data);
+      await base44.entities.Announcement.update(editing, data).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Anúncio atualizado!");
     } else {
-      await base44.entities.Announcement.create(data);
+      await base44.entities.Announcement.create(data).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Anúncio criado!");
     }
     setOpen(false);
@@ -99,26 +99,26 @@ export default function Announcements() {
   };
 
   const handleDelete = async (id) => {
-    await base44.entities.Announcement.delete(id);
+    await base44.entities.Announcement.delete(id).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Excluído.");
     load();
   };
 
   const handleArchive = async (item) => {
-    await base44.entities.Announcement.update(item.id, { ativo: false, status: "arquivado" });
+    await base44.entities.Announcement.update(item.id, { ativo: false, status: "arquivado" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Anúncio arquivado.");
     load();
   };
 
   const handleReactivate = async (item) => {
     const status = item.data_fim && item.data_fim < format(new Date(), "yyyy-MM-dd") ? "ativo" : computeStatus({ ...item, ativo: true, data_fim: "" });
-    await base44.entities.Announcement.update(item.id, { ativo: true, status, data_fim: "" });
+    await base44.entities.Announcement.update(item.id, { ativo: true, status, data_fim: "" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Anúncio reativado!");
     load();
   };
 
   const handleTogglePin = async (item) => {
-    await base44.entities.Announcement.update(item.id, { fixado: !item.fixado });
+    await base44.entities.Announcement.update(item.id, { fixado: !item.fixado }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     load();
   };
 

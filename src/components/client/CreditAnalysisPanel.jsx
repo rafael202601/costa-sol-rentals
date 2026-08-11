@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, CheckCircle2, RefreshCw, ShieldAlert, TrendingUp, Ban } from "lucide-react";
 import { calcularClassificacao, getScoreBadgeClass } from "../../lib/clientScore";
 import { toast } from "sonner";

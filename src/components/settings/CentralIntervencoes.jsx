@@ -3,11 +3,9 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import {
-  AlertTriangle, Clock, CheckCircle2, UserCheck, Bot, RefreshCw,
-  Phone, MessageSquare, Send, RotateCcw, ChevronDown, ChevronUp,
-  Lock, ArrowRightLeft, XCircle, Zap, User
+import { Clock, CheckCircle2, UserCheck, Bot, RefreshCw,
+  Phone, Send, ChevronDown, ChevronUp,
+  Lock, ArrowRightLeft, Zap, User
 } from "lucide-react";
 import { toast } from "sonner";
 

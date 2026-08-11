@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Brain, Building2, Shield, MessageSquare, Lightbulb,
-  Plus, Trash2, CheckCircle2, XCircle, Save
+  Plus, Trash2, CheckCircle2, XCircle
 } from "lucide-react";
 import BaseConhecimentoIA from "./BaseConhecimentoIA";
 

@@ -9,18 +9,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Save, Trash2, Plus, X, Building2, Search, RefreshCw, AlertCircle, CheckCircle2, FileText, Clock, Ban, ShieldX } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Plus, X, Building2, Search, RefreshCw, AlertCircle, CheckCircle2, FileText, Clock, Ban } from "lucide-react";
 import { toast } from "sonner";
-import { showError, SAVE_ERRORS } from "../lib/errorHandler";
+import { showError } from "../lib/errorHandler";
 import { getNextClientCode, isClientCodeDuplicate } from "../lib/sequentialNumber";
-import { formatCPF, formatCNPJ, formatCPFCNPJ, validarCPF, validarCNPJ, validarDocumento } from "../lib/cpfCnpj";
-import { calcularScoreFromContracts, calcularClassificacao } from "../lib/clientScore";
+import { formatCPF, formatCNPJ, formatCPFCNPJ, validarCNPJ, validarDocumento } from "../lib/cpfCnpj";
+import { calcularScoreFromContracts } from "../lib/clientScore";
 import ClientScoreBadge from "../components/client/ClientScoreBadge";
 import ClientDocuments from "../components/client/ClientDocuments";
 import ClientTagsField from "../components/client/ClientTagsField";
 import FichaCadastralDialog from "../components/client/FichaCadastralDialog";
 import { PERIODOS_VALIDADE, calcularDataValidade, getStatusValidade, getValidadeConfig, getDiasParaValidade } from "../lib/clientValidade";
-import { format as fmtDate, parseISO, addDays, addMonths } from "date-fns";
+import { format as fmtDate, addDays, addMonths } from "date-fns";
 
 // Prazos para pessoas autorizadas
 const PRAZOS_PESSOA = [
@@ -416,7 +416,7 @@ export default function ClientForm() {
 
   const handleDelete = async () => {
     if (!confirm("Tem certeza que deseja excluir este cliente?")) return;
-    await base44.entities.Client.delete(clientId);
+    await base44.entities.Client.delete(clientId).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Cliente excluído");
     navigate("/clientes");
   };

@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Search, Pencil, Package, AlertTriangle, Barcode, ScanLine } from "lucide-react";
+import { Plus, Search, Pencil, Package, AlertTriangle, Barcode } from "lucide-react";
 import { toast } from "sonner";
 
 const EMPTY = {
@@ -52,10 +52,10 @@ export default function Products() {
     if (!form.nome) return toast.error("Nome é obrigatório");
     setSaving(true);
     if (editId) {
-      await base44.entities.Product.update(editId, form);
+      await base44.entities.Product.update(editId, form).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Produto atualizado!");
     } else {
-      await base44.entities.Product.create(form);
+      await base44.entities.Product.create(form).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Produto criado!");
     }
     setSaving(false);

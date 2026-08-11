@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { GitBranch, ChevronDown, ChevronRight, User, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 
 export default function ContractVersionsTab({ contractId, onRestore, isAdmin }) {
   const [versions, setVersions] = useState([]);

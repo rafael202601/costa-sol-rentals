@@ -18,7 +18,7 @@ import BloqueioClienteDialog from "../components/client/BloqueioClienteDialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import DriverSelect from "../components/DriverSelect";
 import { toast } from "sonner";
-import { showError, SAVE_ERRORS } from "../lib/errorHandler";
+import { showError } from "../lib/errorHandler";
 import { getNextNumber } from "../lib/sequentialNumber";
 import SignatureDialog from "../components/SignatureDialog";
 import { format } from "date-fns";

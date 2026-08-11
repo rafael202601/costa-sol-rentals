@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Plus, Package, Pencil, Trash2, Search, Upload, ImageIcon, Link as LinkIcon, Wrench, Hash, ScanBarcode } from "lucide-react";
 import SerialManager from "../components/equipment/SerialManager";
 import { toast } from "sonner";

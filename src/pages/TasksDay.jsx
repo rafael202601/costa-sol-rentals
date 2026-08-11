@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Plus, Bell, ListTodo, Eye, Megaphone, LayoutGrid, Calendar, Send, Trash2,
-  MessageSquare, Search, X, BarChart3, CheckCircle2, Clock, AlertTriangle, Filter
+  MessageSquare, Search, X, AlertTriangle
 } from "lucide-react";
 import { toast } from "sonner";
 import { format, isToday, parseISO } from "date-fns";

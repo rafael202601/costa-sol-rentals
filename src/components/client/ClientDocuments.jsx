@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Upload, Trash2, Eye, Download, FileText, Image, File, Camera } from "lucide-react";
 import { toast } from "sonner";
@@ -37,7 +35,7 @@ export default function ClientDocuments({ clientId, fotoUrl, onFotoChange }) {
   };
 
   const saveDocs = async (newDocs) => {
-    await base44.entities.Client.update(clientId, { documentos: newDocs });
+    await base44.entities.Client.update(clientId, { documentos: newDocs }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     setDocs(newDocs);
   };
 
@@ -123,7 +121,7 @@ export default function ClientDocuments({ clientId, fotoUrl, onFotoChange }) {
               </span>
             </label>
             {fotoUrl && (
-              <button onClick={async () => { await base44.entities.Client.update(clientId, { foto_url: "" }); onFotoChange?.(""); toast.success("Foto removida."); }}
+              <button onClick={async () => { await base44.entities.Client.update(clientId, { foto_url: "" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; }); onFotoChange?.(""); toast.success("Foto removida."); }}
                 className="text-xs text-destructive hover:underline block">
                 Remover foto
               </button>

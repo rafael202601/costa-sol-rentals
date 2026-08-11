@@ -89,9 +89,9 @@ export default function CashAutoConfigPanel({ currentUser, openCash, registers, 
       configurado_em: format(new Date(), "dd/MM/yyyy HH:mm"),
     };
     if (configId) {
-      await base44.entities.CashAutoConfig.update(configId, payload);
+      await base44.entities.CashAutoConfig.update(configId, payload).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     } else {
-      const created = await base44.entities.CashAutoConfig.create(payload);
+      const created = await base44.entities.CashAutoConfig.create(payload).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setConfigId(created.id);
     }
     toast.success("Configurações salvas! As automações serão aplicadas no próximo ciclo.");

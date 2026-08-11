@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import {
   Search, RefreshCw, MessageSquare, Bot, User, Phone,
   ChevronLeft, AlertCircle, XCircle, BarChart3,
-  Filter, Calendar, UserCheck, UserX, CheckCircle2,
-  Clock, HandHelping, Undo2, Users, ChevronRight,
-  SendHorizonal, Lock, ArrowRightLeft, Zap
+  Filter, Calendar, UserCheck, UserX, CheckCircle2, HandHelping, Undo2, Users, ChevronRight,
+  SendHorizonal, Lock, ArrowRightLeft
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";

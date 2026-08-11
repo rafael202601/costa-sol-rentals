@@ -26,7 +26,7 @@ export default function TaskKanban({ tasks, user, onEdit, onDelete, onReload }) 
       updateData.data_conclusao = new Date().toISOString();
       updateData.concluido_por = user?.full_name || user?.email || "—";
     }
-    await base44.entities.Task.update(taskId, updateData);
+    await base44.entities.Task.update(taskId, updateData).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     onReload();
   };
 

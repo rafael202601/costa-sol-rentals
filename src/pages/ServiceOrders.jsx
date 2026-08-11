@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, memo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link, useNavigate } from "react-router-dom";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Search, Truck, MapPin, DollarSign, Filter, X, Calendar, RefreshCw, Tag, Hash } from "lucide-react";
-import { format, parseISO, subDays, startOfMonth } from "date-fns";
+import { format, subDays, startOfMonth } from "date-fns";
 import { cn } from "@/lib/utils";
 
 const TODAY = format(new Date(), "yyyy-MM-dd");

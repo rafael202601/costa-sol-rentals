@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Download, Upload, Eye, FileText, AlertCircle, CheckCircle2, Clock, XCircle, Plus, Trash2 } from "lucide-react";
+import { Download, Upload, Eye, FileText, CheckCircle2, Plus, Trash2 } from "lucide-react";
 import { format, parseISO, isBefore, startOfToday } from "date-fns";
 import { toast } from "sonner";
 
@@ -99,7 +99,7 @@ export default function FinancialDocumentsTab({ note, onUpdated }) {
       criado_em: new Date().toISOString(),
     };
     const docsAtualizados = [...(note.documentos_financeiros || []), novoDoc];
-    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Documento salvo!");
     setSaving(false);
     setShowForm(false);
@@ -110,7 +110,7 @@ export default function FinancialDocumentsTab({ note, onUpdated }) {
   const handleMarcarPago = async (idx) => {
     const docsAtualizados = [...(note.documentos_financeiros || [])];
     docsAtualizados[idx] = { ...docsAtualizados[idx], status: "pago" };
-    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Documento marcado como pago!");
     onUpdated(updated);
   };
@@ -118,7 +118,7 @@ export default function FinancialDocumentsTab({ note, onUpdated }) {
   const handleRemover = async (idx) => {
     if (!window.confirm("Remover este documento?")) return;
     const docsAtualizados = (note.documentos_financeiros || []).filter((_, i) => i !== idx);
-    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados });
+    const updated = await base44.entities.BillingNote.update(note.id, { documentos_financeiros: docsAtualizados }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Documento removido");
     onUpdated(updated);
   };

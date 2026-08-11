@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Search, Trash2, ShoppingCart, Check, X, Download, Pencil, Calendar, ChevronDown } from "lucide-react";
+import { Plus, Search, Trash2, ShoppingCart, Check, X, Download, Pencil, Calendar } from "lucide-react";
 import { toast } from "sonner";
 import { generateSalePDF } from "../lib/generateSalePDF";
 import { format, subDays, startOfMonth } from "date-fns";
@@ -274,7 +274,7 @@ export default function Sales() {
     } else {
       const numero = await getNextNumber();
       const saleData = { ...form, numero, criado_por: user?.email || "" };
-      await base44.entities.Sale.create(saleData);
+      await base44.entities.Sale.create(saleData).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Venda registrada! Aguardando aprovação financeira.");
     }
 
@@ -354,7 +354,7 @@ export default function Sales() {
         client_nome: sale.client_nome,
         status: "pendente",
       });
-      await base44.entities.Client.update(sale.client_id, { pendencia_financeira: true });
+      await base44.entities.Client.update(sale.client_id, { pendencia_financeira: true }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     }
 
     const msg = saldoPendente > 0
@@ -365,7 +365,7 @@ export default function Sales() {
   };
 
   const handleCancel = async (sale) => {
-    await base44.entities.Sale.update(sale.id, { status: "cancelado" });
+    await base44.entities.Sale.update(sale.id, { status: "cancelado" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Venda cancelada.");
     loadSales();
   };

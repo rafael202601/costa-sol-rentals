@@ -10,8 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import {
   Bot, Key, Eye, EyeOff, CheckCircle2, AlertCircle, Wifi, WifiOff,
-  MessageSquare, Settings2, Shield, BarChart3, RefreshCw, Save,
-  Zap, FileText, DollarSign, Lock, Unlock, TestTube2, Smartphone, Globe, Brain, History, Users, Activity, GitBranch
+  MessageSquare, Settings2, Shield, RefreshCw, Save,
+  Zap, FileText, DollarSign, Lock, Unlock, TestTube2, Smartphone, Brain, History, Users, Activity, GitBranch
 } from "lucide-react";
 import { toast } from "sonner";
 import AgenteIAKnowledgeSettings from "./AgenteIAKnowledgeSettings";
@@ -228,9 +228,9 @@ export default function AgenteIASettings() {
   const saveFieldImmediate = async (field, value) => {
     const patch = { [field]: value };
     if (settingsId) {
-      await base44.entities.AgentSettings.update(settingsId, patch);
+      await base44.entities.AgentSettings.update(settingsId, patch).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     } else {
-      const created = await base44.entities.AgentSettings.create({ ...DEFAULTS, [field]: value });
+      const created = await base44.entities.AgentSettings.create({ ...DEFAULTS, [field]: value }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setSettingsId(created.id);
     }
     // Atualiza o form local também
@@ -248,9 +248,9 @@ export default function AgenteIASettings() {
     delete payload.created_by;
 
     if (settingsId) {
-      await base44.entities.AgentSettings.update(settingsId, payload);
+      await base44.entities.AgentSettings.update(settingsId, payload).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     } else {
-      const created = await base44.entities.AgentSettings.create(payload);
+      const created = await base44.entities.AgentSettings.create(payload).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setSettingsId(created.id);
     }
     toast.success("Configurações do Agente IA salvas com sucesso!");

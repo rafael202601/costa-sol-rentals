@@ -204,9 +204,9 @@ export default function Settings() {
   const handleSave = async () => {
     setSaving(true);
     if (settingsId) {
-      await base44.entities.CompanySettings.update(settingsId, form);
+      await base44.entities.CompanySettings.update(settingsId, form).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     } else {
-      const created = await base44.entities.CompanySettings.create(form);
+      const created = await base44.entities.CompanySettings.create(form).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setSettingsId(created.id);
     }
     toast.success("Configurações salvas!");

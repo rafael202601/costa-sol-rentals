@@ -189,7 +189,7 @@ export default function FichaCadastralDialog({ open, onOpenChange, client, onCli
     const docsAtuais = client.documentos || [];
     const fichaReal = fichas[idx];
     const updated = docsAtuais.filter(d => d !== fichaReal);
-    await base44.entities.Client.update(client.id, { documentos: updated });
+    await base44.entities.Client.update(client.id, { documentos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Ficha removida.");
     if (onClientUpdate) onClientUpdate();
   };

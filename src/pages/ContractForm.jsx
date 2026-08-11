@@ -19,12 +19,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import AndaimeCalculator from "../components/andaime/AndaimeCalculator";
 import DriverSelect from "../components/DriverSelect";
 import FreightCalculator from "../components/freight/FreightCalculator";
-import { addDays, addMonths, format, parseISO } from "date-fns";
+import { addDays, addMonths, format } from "date-fns";
 import { toast } from "sonner";
-import { showError, SAVE_ERRORS } from "../lib/errorHandler";
+import { showError } from "../lib/errorHandler";
 import { getNextNumber } from "../lib/sequentialNumber";
 import { calcContractTotal, getDiasContrato, calcValorMinimoLocacao } from "../lib/contractCalc";
-import { isCadastroVencido, getStatusValidade, getValidadeConfig, getDiasParaValidade } from "../lib/clientValidade";
+import { isCadastroVencido } from "../lib/clientValidade";
 import { getClienteRestricoes, PendenciaFinanceiraDialog } from "../components/client/ClientStatusAlert";
 import BloqueioClienteDialog from "../components/client/BloqueioClienteDialog";
 
@@ -174,7 +174,7 @@ export default function ContractForm() {
     });
     setCalcInfo(result);
     setForm((prev) => ({ ...prev, valor_total: result.valorTotal, saldo_pagar: result.saldoPagar }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [form.itens, form.frete, form.valor_pago, form.sinal, form.prazo_valor, form.prazo_tipo, settings]);
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
@@ -456,7 +456,7 @@ export default function ContractForm() {
           }
           return n;
         });
-        await base44.entities.Equipment.update(item.equipamento_id, { numeracoes: updatedNumeracoes });
+        await base44.entities.Equipment.update(item.equipamento_id, { numeracoes: updatedNumeracoes }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       }
     };
 

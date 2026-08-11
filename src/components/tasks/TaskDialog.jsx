@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { PRIO_CONFIG, STATUS_CONFIG, CATEGORIA_CONFIG } from "./TaskConfig";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Plus, Trash2, Send, Paperclip, CheckSquare, Eye, EyeOff, X } from "lucide-react";
+import { Plus, Trash2, Send, Paperclip, Eye, EyeOff, X } from "lucide-react";
 
 export default function TaskDialog({ open, onOpenChange, task, user, onSaved }) {
   const [form, setForm] = useState(task);
@@ -88,10 +88,10 @@ export default function TaskDialog({ open, onOpenChange, task, user, onSaved }) 
       usuario_nome: user?.full_name || user?.email || "",
     };
     if (form.id) {
-      await base44.entities.Task.update(form.id, data);
+      await base44.entities.Task.update(form.id, data).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Tarefa salva!");
     } else {
-      await base44.entities.Task.create(data);
+      await base44.entities.Task.create(data).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Tarefa criada!");
     }
     setSaving(false);

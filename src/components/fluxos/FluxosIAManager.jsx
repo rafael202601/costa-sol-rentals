@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Plus, Search, Loader2, AlertCircle, Zap } from "lucide-react";
@@ -96,23 +95,23 @@ export default function FluxosIAManager() {
 
   const handleSave = async (form) => {
     if (form.id) {
-      await base44.entities.FluxoIA.update(form.id, form);
+      await base44.entities.FluxoIA.update(form.id, form).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Fluxo atualizado!");
     } else {
-      await base44.entities.FluxoIA.create(form);
+      await base44.entities.FluxoIA.create(form).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       toast.success("Fluxo criado!");
     }
     await load();
   };
 
   const handleToggle = async (fluxo, ativo) => {
-    await base44.entities.FluxoIA.update(fluxo.id, { ativo });
+    await base44.entities.FluxoIA.update(fluxo.id, { ativo }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     setFluxos(f => f.map(x => x.id === fluxo.id ? { ...x, ativo } : x));
     toast.success(ativo ? "Fluxo ativado" : "Fluxo desativado");
   };
 
   const handleDelete = async () => {
-    await base44.entities.FluxoIA.delete(deletando.id);
+    await base44.entities.FluxoIA.delete(deletando.id).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     setDeletando(null);
     toast.success("Fluxo removido");
     await load();
@@ -121,7 +120,7 @@ export default function FluxosIAManager() {
   const handleCriarPadrao = async () => {
     setLoading(true);
     for (const f of FLUXOS_PADRAO) {
-      await base44.entities.FluxoIA.create(f);
+      await base44.entities.FluxoIA.create(f).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     }
     toast.success(`${FLUXOS_PADRAO.length} fluxos padrão criados!`);
     await load();

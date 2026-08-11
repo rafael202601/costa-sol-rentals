@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import {
   ArrowLeft, Pencil, Phone, Mail, MapPin, Ban, AlertCircle,
-  FileText, Truck, DollarSign, User, Building2, HardHat, Receipt, Search, X, TrendingUp, Eye, ShoppingCart
+  FileText, Truck, DollarSign, User, Building2, HardHat, Receipt, X, TrendingUp, Eye
 } from "lucide-react";
 import { calcularScoreFromContracts } from "../lib/clientScore";
 import { calcContractTotal, getDiasContrato } from "../lib/contractCalc";

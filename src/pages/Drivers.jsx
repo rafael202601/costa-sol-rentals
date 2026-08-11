@@ -66,7 +66,7 @@ export default function Drivers() {
   };
 
   const toggleStatus = async (d) => {
-    await base44.entities.Driver.update(d.id, { status: d.status === "ativo" ? "inativo" : "ativo" });
+    await base44.entities.Driver.update(d.id, { status: d.status === "ativo" ? "inativo" : "ativo" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     load();
   };
 

@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Circle, Clock, AlertCircle } from "lucide-react";
+import { CheckCircle2, Circle, Clock } from "lucide-react";
 
 /**
  * Painel visual do estado atual de uma conversa num fluxo específico.

@@ -560,7 +560,7 @@ export default function CashFlow() {
               updates.ultima_nota_paga_ate = pagoAteData;
             }
             if (novoSaldo === 0 && ct.status === "devolvido_pendente") updates.status = "finalizado";
-            await base44.entities.Contract.update(item.id, updates);
+            await base44.entities.Contract.update(item.id, updates).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
 
             // ─── Gerar BillingNote automática se não veio de uma nota já existente
             const temNotaVinculada = !!(req.nota_id || (req.observacoes || "").match(/Nota\s*#(\S+)/i));
@@ -628,7 +628,7 @@ export default function CashFlow() {
         } else if (item.tipo === "os" && item.id) {
           const valorOS = item.valor_final || item.valor || 0;
           saldoRestante -= Math.min(saldoRestante, valorOS);
-          await base44.entities.ServiceOrder.update(item.id, { status_pagamento: "pago" });
+          await base44.entities.ServiceOrder.update(item.id, { status_pagamento: "pago" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
         }
       }
 
@@ -669,7 +669,7 @@ export default function CashFlow() {
         const pagsAtualizados = (notaVinculada.pagamentos || []).map(p =>
           p.status === "aguardando_confirmacao" ? { ...p, status: "rejeitado" } : p
         );
-        await base44.entities.BillingNote.update(notaVinculada.id, { pagamentos: pagsAtualizados });
+        await base44.entities.BillingNote.update(notaVinculada.id, { pagamentos: pagsAtualizados }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       }
     }
 

@@ -179,7 +179,7 @@ export default function Vehicles() {
 
   const deleteExpense = async (id) => {
     if (!confirm("Remover esta despesa?")) return;
-    await base44.entities.VehicleExpense.delete(id);
+    await base44.entities.VehicleExpense.delete(id).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Despesa removida!");
     load();
   };

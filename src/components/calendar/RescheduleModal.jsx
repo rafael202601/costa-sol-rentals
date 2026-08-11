@@ -4,9 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Truck, User, Car, CheckCircle2, AlertTriangle } from "lucide-react";
-import { format, parseISO } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { Calendar, User, Car, CheckCircle2, AlertTriangle } from "lucide-react";
 
 export default function RescheduleModal({ open, event, drivers, vehicles, onConfirm, onCancel }) {
   const [novaData, setNovaData] = useState("");

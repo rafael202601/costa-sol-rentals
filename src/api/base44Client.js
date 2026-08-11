@@ -113,7 +113,23 @@ function createEntityAdapter(entityName) {
         }
       });
 
-      const { data, error } = await supabase.from(tableName).insert([cleanPayload]).select();
+      let data, error;
+      for (let attempt = 0; attempt < 10; attempt++) {
+        const res = await supabase.from(tableName).insert([cleanPayload]).select();
+        data = res.data;
+        error = res.error;
+        if (!error) break;
+        if (error.code === 'PGRST204') {
+          const match = error.message.match(/Could not find the '([^']+)' column/);
+          if (match && match[1]) {
+            console.warn(`[Auto-Heal] Removendo coluna inexistente '${match[1]}' da tabela '${tableName}' (create)`);
+            delete cleanPayload[match[1]];
+            continue;
+          }
+        }
+        break;
+      }
+
       if (error) {
         console.error("ERRO SUPABASE INSERT:", error);
         throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);
@@ -132,7 +148,23 @@ function createEntityAdapter(entityName) {
         }
       });
 
-      const { data, error } = await supabase.from(tableName).update(cleanPayload).eq('id', id).select();
+      let data, error;
+      for (let attempt = 0; attempt < 10; attempt++) {
+        const res = await supabase.from(tableName).update(cleanPayload).eq('id', id).select();
+        data = res.data;
+        error = res.error;
+        if (!error) break;
+        if (error.code === 'PGRST204') {
+          const match = error.message.match(/Could not find the '([^']+)' column/);
+          if (match && match[1]) {
+            console.warn(`[Auto-Heal] Removendo coluna inexistente '${match[1]}' da tabela '${tableName}' (update)`);
+            delete cleanPayload[match[1]];
+            continue;
+          }
+        }
+        break;
+      }
+
       if (error) {
         console.error("ERRO SUPABASE UPDATE:", error);
         throw new Error(`[ERRO SUPABASE] ${error.message || JSON.stringify(error)}`);

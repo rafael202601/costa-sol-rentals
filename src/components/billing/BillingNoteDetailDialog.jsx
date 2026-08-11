@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { FileText, Paperclip, XCircle, CheckCircle, Download, MessageCircle, Clock, Edit2, AlertCircle } from "lucide-react";
+import { Paperclip, XCircle, Download, MessageCircle, Clock, Edit2, AlertCircle } from "lucide-react";
 import FinancialDocumentsTab from "./FinancialDocumentsTab";
 import NFeBoletoPainel from "./NFeBoletoPainel";
 import { format, parseISO } from "date-fns";
@@ -198,7 +198,7 @@ export default function BillingNoteDetailDialog({ open, note, client, settings, 
 
     const pagamentos = [...(note.pagamentos || []), newPag];
     // Saldo NÃO é abatido ainda — só após aprovação
-    const updated = await base44.entities.BillingNote.update(note.id, { pagamentos });
+    const updated = await base44.entities.BillingNote.update(note.id, { pagamentos }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
 
     await log(
       "Pagamento registrado — aguardando aprovação",
@@ -244,7 +244,7 @@ export default function BillingNoteDetailDialog({ open, note, client, settings, 
       usuario: meu?.email || meu?.full_name || "",
     };
     const anexos = [...(note.anexos || []), anexo];
-    const updated = await base44.entities.BillingNote.update(note.id, { anexos });
+    const updated = await base44.entities.BillingNote.update(note.id, { anexos }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Anexo adicionado!");
     setUploading(false);
     onUpdated(updated);
@@ -321,7 +321,7 @@ export default function BillingNoteDetailDialog({ open, note, client, settings, 
       texto: novaObs.trim(),
     };
     const historico = [...(note.historico_observacoes || []), novoItem];
-    const updated = await base44.entities.BillingNote.update(note.id, { historico_observacoes: historico });
+    const updated = await base44.entities.BillingNote.update(note.id, { historico_observacoes: historico }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     setNovaObs("");
     setSavingObs(false);
     onUpdated(updated);

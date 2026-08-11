@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Upload, FileText, CheckCircle2, AlertCircle, RefreshCw, Download } from "lucide-react";
-import { toast } from "sonner";
 import { getNextNumber } from "@/lib/sequentialNumber";
 
 // Mapeamento de cabeçalhos CSV → campos internos

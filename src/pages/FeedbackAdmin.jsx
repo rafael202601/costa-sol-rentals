@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import {
   Star, MessageSquare, ThumbsUp, ThumbsDown, Lightbulb, Wrench, Truck, Package,
-  Search, Send, Archive, CheckCircle, Filter, Paperclip
+  Search, Send, Archive, Paperclip
 } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
@@ -78,7 +78,7 @@ export default function FeedbackAdmin() {
   };
 
   const handleArchive = async (id) => {
-    await base44.entities.Feedback.update(id, { status: "arquivado" });
+    await base44.entities.Feedback.update(id, { status: "arquivado" }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     toast.success("Arquivado.");
     load();
   };

@@ -16,9 +16,8 @@ import {
 import { OpenLocationButton } from "../components/LocationField";
 import {
   format, startOfMonth, endOfMonth, eachDayOfInterval,
-  isSameDay, parseISO, addMonths, subMonths, getDay, isWithinInterval
+  isSameDay, parseISO, addMonths, subMonths, getDay
 } from "date-fns";
-import { getDataOperacional, STATUS_RECOLHA } from "../lib/dataOperacional";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner";
 import RescheduleModal from "../components/calendar/RescheduleModal";

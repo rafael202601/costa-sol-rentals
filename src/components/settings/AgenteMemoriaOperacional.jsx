@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { RefreshCw, Search, Trash2, Bot, ChevronDown, ChevronRight } from 'lucide-react';
@@ -200,7 +200,7 @@ export default function AgenteMemoriaOperacional() {
   useEffect(() => { carregar(); }, []);
 
   const deletar = async (id) => {
-    await base44.entities.ConversationState.delete(id);
+    await base44.entities.ConversationState.delete(id).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     setEstados(prev => prev.filter(e => e.id !== id));
     if (selectedId === id) setSelectedId(null);
   };

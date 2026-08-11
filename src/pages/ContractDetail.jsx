@@ -12,23 +12,20 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   ArrowLeft, Pencil, Truck, HandMetal, RotateCcw, CheckCircle2,
-  DollarSign, RefreshCcw, FileDown, Calendar, MapPin, Package, PackageCheck, PenLine,
-  XCircle, MessageSquare, Lock, History, GitBranch, ShieldAlert, Upload, Paperclip, Clock, ScanBarcode, Images, ArrowLeftRight
+  DollarSign, RefreshCcw, FileDown, Package, PackageCheck, PenLine,
+  XCircle, MessageSquare, Lock, History, GitBranch, ShieldAlert, Paperclip, Clock, ScanBarcode, Images, ArrowLeftRight
 } from "lucide-react";
 import PhotoGallery from "../components/PhotoGallery";
 import SerialSelector from "../components/equipment/SerialSelector";
-import { OpenLocationButton } from "../components/LocationField";
 import { differenceInDays, parseISO, format, addDays, addMonths } from "date-fns";
 import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 import { showError } from "../lib/errorHandler";
 import { usePermissions } from "@/lib/usePermissions";
 import SaleReciboButton from "../components/sales/SaleReciboButton";
-import { generateReciboPDF } from "../lib/generateRecibo";
 import { generateContractPDF } from "../lib/generateContractPDF";
 import { generateContractQuitadoPDF } from "../lib/generateQuitadoPDF";
 import WhatsAppSendDialog from "../components/WhatsAppSendDialog";
-import { getNextNumber } from "../lib/sequentialNumber";
 import SignatureDialog from "../components/SignatureDialog";
 import DynamicBillingCard from "../components/contracts/DynamicBillingCard";
 import BillingRestartInfo from "../components/BillingRestartInfo";
@@ -36,7 +33,6 @@ import { calcContractTotal, getDiasContrato, calcValorMinimoLocacao } from "../l
 import ContractAuditTab from "../components/contracts/ContractAuditTab";
 import ContractVersionsTab from "../components/contracts/ContractVersionsTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { generateReciboDevolucaoPDF } from "../lib/generateReciboDevolucao";
 import ReciboDevolucaoButton from "../components/devolucao/ReciboDevolucaoButton";
 import HistoricoDevolucoes from "../components/devolucao/HistoricoDevolucoes";
 import TrocaEquipamentoDialog from "../components/troca/TrocaEquipamentoDialog";
@@ -112,6 +108,18 @@ export default function ContractDetail() {
         const all = await base44.entities.Contract.list("-created_date", 2000);
         c = all.find(x => x.id === contractId) || null;
       } catch { /* ignore */ }
+    }
+
+    if (c) {
+      if (typeof c.itens === 'string') { try { c.itens = JSON.parse(c.itens); } catch { c.itens = []; } }
+      if (typeof c.historico_recolhas === 'string') { try { c.historico_recolhas = JSON.parse(c.historico_recolhas); } catch { c.historico_recolhas = []; } }
+      if (typeof c.recolha_parcial_itens === 'string') { try { c.recolha_parcial_itens = JSON.parse(c.recolha_parcial_itens); } catch { c.recolha_parcial_itens = []; } }
+      if (typeof c.fotos === 'string') { try { c.fotos = JSON.parse(c.fotos); } catch { c.fotos = []; } }
+      
+      c.itens = Array.isArray(c.itens) ? c.itens : [];
+      c.historico_recolhas = Array.isArray(c.historico_recolhas) ? c.historico_recolhas : [];
+      c.recolha_parcial_itens = Array.isArray(c.recolha_parcial_itens) ? c.recolha_parcial_itens : [];
+      c.fotos = Array.isArray(c.fotos) ? c.fotos : [];
     }
 
     setContract(c);
@@ -345,7 +353,7 @@ export default function ContractDetail() {
     if (novoSaldo === 0 && contract.status === "devolvido_pendente") {
       updates.status = "finalizado";
     }
-    await base44.entities.Contract.update(contractId, updates);
+    await base44.entities.Contract.update(contractId, updates).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
   };
 
   const handleLogisticReturn = async () => {
@@ -478,7 +486,7 @@ export default function ContractDetail() {
         data_prevista_termino: dataRecolhaFinal,
       };
       if (recolhaMotorista) recolhaUpdate.motorista_recolha = recolhaMotorista;
-      await base44.entities.Contract.update(contractId, recolhaUpdate);
+      await base44.entities.Contract.update(contractId, recolhaUpdate).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setRecolhaDialog(false);
       toast.success("Recolha parcial solicitada! Aparecerá no calendário e quadro logístico.");
       load();
@@ -491,7 +499,7 @@ export default function ContractDetail() {
         data_prevista_termino: dataRecolhaFinal,
       };
       if (recolhaMotorista) recolhaUpdate.motorista_recolha = recolhaMotorista;
-      await base44.entities.Contract.update(contractId, recolhaUpdate);
+      await base44.entities.Contract.update(contractId, recolhaUpdate).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
       setRecolhaDialog(false);
       setRecolhaMotorista("");
       setRecolhaData("");
@@ -752,7 +760,7 @@ export default function ContractDetail() {
   const onSignatureConfirmed = async (dataUrl) => {
     setSignatureDataUrl(dataUrl);
     const dataHoraAssinatura = format(new Date(), "dd/MM/yyyy HH:mm");
-    await base44.entities.Contract.update(contractId, { assinatura_data: dataHoraAssinatura });
+    await base44.entities.Contract.update(contractId, { assinatura_data: dataHoraAssinatura }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
     await base44.entities.ActivityLog.create({
       usuario: contract.client_nome || "Cliente",
       acao: "Assinatura do cliente",
@@ -1029,16 +1037,16 @@ export default function ContractDetail() {
                   )}
                 </td>
                 <td className="py-2.5 text-right">{item.quantidade_retirada}</td>
-                <td className="py-2.5 text-right">R$ {(item.valor_diario || item.valor_unitario || 0).toFixed(2)}</td>
+                <td className="py-2.5 text-right">R$ {Number(item.valor_diario || item.valor_unitario || 0).toFixed(2)}</td>
                 <td className="py-2.5 text-right text-xs text-muted-foreground">
                   {temMinimo
                     ? <span className={minimoAplicado ? "text-blue-600 font-medium" : ""}>{diasEfetivos} dias{minimoAplicado ? " (mín.)" : ""}</span>
                     : `${diasContrato} dias`}
                 </td>
-                <td className="py-2.5 text-right">R$ {(item.desconto || 0).toFixed(2)}</td>
+                <td className="py-2.5 text-right">R$ {Number(item.desconto || 0).toFixed(2)}</td>
                 <td className="py-2.5 text-right">{item.quantidade_devolvida || 0}</td>
                 <td className="py-2.5 text-right font-semibold">
-                  R$ {subtotal.toFixed(2)}
+                  R$ {Number(subtotal || 0).toFixed(2)}
                 </td>
               </tr>
             );
@@ -1308,14 +1316,14 @@ export default function ContractDetail() {
                         const fotosRecolha = (contract.fotos || []).filter(f => f.tipo === "recolha");
                         const outrasExistentes = (contract.fotos || []).filter(f => !f.tipo);
                         const tagged = newPhotos.map(p => p.tipo ? p : { ...p, tipo: "entrega" });
-                        await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] });
+                        await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
                       }}
                       onRemove={async (idx) => {
                         const allFotos = contract.fotos || [];
                         const urlToRemove = fotosEntrega[idx]?.url;
                         const updated = allFotos.filter(f => f.url !== urlToRemove);
-                        await base44.entities.Contract.update(contractId, { fotos: updated });
+                        await base44.entities.Contract.update(contractId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
                       }}
                     />
@@ -1332,14 +1340,14 @@ export default function ContractDetail() {
                         const fotosEntregaExist = (contract.fotos || []).filter(f => f.tipo === "entrega");
                         const outrasExistentes = (contract.fotos || []).filter(f => !f.tipo);
                         const tagged = newPhotos.map(p => p.tipo ? p : { ...p, tipo: "recolha" });
-                        await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...fotosEntregaExist, ...tagged] });
+                        await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...fotosEntregaExist, ...tagged] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
                       }}
                       onRemove={async (idx) => {
                         const fotosRecolha = (contract.fotos || []).filter(f => f.tipo === "recolha");
                         const urlToRemove = fotosRecolha[idx]?.url;
                         const updated = (contract.fotos || []).filter(f => f.url !== urlToRemove);
-                        await base44.entities.Contract.update(contractId, { fotos: updated });
+                        await base44.entities.Contract.update(contractId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
                       }}
                     />
@@ -1353,13 +1361,13 @@ export default function ContractDetail() {
                         canDelete={isOperador}
                         onAdd={async (newPhotos) => {
                           const fotosTyped = (contract.fotos || []).filter(f => f.tipo);
-                          await base44.entities.Contract.update(contractId, { fotos: [...fotosTyped, ...newPhotos] });
+                          await base44.entities.Contract.update(contractId, { fotos: [...fotosTyped, ...newPhotos] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                           load();
                         }}
                         onRemove={async (idx) => {
                           const urlToRemove = fotosOutras[idx]?.url;
                           const updated = (contract.fotos || []).filter(f => f.url !== urlToRemove);
-                          await base44.entities.Contract.update(contractId, { fotos: updated });
+                          await base44.entities.Contract.update(contractId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                           load();
                         }}
                       />
