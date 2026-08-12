@@ -362,12 +362,12 @@ export default function BillingNoteDialog({ open, onClose, client, contracts, or
     // NÃO atualiza ultima_cobranca_enviada aqui — esse campo só deve ser gravado após pagamento real.
     // Apenas registra a data da nota para referência visual (sem impacto no cálculo de período).
     for (const c of chosenContracts) {
-      await base44.entities.Contract.update(c.id, { ultima_nota_gerada_em: new Date().toISOString().catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; }).slice(0, 10) }).catch(() => {});
+      await base44.entities.Contract.update(c.id, { ultima_nota_gerada_em: new Date().toISOString().slice(0, 10) }).catch(() => {});
     }
 
     // Vincula vendas à nota
     for (const v of selectedSalesData) {
-      await base44.entities.Sale.update(v.id, { nota_vinculada_id: note.id, nota_vinculada_numero: note.numero }).catch(().catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; }) => {});
+      await base44.entities.Sale.update(v.id, { nota_vinculada_id: note.id, nota_vinculada_numero: note.numero }).catch(() => {});
     }
 
     await log("Nota de Cobrança criada", "financeiro", note.id, note.numero, `Nota #${note.numero} — R$ ${fmtMoney(valorFinal)}`);
