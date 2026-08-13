@@ -257,7 +257,7 @@ export default function ContractDetail() {
         });
       } else if (status === "finalizado") {
         await releaseEquipmentSerials(
-          (contract.itens || []).map(item => ({
+          (Array.isArray(contract.itens) ? contract.itens : []).map(item => ({
             equipamento_id: item.equipamento_id,
             quantidade: item.quantidade_retirada || 0,
             seriais_devolvidos: [], // lista vazia = libera tudo vinculado ao contrato
@@ -359,7 +359,7 @@ export default function ContractDetail() {
   const handleLogisticReturn = async () => {
     // Libera estoque + seriais individuais para TODOS os itens do contrato
     await releaseEquipmentSerials(
-      (contract.itens || []).map(item => ({
+      (Array.isArray(contract.itens) ? contract.itens : []).map(item => ({
         equipamento_id: item.equipamento_id,
         quantidade: item.quantidade_retirada || 0,
         seriais_devolvidos: [],
@@ -377,7 +377,7 @@ export default function ContractDetail() {
     const hasSaldo = saldoFinal > 0;
 
     // Monta itens para recibo de devolução total
-    const itensDevolucaoTotal = (contract.itens || []).map((item) => ({
+    const itensDevolucaoTotal = (Array.isArray(contract.itens) ? contract.itens : []).map((item) => ({
       nome: item.equipamento_nome || "—",
       quantidade: item.quantidade_retirada || 1,
       unidade: "un.",
@@ -427,7 +427,7 @@ export default function ContractDetail() {
   };
 
   const openRecolhaDialog = () => {
-    const initial = (contract.itens || []).map((item, idx) => ({
+    const initial = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => ({
       idx,
       quantidade: 0,
       max: (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0),
@@ -514,7 +514,7 @@ export default function ContractDetail() {
     if (itensParaRecolher.length === 0) { toast.error("Nenhum item definido para recolha parcial"); return; }
 
     // Atualiza quantidade_devolvida
-    const updatedItens = (contract.itens || []).map((item, idx) => {
+    const updatedItens = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => {
       const r = itensParaRecolher.find((d) => d.idx === idx);
       const qtdRecolhida = r ? r.quantidade : 0;
       return { ...item, quantidade_devolvida: (item.quantidade_devolvida || 0) + qtdRecolhida };
@@ -544,7 +544,7 @@ export default function ContractDetail() {
     const newStatus = allReturned ? (hasSaldo ? "devolvido_pendente" : "finalizado") : "na_obra";
 
     // Atualiza histórico — marca última recolha como concluída
-    const historicoAtualizado = (contract.historico_recolhas || []).map((h, i) =>
+    const historicoAtualizado = (Array.isArray(contract.historico_recolhas) ? contract.historico_recolhas : []).map((h, i) =>
       i === (contract.historico_recolhas.length - 1) ? { ...h, status: "concluido" } : h
     );
 
@@ -612,7 +612,7 @@ export default function ContractDetail() {
   };
 
   const openPartialReturn = () => {
-    const initial = (contract.itens || []).map((item, idx) => ({
+    const initial = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => ({
       idx,
       quantidade: 0,
       max: (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0),
@@ -630,7 +630,7 @@ export default function ContractDetail() {
     if (toReturn.length === 0) { toast.error("Selecione ao menos um item para devolver"); return; }
 
     // Update each item's quantidade_devolvida and update stock
-    const updatedItens = (contract.itens || []).map((item, idx) => {
+    const updatedItens = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => {
       const devItem = devItens.find((d) => d.idx === idx);
       const qtdDevolvida = devItem ? devItem.quantidade : 0;
       return { ...item, quantidade_devolvida: (item.quantidade_devolvida || 0) + qtdDevolvida };
@@ -784,7 +784,7 @@ export default function ContractDetail() {
     try {
     // Libera estoque + seriais ao cancelar
     await releaseEquipmentSerials(
-      (contract.itens || []).map(item => ({
+      (Array.isArray(contract.itens) ? contract.itens : []).map(item => ({
         equipamento_id: item.equipamento_id,
         quantidade: item.quantidade_retirada || 0,
         seriais_devolvidos: [], // lista vazia = libera tudo vinculado ao contrato
@@ -1260,7 +1260,7 @@ export default function ContractDetail() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {(contract.historico_recolhas || []).map((rec, i) => (
+              {(Array.isArray(contract.historico_recolhas) ? contract.historico_recolhas : []).map((rec, i) => (
                 <div key={i} className="p-3 rounded-xl bg-muted/40 border text-sm space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">{rec.tipo === "parcial" ? "🔄 Recolha Parcial" : "📦 Recolha Total"}</span>
@@ -1417,7 +1417,7 @@ export default function ContractDetail() {
                   {contract.status === "aguardando_recolha" && contract.recolha_parcial_pendente && (
                     <div className="w-full p-3 rounded-xl bg-blue-50 border border-blue-200 space-y-2">
                       <p className="text-xs font-semibold text-blue-800">🔄 Recolha Parcial Aguardando Confirmação</p>
-                      {(contract.recolha_parcial_itens || []).map((r, i) => {
+                      {(Array.isArray(contract.recolha_parcial_itens) ? contract.recolha_parcial_itens : []).map((r, i) => {
                         const item = contract.itens?.[r.idx];
                         return (
                           <div key={i} className="flex justify-between text-xs text-blue-700">
@@ -1741,7 +1741,7 @@ export default function ContractDetail() {
             {recolhaTipo === "parcial" && (
               <div className="space-y-2">
                 <Label className="text-xs font-semibold">Selecione os itens e quantidades:</Label>
-                {(contract?.itens || []).map((item, idx) => {
+                {(Array.isArray(contract?.itens) ? contract.itens : []).map((item, idx) => {
                   const emAberto = (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0);
                   if (emAberto <= 0) return null;
                   const rItem = recolhaItens.find((r) => r.idx === idx);
@@ -1941,7 +1941,7 @@ export default function ContractDetail() {
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground">Informe a quantidade a devolver por item:</p>
             <div className="space-y-3">
-              {(contract?.itens || []).map((item, idx) => {
+              {(Array.isArray(contract?.itens) ? contract.itens : []).map((item, idx) => {
                 const emAberto = (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0);
                 if (emAberto <= 0) return null;
                 const devItem = devItens.find((d) => d.idx === idx);
