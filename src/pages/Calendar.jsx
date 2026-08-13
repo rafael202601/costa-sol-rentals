@@ -383,6 +383,15 @@ const FILTROS_VAZIOS = {
 };
 
 // ─── Componente principal ─────────────────────────────────────────────────────
+
+const safeArray = (arr) => {
+  if (Array.isArray(arr)) return arr;
+  if (typeof arr === 'string') {
+    try { const p = JSON.parse(arr); return Array.isArray(p) ? p : []; } catch { return []; }
+  }
+  return [];
+};
+
 export default function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [contracts, setContracts] = useState([]);
@@ -1150,13 +1159,13 @@ export default function Calendar() {
                                     )}
                                     {(contract.itens || []).length > 0 && (
                                       <div className="flex flex-wrap gap-1 mt-1">
-                                        {contract.itens.slice(0, 3).map((item, idx) => (
+                                        {safeArray(contract.itens).slice(0, 3).map((item, idx) => (
                                           <span key={idx} className="bg-muted px-1.5 py-0.5 rounded-full text-[9px] border">
                                             {item.quantidade_retirada || item.quantidade || 1}x {item.equipamento_nome}
                                           </span>
                                         ))}
-                                        {contract.itens.length > 3 && (
-                                          <span className="text-[9px] text-muted-foreground">+{contract.itens.length - 3}</span>
+                                        {safeArray(contract.itens).length > 3 && (
+                                          <span className="text-[9px] text-muted-foreground">+{safeArray(contract.itens).length - 3}</span>
                                         )}
                                       </div>
                                     )}

@@ -75,7 +75,7 @@ function ContractCard({ contract, drivers, vehicles, driversMap, onAssignDriver,
     : contract.motorista_entrega ? getDriverColor(contract.motorista_entrega, driversMap) : null;
 
   // Saldo de itens para recolha parcial
-  const itensSaldo = (contract.itens || []).map(item => {
+  const itensSaldo = safeArray(contract.itens).map(item => {
     const restante = (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0);
     return restante > 0 ? { nome: item.equipamento_nome, restante } : null;
   }).filter(Boolean);
@@ -266,6 +266,15 @@ function OSCard({ os, drivers, vehicles, driversMap, onAssignDriver, onAssignVeh
     </Card>
   );
 }
+
+
+const safeArray = (arr) => {
+  if (Array.isArray(arr)) return arr;
+  if (typeof arr === 'string') {
+    try { const p = JSON.parse(arr); return Array.isArray(p) ? p : []; } catch { return []; }
+  }
+  return [];
+};
 
 export default function Kanban() {
   const [contracts, setContracts] = useState([]);

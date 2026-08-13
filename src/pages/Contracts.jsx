@@ -97,14 +97,14 @@ const ContractCard = ({ contract }) => {
                 )}
                 {(contract.itens || []).length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-0.5">
-                    {contract.itens.slice(0, 3).map((item, i) => (
+                    {safeArray(contract.itens).slice(0, 3).map((item, i) => (
                       <span key={i} className="inline-flex items-center gap-0.5 text-[10px] bg-muted px-1.5 py-0.5 rounded-full border">
                         <Package className="w-2.5 h-2.5" />
                         {item.quantidade_retirada || 1}x {item.equipamento_nome}
                       </span>
                     ))}
-                    {contract.itens.length > 3 && (
-                      <span className="text-[10px] text-muted-foreground">+{contract.itens.length - 3}</span>
+                    {safeArray(contract.itens).length > 3 && (
+                      <span className="text-[10px] text-muted-foreground">+{safeArray(contract.itens).length - 3}</span>
                     )}
                   </div>
                 )}
@@ -135,7 +135,7 @@ const ContractCard = ({ contract }) => {
                 </div>
                 {(contract.client_etiquetas || []).length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {contract.client_etiquetas.slice(0, 4).map((et, i) => (
+                    {safeArray(contract.client_etiquetas).slice(0, 4).map((et, i) => (
                       <span key={i} className="inline-flex items-center gap-0.5 text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-full font-medium">
                         <Tag className="w-2.5 h-2.5" />{et}
                       </span>

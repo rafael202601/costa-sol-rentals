@@ -130,7 +130,16 @@ export function calcContractTotal({
   diasMinimos,
 }) {
   // ─── PASSO 1: calcular cada item (mínimo por equipamento, sem global)
-  const itensCalculados = itens.map((item) => {
+  
+  const safeArray = (arr) => {
+    if (Array.isArray(arr)) return arr;
+    if (typeof arr === 'string') {
+      try { const p = JSON.parse(arr); return Array.isArray(p) ? p : []; } catch { return []; }
+    }
+    return [];
+  };
+  const itensCalculados = safeArray(itens).map((item) => {
+
     const calc = calcItemValorBase(item, diasContrato);
     const desconto = item.desconto || 0;
     const subtotal = Math.max(0, calc.valorBase - desconto);

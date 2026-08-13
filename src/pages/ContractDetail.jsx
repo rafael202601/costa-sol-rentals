@@ -172,7 +172,7 @@ export default function ContractDetail() {
     if (c?.itens?.length) {
       const itensNeedEnrich = c.itens.some(i => i.equipamento_id && i.aplica_valor_minimo === undefined);
       if (itensNeedEnrich) {
-        const enriched = await Promise.all((Array.isArray(c.itens) ? c.itens : []).map(async (item) => {
+        const enriched = await Promise.all(safeArray(c.itens).map(async (item) => {
           if (!item.equipamento_id || item.aplica_valor_minimo !== undefined) return item;
           try {
             const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
@@ -257,7 +257,7 @@ export default function ContractDetail() {
         });
       } else if (status === "finalizado") {
         await releaseEquipmentSerials(
-          (Array.isArray(contract.itens) ? contract.itens : []).map(item => ({
+          safeArray(contract.itens).map(item => ({
             equipamento_id: item.equipamento_id,
             quantidade: item.quantidade_retirada || 0,
             seriais_devolvidos: [], // lista vazia = libera tudo vinculado ao contrato
@@ -359,7 +359,7 @@ export default function ContractDetail() {
   const handleLogisticReturn = async () => {
     // Libera estoque + seriais individuais para TODOS os itens do contrato
     await releaseEquipmentSerials(
-      (Array.isArray(contract.itens) ? contract.itens : []).map(item => ({
+      safeArray(contract.itens).map(item => ({
         equipamento_id: item.equipamento_id,
         quantidade: item.quantidade_retirada || 0,
         seriais_devolvidos: [],
@@ -377,7 +377,7 @@ export default function ContractDetail() {
     const hasSaldo = saldoFinal > 0;
 
     // Monta itens para recibo de devolução total
-    const itensDevolucaoTotal = (Array.isArray(contract.itens) ? contract.itens : []).map((item) => ({
+    const itensDevolucaoTotal = safeArray(contract.itens).map((item) => ({
       nome: item.equipamento_nome || "—",
       quantidade: item.quantidade_retirada || 1,
       unidade: "un.",
@@ -393,7 +393,7 @@ export default function ContractDetail() {
       status: "concluido",
       assinatura_responsavel_url: currentUser?.assinatura_usuario || null,
     };
-    const historicoDevAtualizado = [...(contract.historico_devolucoes || []), novaDevolucao];
+    const historicoDevAtualizado = [...safeArray(contract.historico_devolucoes), novaDevolucao];
 
     // REGRA: após devolução, congela cobrança dinâmica e define saldo final fixo
     // Contrato só vai para "finalizado" se saldo for zero
@@ -427,7 +427,7 @@ export default function ContractDetail() {
   };
 
   const openRecolhaDialog = () => {
-    const initial = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => ({
+    const initial = safeArray(contract.itens).map((item, idx) => ({
       idx,
       quantidade: 0,
       max: (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0),
@@ -452,7 +452,7 @@ export default function ContractDetail() {
       observacao: `CANCELADO: ${cancelRecolhaMotivo}`,
       itens: [],
     };
-    const historicoAtual = [...(contract.historico_recolhas || []), historicoCancelamento];
+    const historicoAtual = [...safeArray(contract.historico_recolhas), historicoCancelamento];
     await base44.entities.Contract.update(contractId, {
       status: "na_obra",
       recolha_parcial_pendente: false,
@@ -479,7 +479,7 @@ export default function ContractDetail() {
       };
       const recolhaUpdate = {
         status: "aguardando_recolha",
-        historico_recolhas: [...(contract.historico_recolhas || []), historicoRecolha],
+        historico_recolhas: [...safeArray(contract.historico_recolhas), historicoRecolha],
         recolha_parcial_pendente: true,
         recolha_parcial_itens: toRecolher.map((r) => ({ idx: r.idx, quantidade: r.quantidade })),
         data_recolha: dataRecolhaFinal,
@@ -514,7 +514,7 @@ export default function ContractDetail() {
     if (itensParaRecolher.length === 0) { toast.error("Nenhum item definido para recolha parcial"); return; }
 
     // Atualiza quantidade_devolvida
-    const updatedItens = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => {
+    const updatedItens = safeArray(contract.itens).map((item, idx) => {
       const r = itensParaRecolher.find((d) => d.idx === idx);
       const qtdRecolhida = r ? r.quantidade : 0;
       return { ...item, quantidade_devolvida: (item.quantidade_devolvida || 0) + qtdRecolhida };
@@ -544,7 +544,7 @@ export default function ContractDetail() {
     const newStatus = allReturned ? (hasSaldo ? "devolvido_pendente" : "finalizado") : "na_obra";
 
     // Atualiza histórico — marca última recolha como concluída
-    const historicoAtualizado = (Array.isArray(contract.historico_recolhas) ? contract.historico_recolhas : []).map((h, i) =>
+    const historicoAtualizado = safeArray(contract.historico_recolhas).map((h, i) =>
       i === (contract.historico_recolhas.length - 1) ? { ...h, status: "concluido" } : h
     );
 
@@ -565,7 +565,7 @@ export default function ContractDetail() {
       status: "concluido",
       assinatura_responsavel_url: currentUser?.assinatura_usuario || null,
     };
-    const historicoDevRecolha = [...(contract.historico_devolucoes || []), novaDevolucaoRecolha];
+    const historicoDevRecolha = [...safeArray(contract.historico_devolucoes), novaDevolucaoRecolha];
 
     await base44.entities.Contract.update(contractId, {
       itens: updatedItens,
@@ -612,7 +612,7 @@ export default function ContractDetail() {
   };
 
   const openPartialReturn = () => {
-    const initial = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => ({
+    const initial = safeArray(contract.itens).map((item, idx) => ({
       idx,
       quantidade: 0,
       max: (item.quantidade_retirada || 0) - (item.quantidade_devolvida || 0),
@@ -630,7 +630,7 @@ export default function ContractDetail() {
     if (toReturn.length === 0) { toast.error("Selecione ao menos um item para devolver"); return; }
 
     // Update each item's quantidade_devolvida and update stock
-    const updatedItens = (Array.isArray(contract.itens) ? contract.itens : []).map((item, idx) => {
+    const updatedItens = safeArray(contract.itens).map((item, idx) => {
       const devItem = devItens.find((d) => d.idx === idx);
       const qtdDevolvida = devItem ? devItem.quantidade : 0;
       return { ...item, quantidade_devolvida: (item.quantidade_devolvida || 0) + qtdDevolvida };
@@ -679,7 +679,7 @@ export default function ContractDetail() {
       status: "concluido",
       assinatura_responsavel_url: currentUser?.assinatura_usuario || null,
     };
-    const historicoDevAtualizado = [...(contract.historico_devolucoes || []), novaDevolucao];
+    const historicoDevAtualizado = [...safeArray(contract.historico_devolucoes), novaDevolucao];
 
     await base44.entities.Contract.update(contractId, {
       itens: updatedItens,
@@ -712,7 +712,7 @@ export default function ContractDetail() {
 
   const enrichContractItens = async (itens) => {
     if (!itens?.length) return itens || [];
-    const enriched = await Promise.all((Array.isArray(itens) ? itens : []).map(async (item) => {
+    const enriched = await Promise.all(safeArray(itens).map(async (item) => {
       if (!item.equipamento_id) return item;
       try {
         const [eq] = await base44.entities.Equipment.filter({ id: item.equipamento_id });
@@ -784,7 +784,7 @@ export default function ContractDetail() {
     try {
     // Libera estoque + seriais ao cancelar
     await releaseEquipmentSerials(
-      (Array.isArray(contract.itens) ? contract.itens : []).map(item => ({
+      safeArray(contract.itens).map(item => ({
         equipamento_id: item.equipamento_id,
         quantidade: item.quantidade_retirada || 0,
         seriais_devolvidos: [], // lista vazia = libera tudo vinculado ao contrato
@@ -1093,7 +1093,7 @@ export default function ContractDetail() {
           const s = settings || {};
           const itensParaCalc = enrichedItens || contract.itens || [];
           const calcResult = _calcResult || { grupoA: [], saldoPagar: 0, valorTotal: 0, descontoInfo: null };
-          const temGrupoA = calcResult.grupoA.length > 0;
+          const temGrupoA = (calcResult?.grupoA || []).length > 0;
           const minimoAplicadoEmAlgum = calcResult.grupoA.some(i => i._minimoAplicado);
           const totalFinal = valorTotalCorreto;
           return (
@@ -1103,7 +1103,7 @@ export default function ContractDetail() {
                 <div className="space-y-1.5 text-sm">
                   {/* Valor da locação diária — SEMPRE visível (soma das diárias reais dos itens × qtd) */}
                   {(() => {
-                    const valorDiarioPuro = itensParaCalc.reduce((sum, item) => {
+                    const valorDiarioPuro = (itensParaCalc || []).reduce((sum, item) => {
                       const diaria = item.valor_diario > 0 ? item.valor_diario : (item.valor_unitario || 0);
                       return sum + diaria * (item.quantidade_retirada || 1);
                     }, 0);
@@ -1117,7 +1117,7 @@ export default function ContractDetail() {
 
                   {/* Valor mínimo de locação — somente quando existe Grupo A */}
                   {temGrupoA && (() => {
-                    const diasMinLabel = calcResult.grupoA.reduce((max, i) => Math.max(max, i._diasMinUsados || i.dias_minimos_proprio || (s.minimo_dias || 5)), 0);
+                    const diasMinLabel = (calcResult?.grupoA || []).reduce((max, i) => Math.max(max, i._diasMinUsados || i.dias_minimos_proprio || (s.minimo_dias || 5)), 0);
                     const valorMinimo = calcValorMinimoLocacao(calcResult.grupoA, s.minimo_dias || 5, s.valor_minimo_contrato || 0);
                     return (
                       <div className="flex justify-between text-slate-500">
@@ -1260,7 +1260,7 @@ export default function ContractDetail() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {(Array.isArray(contract.historico_recolhas) ? contract.historico_recolhas : []).map((rec, i) => (
+              {safeArray(contract.historico_recolhas).map((rec, i) => (
                 <div key={i} className="p-3 rounded-xl bg-muted/40 border text-sm space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold">{rec.tipo === "parcial" ? "🔄 Recolha Parcial" : "📦 Recolha Total"}</span>
@@ -1272,7 +1272,7 @@ export default function ContractDetail() {
                   {rec.motorista && rec.tipo !== "cancelamento" && <p className="text-xs text-muted-foreground">Motorista: {rec.motorista}</p>}
                   {rec.itens?.length > 0 && rec.tipo !== "cancelamento" && (
                     <ul className="text-xs space-y-0.5 mt-1">
-                      {(Array.isArray(rec.itens) ? rec.itens : []).map((it, j) => (
+                      {safeArray(rec.itens).map((it, j) => (
                         <li key={j} className="flex justify-between">
                           <span>{it.nome}</span>
                           <span className="font-medium">{it.quantidade} un.</span>
@@ -1292,16 +1292,16 @@ export default function ContractDetail() {
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-heading flex items-center gap-2">
               <Images className="w-4 h-4 text-blue-500" /> Registro Fotográfico
-              {(contract.fotos || []).length > 0 && (
-                <span className="ml-auto text-xs text-muted-foreground font-normal">{(contract.fotos || []).length} foto(s)</span>
+              {safeArray(contract.fotos).length > 0 && (
+                <span className="ml-auto text-xs text-muted-foreground font-normal">{safeArray(contract.fotos).length} foto(s)</span>
               )}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
             {/* Fotos de Entrega */}
             {(() => {
-              const fotosEntrega = (contract.fotos || []).filter(f => f.tipo === "entrega");
-              const fotosOutras = (contract.fotos || []).filter(f => !f.tipo);
+              const fotosEntrega = safeArray(contract.fotos).filter(f => f.tipo === "entrega");
+              const fotosOutras = safeArray(contract.fotos).filter(f => !f.tipo);
               return (
                 <>
                   <div>
@@ -1313,8 +1313,8 @@ export default function ContractDetail() {
                       currentUser={currentUser}
                       canDelete={isOperador}
                       onAdd={async (newPhotos) => {
-                        const fotosRecolha = (contract.fotos || []).filter(f => f.tipo === "recolha");
-                        const outrasExistentes = (contract.fotos || []).filter(f => !f.tipo);
+                        const fotosRecolha = safeArray(contract.fotos).filter(f => f.tipo === "recolha");
+                        const outrasExistentes = safeArray(contract.fotos).filter(f => !f.tipo);
                         const tagged = newPhotos.map(p => p.tipo ? p : { ...p, tipo: "entrega" });
                         await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...tagged, ...fotosRecolha] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
@@ -1330,23 +1330,23 @@ export default function ContractDetail() {
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-amber-700 mb-2 flex items-center gap-1">📷 Fotos de Recolha
-                      {(() => { const fr = (contract.fotos || []).filter(f => f.tipo === "recolha"); return fr.length > 0 ? <span className="ml-1 text-amber-500 font-normal">({fr.length})</span> : null; })()}
+                      {(() => { const fr = safeArray(contract.fotos).filter(f => f.tipo === "recolha"); return fr.length > 0 ? <span className="ml-1 text-amber-500 font-normal">({fr.length})</span> : null; })()}
                     </p>
                     <PhotoGallery
-                      photos={(contract.fotos || []).filter(f => f.tipo === "recolha")}
+                      photos={safeArray(contract.fotos).filter(f => f.tipo === "recolha")}
                       currentUser={currentUser}
                       canDelete={isOperador}
                       onAdd={async (newPhotos) => {
-                        const fotosEntregaExist = (contract.fotos || []).filter(f => f.tipo === "entrega");
-                        const outrasExistentes = (contract.fotos || []).filter(f => !f.tipo);
+                        const fotosEntregaExist = safeArray(contract.fotos).filter(f => f.tipo === "entrega");
+                        const outrasExistentes = safeArray(contract.fotos).filter(f => !f.tipo);
                         const tagged = newPhotos.map(p => p.tipo ? p : { ...p, tipo: "recolha" });
                         await base44.entities.Contract.update(contractId, { fotos: [...outrasExistentes, ...fotosEntregaExist, ...tagged] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
                       }}
                       onRemove={async (idx) => {
-                        const fotosRecolha = (contract.fotos || []).filter(f => f.tipo === "recolha");
+                        const fotosRecolha = safeArray(contract.fotos).filter(f => f.tipo === "recolha");
                         const urlToRemove = fotosRecolha[idx]?.url;
-                        const updated = (contract.fotos || []).filter(f => f.url !== urlToRemove);
+                        const updated = safeArray(contract.fotos).filter(f => f.url !== urlToRemove);
                         await base44.entities.Contract.update(contractId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                         load();
                       }}
@@ -1360,13 +1360,13 @@ export default function ContractDetail() {
                         currentUser={currentUser}
                         canDelete={isOperador}
                         onAdd={async (newPhotos) => {
-                          const fotosTyped = (contract.fotos || []).filter(f => f.tipo);
+                          const fotosTyped = safeArray(contract.fotos).filter(f => f.tipo);
                           await base44.entities.Contract.update(contractId, { fotos: [...fotosTyped, ...newPhotos] }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                           load();
                         }}
                         onRemove={async (idx) => {
                           const urlToRemove = fotosOutras[idx]?.url;
-                          const updated = (contract.fotos || []).filter(f => f.url !== urlToRemove);
+                          const updated = safeArray(contract.fotos).filter(f => f.url !== urlToRemove);
                           await base44.entities.Contract.update(contractId, { fotos: updated }).catch(err => { console.error(err); typeof toast !== "undefined" && toast.error("Erro ao salvar. Verifique sua conexão."); throw err; });
                           load();
                         }}
@@ -1417,7 +1417,7 @@ export default function ContractDetail() {
                   {contract.status === "aguardando_recolha" && contract.recolha_parcial_pendente && (
                     <div className="w-full p-3 rounded-xl bg-blue-50 border border-blue-200 space-y-2">
                       <p className="text-xs font-semibold text-blue-800">🔄 Recolha Parcial Aguardando Confirmação</p>
-                      {(Array.isArray(contract.recolha_parcial_itens) ? contract.recolha_parcial_itens : []).map((r, i) => {
+                      {safeArray(contract.recolha_parcial_itens).map((r, i) => {
                         const item = contract.itens?.[r.idx];
                         return (
                           <div key={i} className="flex justify-between text-xs text-blue-700">
@@ -1767,18 +1767,18 @@ export default function ContractDetail() {
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => setRecolhaItens((prev) => (Array.isArray(prev) ? prev : []).map((r) => r.idx === idx ? { ...r, quantidade: Math.max(0, r.quantidade - 1) } : r))}
+                          onClick={() => setRecolhaItens((prev) => safeArray(prev).map((r) => r.idx === idx ? { ...r, quantidade: Math.max(0, r.quantidade - 1) } : r))}
                           className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold"
                         >−</button>
                         <span className="w-10 text-center font-semibold text-sm">{qtd}</span>
                         <button
                           type="button"
-                          onClick={() => setRecolhaItens((prev) => (Array.isArray(prev) ? prev : []).map((r) => r.idx === idx ? { ...r, quantidade: Math.min(emAberto, r.quantidade + 1) } : r))}
+                          onClick={() => setRecolhaItens((prev) => safeArray(prev).map((r) => r.idx === idx ? { ...r, quantidade: Math.min(emAberto, r.quantidade + 1) } : r))}
                           className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold"
                         >+</button>
                         <button
                           type="button"
-                          onClick={() => setRecolhaItens((prev) => (Array.isArray(prev) ? prev : []).map((r) => r.idx === idx ? { ...r, quantidade: emAberto } : r))}
+                          onClick={() => setRecolhaItens((prev) => safeArray(prev).map((r) => r.idx === idx ? { ...r, quantidade: emAberto } : r))}
                           className="text-xs text-primary hover:underline ml-1"
                         >Todos</button>
                       </div>
@@ -1813,7 +1813,7 @@ export default function ContractDetail() {
                   <SelectValue placeholder="Definir depois pela logística..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {(Array.isArray(drivers) ? drivers : []).map((d) => (
+                  {safeArray(drivers).map((d) => (
                     <SelectItem key={d.id} value={d.nome}>{d.nome}{d.veiculo ? ` — ${d.veiculo}` : ""}</SelectItem>
                   ))}
                 </SelectContent>
@@ -1958,13 +1958,13 @@ export default function ContractDetail() {
                         <div className="flex items-center gap-2 shrink-0">
                           <button
                             type="button"
-                            onClick={() => setDevItens((prev) => (Array.isArray(prev) ? prev : []).map((d) => d.idx === idx ? { ...d, quantidade: Math.max(0, d.quantidade - 1) } : d))}
+                            onClick={() => setDevItens((prev) => safeArray(prev).map((d) => d.idx === idx ? { ...d, quantidade: Math.max(0, d.quantidade - 1) } : d))}
                             className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold text-lg"
                           >−</button>
                           <span className="w-8 text-center font-semibold text-sm">{qtd}</span>
                           <button
                             type="button"
-                            onClick={() => setDevItens((prev) => (Array.isArray(prev) ? prev : []).map((d) => d.idx === idx ? { ...d, quantidade: Math.min(emAberto, d.quantidade + 1) } : d))}
+                            onClick={() => setDevItens((prev) => safeArray(prev).map((d) => d.idx === idx ? { ...d, quantidade: Math.min(emAberto, d.quantidade + 1) } : d))}
                             className="w-7 h-7 rounded-lg border flex items-center justify-center hover:bg-background font-bold text-lg"
                           >+</button>
                         </div>
@@ -1973,7 +1973,7 @@ export default function ContractDetail() {
                     {/* Seleção de seriais para devolução */}
                     {temControleIndividual && (() => {
                       const serialsAtivos = (item.seriais_selecionados || []).filter(s => {
-                        const devolvidos = (contract.historico_recolhas || []).flatMap(h =>
+                        const devolvidos = safeArray(contract.historico_recolhas).flatMap(h =>
                           (h.itens || []).filter(it => it.idx === idx).flatMap(it => it.seriais_devolvidos || [])
                         );
                         return !devolvidos.includes(s);
@@ -1988,7 +1988,7 @@ export default function ContractDetail() {
                           <SerialSelector
                             numeracoes={numsMock}
                             selected={selecionados}
-                            onChange={(v) => setDevItens(prev => (Array.isArray(prev) ? prev : []).map(d =>
+                            onChange={(v) => setDevItens(prev => safeArray(prev).map(d =>
                               d.idx === idx ? { ...d, seriais_devolvidos: v, quantidade: v.length } : d
                             ))}
                             max={serialsAtivos.length}
